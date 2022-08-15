@@ -1,25 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Container } from "@mui/material";
+import { lazy } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import { Layout } from "./components/Layout";
+
+const Home = lazy(() => import("./pages/Home"));
+const Board = lazy(() => import("./pages/Board"));
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router basename="/task-management">
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="/projects" element={<Home />} />
+          <Route path="/board" element={<Board />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 
