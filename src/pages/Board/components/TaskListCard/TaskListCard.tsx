@@ -9,6 +9,8 @@ import {
   CardContent,
   AppBar,
 } from "@mui/material";
+import * as selectors from "../../selectors/board";
+import { useSelector } from "react-redux";
 
 type TaskListCardProps = {
   status: Partial<Status>;
@@ -17,8 +19,8 @@ type TaskListCardProps = {
 
 export const TaskListCard: React.FC<TaskListCardProps> = (props) => {
   const { status, taskList } = props;
-  const count = taskList.filter((task) => task._id === status.key)[0].records
-    .length;
+  const loading = useSelector(selectors.boardLoadingSelector);
+  const count = taskList.filter((task) => task._id === status.key)[0].count;
 
   const CustomAppbar = (props: any) => (
     <AppBar position="sticky" color="secondary" {...props} />

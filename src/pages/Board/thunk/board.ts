@@ -1,14 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { getAllStatuses, getAllTasks } from "../../../api/tasks";
+import { Params } from "../../../types";
 import { boardStatusFetchErrorAction } from "../reducer/board";
 
 const BOARD_FETCH_THUNK_TYPE = "BOARD_FETCH_THUNK_TYPE";
 
 export const boardListFetch = createAsyncThunk(
   BOARD_FETCH_THUNK_TYPE,
-  async (_, { rejectWithValue }) => {
+  async (params: Params | undefined, { rejectWithValue }) => {
     try {
-      return await getAllTasks();
+      return await getAllTasks(params);
     } catch (error) {
       return rejectWithValue(error);
     }

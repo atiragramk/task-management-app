@@ -9,7 +9,7 @@ const Board = lazy(() => import("./pages/Board"));
 
 function App() {
   return (
-    <Router basename="/task-management">
+    <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />

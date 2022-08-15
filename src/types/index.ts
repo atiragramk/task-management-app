@@ -22,9 +22,16 @@ export type Status = {
 export type SortedTask = {
   _id: string;
   records: Task[];
+  count: number;
 };
 
 export type Modal = {
   open: boolean;
   name: string | null;
+};
+
+export type Params = {
+  status?: string;
+  priority?: string;
+  search?: string;
 };

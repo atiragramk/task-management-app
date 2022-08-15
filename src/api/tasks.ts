@@ -1,9 +1,9 @@
-import { SortedTask, Status, Task } from "../types";
+import { Params, SortedTask, Status, Task } from "../types";
 import { client } from "./client";
 
-export const getAllTasks = async () => {
+export const getAllTasks = async (params: Params = {}) => {
   try {
-    return await client.get<never, SortedTask[]>("/tasks");
+    return await client.get<never, SortedTask[]>("/tasks", { params });
   } catch (error) {
     return Promise.reject(error);
   }

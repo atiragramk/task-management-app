@@ -1,5 +1,4 @@
-import { Box, Button, CircularProgress, Container } from "@mui/material";
-
+import { Box, Button, LinearProgress, Container } from "@mui/material";
 import { TaskListCard } from "./components/TaskListCard";
 import { SortingBar } from "./components/SortingBar";
 import AddIcon from "@mui/icons-material/Add";
@@ -12,7 +11,6 @@ import * as selectors from "./selectors/board";
 const Board = () => {
   const { loading, error, data } = useSelector(selectors.boardStatusSelector);
   const taskList = useSelector(selectors.boardDataSelector);
-  console.log(taskList);
 
   const dispatch: AppDispatch = useDispatch();
 
@@ -22,28 +20,34 @@ const Board = () => {
   }, []);
 
   return (
-    <Container maxWidth="xl">
-      <SortingBar data={data} />
-      <Box sx={{ display: "flex", overflow: "auto", height: "78vh" }}>
-        {loading && !error && data.length === 0 && <CircularProgress />}
-        {!error &&
-          data.length > 0 &&
-          data.map((status) => {
-            return (
-              <TaskListCard
-                key={status._id}
-                status={status}
-                taskList={taskList}
-              />
-            );
-          })}
-        <Box sx={{ width: 220, m: 1 }}>
-          <Button fullWidth={true} variant="outlined" startIcon={<AddIcon />}>
-            Create column
-          </Button>
+    <>
+      {loading && !error && data.length === 0 && (
+        <Box sx={{ width: "100%" }}>
+          <LinearProgress />
         </Box>
-      </Box>
-    </Container>
+      )}
+      <Container maxWidth="xl">
+        <SortingBar data={data} />
+        <Box sx={{ display: "flex", overflow: "auto", height: "78vh" }}>
+          {!error &&
+            data.length > 0 &&
+            data.map((status) => {
+              return (
+                <TaskListCard
+                  key={status._id}
+                  status={status}
+                  taskList={taskList}
+                />
+              );
+            })}
+          <Box sx={{ width: 220, m: 1 }}>
+            <Button fullWidth={true} variant="outlined" startIcon={<AddIcon />}>
+              Create column
+            </Button>
+          </Box>
+        </Box>
+      </Container>
+    </>
   );
 };
 
