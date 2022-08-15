@@ -1,4 +1,5 @@
-import { Box, Button, Container } from "@mui/material";
+import { Box, Button, CircularProgress, Container } from "@mui/material";
+
 import { TaskListCard } from "./components/TaskListCard";
 import { SortingBar } from "./components/SortingBar";
 import AddIcon from "@mui/icons-material/Add";
@@ -9,7 +10,6 @@ import { AppDispatch } from "../../store";
 import * as selectors from "./selectors/board";
 
 const Board = () => {
-  const statusList = ["Defined", "In Progress", "Blocked"];
   const { loading, error, data } = useSelector(selectors.boardStatusSelector);
   const taskList = useSelector(selectors.boardDataSelector);
   console.log(taskList);
@@ -25,15 +25,18 @@ const Board = () => {
     <Container maxWidth="xl">
       <SortingBar data={data} />
       <Box sx={{ display: "flex", overflow: "auto", height: "78vh" }}>
-        {data.map((status) => {
-          return (
-            <TaskListCard
-              key={status._id}
-              status={status}
-              taskList={taskList}
-            />
-          );
-        })}
+        {loading && !error && data.length === 0 && <CircularProgress />}
+        {!error &&
+          data.length > 0 &&
+          data.map((status) => {
+            return (
+              <TaskListCard
+                key={status._id}
+                status={status}
+                taskList={taskList}
+              />
+            );
+          })}
         <Box sx={{ width: 220, m: 1 }}>
           <Button fullWidth={true} variant="outlined" startIcon={<AddIcon />}>
             Create column
