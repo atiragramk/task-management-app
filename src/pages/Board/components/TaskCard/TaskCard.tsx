@@ -1,23 +1,28 @@
-import {
-  Card,
-  CardHeader,
-  Typography,
-  Box,
-  IconButton,
-  CardContent,
-  Avatar,
-  AvatarGroup,
-  Popover,
-  Button,
-  Stack,
-  CardActionArea,
-} from "@mui/material";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import { useState } from "react";
-import { SortedTask, Task } from "../../../../types";
+import { Task } from "../../../../types";
+import {
+  StyledCard,
+  StyledCardHeader,
+  StyledFooterWrapper,
+  StyledHeaderTypography,
+  StyledHeaderWrapper,
+  StyledCardContent,
+  StyledFooterTypography,
+} from "./styled";
+import {
+  Typography,
+  Box,
+  IconButton,
+  Avatar,
+  AvatarGroup,
+  Popover,
+  Button,
+  Stack,
+} from "@mui/material";
 
 type TaskCardProps = {
   data: Task;
@@ -39,39 +44,14 @@ export const TaskCard: React.FC<TaskCardProps> = (props) => {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
   return (
-    <Card
-      sx={{
-        width: 220,
-        marginBottom: "10px",
-        borderLeft: "5px solid",
-        borderColor: `priority.${data.priority}`,
-      }}
-    >
-      <CardHeader
-        sx={{
-          padding: "7px 12px",
-        }}
+    <StyledCard sx={{ borderColor: `priority.${data.priority}` }}>
+      <StyledCardHeader
         title={
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <Typography
-              sx={{
-                bgcolor: "primary.light",
-                padding: "1px 11px",
-                borderRadius: "7px",
-                color: "#fff",
-                fontWeight: 300,
-                fontSize: 12,
-              }}
-            >
+          <StyledHeaderWrapper>
+            <StyledHeaderTypography sx={{ bgcolor: "primary.light" }}>
               AW-228
-            </Typography>
-          </Box>
+            </StyledHeaderTypography>
+          </StyledHeaderWrapper>
         }
         action={
           <Box>
@@ -113,34 +93,21 @@ export const TaskCard: React.FC<TaskCardProps> = (props) => {
             </Popover>
           </Box>
         }
-      ></CardHeader>
-      <CardContent sx={{ padding: "7px 12px" }}>
-        <Typography sx={{ fontWeight: 300 }}>{data.title}</Typography>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginTop: "10px",
-          }}
-        >
-          <Typography
-            sx={{
-              bgcolor: `priority.${data.priority}`,
-              padding: "1px 11px",
-              borderRadius: "7px",
-              fontSize: 14,
-              width: "fit-content",
-            }}
-          >
+      ></StyledCardHeader>
+      <StyledCardContent>
+        <Typography sx={{ fontWeight: 300, fontSize: 14 }}>
+          {data.title}
+        </Typography>
+        <StyledFooterWrapper>
+          <StyledFooterTypography sx={{ bgcolor: `priority.${data.priority}` }}>
             {data.priority}
-          </Typography>
+          </StyledFooterTypography>
           <AvatarGroup>
             <Avatar sx={{ width: 24, height: 24 }}></Avatar>
             <Avatar sx={{ width: 24, height: 24 }}></Avatar>
           </AvatarGroup>
-        </Box>
-      </CardContent>
-    </Card>
+        </StyledFooterWrapper>
+      </StyledCardContent>
+    </StyledCard>
   );
 };

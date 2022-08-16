@@ -22,3 +22,8 @@ export const boardStatusSelector = createSelector(
   boardStateSelector,
   (board) => board.status
 );
+
+export const boardFilterParams = createSelector(
+  boardStateSelector,
+  (board) => board.params
+);

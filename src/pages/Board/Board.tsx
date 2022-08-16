@@ -7,17 +7,24 @@ import { useEffect } from "react";
 import { boardListFetch, boardStatusListFetch } from "./thunk/board";
 import { AppDispatch } from "../../store";
 import * as selectors from "./selectors/board";
+import { Params } from "../../types";
+import { boardFilterParamsAction } from "./reducer/board";
 
 const Board = () => {
   const { loading, error, data } = useSelector(selectors.boardStatusSelector);
   const taskList = useSelector(selectors.boardDataSelector);
+  const params = useSelector(selectors.boardFilterParams);
 
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(boardListFetch());
+    dispatch(boardListFetch(params));
     dispatch(boardStatusListFetch());
-  }, []);
+  }, [params]);
+
+  const handleFilter = (param: Partial<Params>) => {
+    dispatch(boardFilterParamsAction(param));
+  };
 
   return (
     <>
@@ -27,8 +34,8 @@ const Board = () => {
         </Box>
       )}
       <Container maxWidth="xl">
-        <SortingBar data={data} />
-        <Box sx={{ display: "flex", overflow: "auto", height: "78vh" }}>
+        <SortingBar onFilter={handleFilter} data={data} />
+        <Box sx={{ display: "flex", height: "78vh" }}>
           {!error &&
             data.length > 0 &&
             data.map((status) => {
