@@ -4,6 +4,7 @@ import App from "./App";
 import { createTheme, ThemeOptions, ThemeProvider } from "@mui/material";
 import { Provider } from "react-redux";
 import store from "./store";
+import "react-toastify/dist/ReactToastify.css";
 
 const theme = createTheme({
   typography: {

@@ -12,6 +12,8 @@ import {
   StyledHeaderWrapper,
   StyledCardContent,
   StyledFooterTypography,
+  StyledAvatar,
+  StyledAvatarGroup,
 } from "./styled";
 import {
   Typography,
@@ -22,16 +24,18 @@ import {
   Popover,
   Button,
   Stack,
+  Tooltip,
 } from "@mui/material";
 
 type TaskCardProps = {
   data: Task;
+  onEdit: (id: string) => void;
 };
 
 export const TaskCard: React.FC<TaskCardProps> = (props) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-  const { data } = props;
+  const { data, onEdit } = props;
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -78,6 +82,7 @@ export const TaskCard: React.FC<TaskCardProps> = (props) => {
                 </Button>
                 <Button
                   size="small"
+                  onClick={() => onEdit(data._id)}
                   startIcon={<EditIcon fontSize="inherit" />}
                 >
                   Edit
@@ -102,10 +107,29 @@ export const TaskCard: React.FC<TaskCardProps> = (props) => {
           <StyledFooterTypography sx={{ bgcolor: `priority.${data.priority}` }}>
             {data.priority}
           </StyledFooterTypography>
-          <AvatarGroup>
-            <Avatar sx={{ width: 24, height: 24 }}></Avatar>
-            <Avatar sx={{ width: 24, height: 24 }}></Avatar>
-          </AvatarGroup>
+          <StyledAvatarGroup max={3}>
+            {data.assignee.length === 0 && (
+              <Tooltip arrow title="No assignee">
+                <Avatar sx={{ width: 24, height: 24 }}></Avatar>
+              </Tooltip>
+            )}
+            {data.assignee.map((user) => {
+              return (
+                <Tooltip
+                  key={user._id}
+                  arrow
+                  title={`${user.firstName} ${user.lastName}`}
+                >
+                  <StyledAvatar
+                    key={user._id}
+                    sx={{ bgcolor: user.color }}
+                  >{`${user.firstName.charAt(0).toUpperCase()}${user.lastName
+                    .charAt(0)
+                    .toUpperCase()}`}</StyledAvatar>
+                </Tooltip>
+              );
+            })}
+          </StyledAvatarGroup>
         </StyledFooterWrapper>
       </StyledCardContent>
     </StyledCard>

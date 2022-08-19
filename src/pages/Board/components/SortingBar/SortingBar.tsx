@@ -8,6 +8,9 @@ import {
   TextField,
   Button,
   Stack,
+  Autocomplete,
+  Chip,
+  Checkbox,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -15,16 +18,32 @@ import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
 import { Params, Status } from "../../../../types";
 
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import { useSelector } from "react-redux";
+import { boardUsersSelector } from "../../selectors/board";
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
+
 type SortingBarProps = {
   data: Status[];
   onFilter: (params: Params) => void;
+  onCreateModalOpen: () => void;
 };
 
 export const SortingBar: React.FC<SortingBarProps> = (props) => {
-  const { data, onFilter } = props;
+  const { data, onFilter, onCreateModalOpen } = props;
+  const { loading, error, userList } = useSelector(boardUsersSelector);
+
   return (
     <Stack direction="row" spacing={2} sx={{ p: 2 }}>
-      <Button variant="contained" startIcon={<AddIcon />} sx={{ width: 150 }}>
+      <Button
+        onClick={onCreateModalOpen}
+        variant="contained"
+        startIcon={<AddIcon />}
+        sx={{ width: 150 }}
+      >
         Add issue
       </Button>
       <TextField
@@ -46,7 +65,7 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
           sx={{ minWidth: 150 }}
           labelId="status-select-label"
           id="status-select"
-          label="Priority"
+          label="Status"
           defaultValue=""
           onChange={(event) => onFilter({ status: event.target.value })}
         >
@@ -81,6 +100,20 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
           <MenuItem value="critical">Critical</MenuItem>
         </Select>
       </FormControl>
+      <Autocomplete
+        sx={{ minWidth: 300, mt: 1 }}
+        size="small"
+        multiple
+        loading={loading}
+        id="users"
+        options={userList}
+        filterSelectedOptions
+        disableCloseOnSelect
+        getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
+        renderInput={(params) => (
+          <TextField {...params} label="Assignee" placeholder="User" />
+        )}
+      ></Autocomplete>
     </Stack>
   );
 };

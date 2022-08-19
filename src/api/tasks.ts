@@ -1,4 +1,4 @@
-import { Params, SortedTask, Status, Task } from "../types";
+import { Params, SortedTask, Status, Task, User } from "../types";
 import { client } from "./client";
 
 export const getAllTasks = async (params: Params = {}) => {
@@ -25,9 +25,17 @@ export const createStatus = async () => {
   }
 };
 
-export const createTask = async () => {
+export const createTask = async (data: Partial<Task>) => {
   try {
-    return await client.post<never, Task>("/tasks");
+    return await client.post<never, Task>("/tasks", { ...data });
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const getAllUsers = async () => {
+  try {
+    return await client.get<never, User[]>("/users");
   } catch (error) {
     return Promise.reject(error);
   }

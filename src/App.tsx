@@ -1,6 +1,7 @@
 import { Container } from "@mui/material";
 import { lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 import { Layout } from "./components/Layout";
 
@@ -9,15 +10,18 @@ const Board = lazy(() => import("./pages/Board"));
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="/projects" element={<Home />} />
-          <Route path="/board" element={<Board />} />
-        </Route>
-      </Routes>
-    </Router>
+    <>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="/projects" element={<Home />} />
+            <Route path="/board" element={<Board />} />
+          </Route>
+        </Routes>
+      </Router>
+      <ToastContainer position="top-right" autoClose={3000} theme="dark" />
+    </>
   );
 }
 

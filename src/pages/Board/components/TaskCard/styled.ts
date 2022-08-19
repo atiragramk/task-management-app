@@ -1,5 +1,20 @@
-import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
+import {
+  Avatar,
+  AvatarGroup,
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  Typography,
+} from "@mui/material";
 import { styled } from "@mui/system";
+
+function randomColor() {
+  let hex = Math.floor(Math.random() * 0xffffff);
+  let color = "#" + hex.toString(16);
+
+  return color;
+}
 
 export const StyledCard = styled(Card)`
   width: 220px;
@@ -41,4 +56,18 @@ export const StyledFooterTypography = styled(Typography)`
   border-radius: 7px;
   font-size: 14px;
   width: fit-content;
+`;
+
+export const StyledAvatar = styled(Avatar)`
+  width: 24px;
+  height: 24px;
+  font-size: 0.8rem;
+`;
+
+export const StyledAvatarGroup = styled(AvatarGroup)`
+  div:nth-of-type(1) {
+    width: 24px;
+    height: 24px;
+    font-size: 0.8rem;
+  }
 `;

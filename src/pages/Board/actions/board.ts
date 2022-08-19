@@ -32,3 +32,22 @@ export const boardFilterParams = (
 ) => {
   state.params = { ...state.params, ...action.payload };
 };
+
+export const boardTaskCreateInProgress = (state: BoardState) => {
+  state.createState.loading = true;
+  state.createState.error = false;
+};
+export const boardTaskCreateSuccess = (state: BoardState) => {
+  state.createState.loading = false;
+};
+export const boardTaskCreateError = (state: BoardState) => {
+  state.createState.loading = false;
+  state.createState.error = true;
+};
+
+export const boardUpdateItemIdSet = (
+  state: BoardState,
+  action: PayloadAction<{ id: string }>
+) => {
+  state.updateState.fetchData = action.payload;
+};

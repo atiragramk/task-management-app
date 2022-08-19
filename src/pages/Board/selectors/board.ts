@@ -27,3 +27,13 @@ export const boardFilterParams = createSelector(
   boardStateSelector,
   (board) => board.params
 );
+
+export const boardUsersSelector = createSelector(
+  boardStateSelector,
+  (board) => board.users
+);
+
+export const boardCreateStateSelector = createSelector(
+  boardStateSelector,
+  (board) => board.createState
+);

@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Params, SortedTask, Status } from "../../../types";
-import { boardListFetch, boardStatusListFetch } from "../thunk/board";
+import { Params, SortedTask, Status, User, Task } from "../../../types";
+import {
+  boardListFetch,
+  boardStatusListFetch,
+  boardUserListFetch,
+} from "../thunk/board";
 import {
   boardFetchInProgress,
   boardFetchSuccess,
@@ -9,6 +13,10 @@ import {
   boardStatusFetchInProgress,
   boardStatusFetchSuccess,
   boardFilterParams,
+  boardTaskCreateInProgress,
+  boardTaskCreateSuccess,
+  boardTaskCreateError,
+  boardUpdateItemIdSet,
 } from "../actions/board";
 
 export type BoardState = {
@@ -21,6 +29,22 @@ export type BoardState = {
     data: Status[] | [];
   };
   params: Params;
+  users: {
+    loading: boolean;
+    error: boolean | null;
+    userList: User[] | [];
+  };
+  createState: {
+    loading: boolean;
+    error: boolean | null;
+    data: Task | {};
+  };
+  updateState: {
+    loading: boolean;
+    error: boolean | null;
+    fetchData: { id: string };
+    taskData: Task | {};
+  };
 };
 
 const initialState: BoardState = {
@@ -33,6 +57,22 @@ const initialState: BoardState = {
     data: [],
   },
   params: {},
+  users: {
+    loading: true,
+    error: null,
+    userList: [],
+  },
+  createState: {
+    loading: false,
+    error: null,
+    data: {},
+  },
+  updateState: {
+    loading: false,
+    error: null,
+    taskData: {},
+    fetchData: { id: "" },
+  },
 };
 const name = "BOARD";
 
@@ -47,6 +87,10 @@ const boardSlice = createSlice({
     boardStatusFetchInProgress,
     boardStatusFetchSuccess,
     boardFilterParams,
+    boardTaskCreateInProgress,
+    boardTaskCreateSuccess,
+    boardTaskCreateError,
+    boardUpdateItemIdSet,
   },
   extraReducers(builder) {
     builder
@@ -63,16 +107,28 @@ const boardSlice = createSlice({
         state.error = true;
       })
       .addCase(boardStatusListFetch.pending, (state) => {
-        state.loading = true;
-        state.error = false;
+        state.status.loading = true;
+        state.status.error = false;
       })
       .addCase(boardStatusListFetch.fulfilled, (state, action) => {
-        state.loading = false;
+        state.status.loading = false;
         state.status.data = action.payload;
       })
       .addCase(boardStatusListFetch.rejected, (state) => {
-        state.loading = false;
-        state.error = true;
+        state.status.loading = false;
+        state.status.error = true;
+      })
+      .addCase(boardUserListFetch.pending, (state) => {
+        state.users.loading = true;
+        state.users.error = false;
+      })
+      .addCase(boardUserListFetch.fulfilled, (state, action) => {
+        state.users.loading = false;
+        state.users.userList = action.payload;
+      })
+      .addCase(boardUserListFetch.rejected, (state) => {
+        state.users.loading = false;
+        state.users.error = true;
       });
   },
 });
@@ -85,6 +141,10 @@ export const {
   boardStatusFetchInProgress: boardStatusFetchInProgressAction,
   boardStatusFetchSuccess: boardStatusFetchSuccessAction,
   boardFilterParams: boardFilterParamsAction,
+  boardTaskCreateInProgress: boardTaskCreateInProgressAction,
+  boardTaskCreateSuccess: boardTaskCreateSuccessAction,
+  boardTaskCreateError: boardTaskCreateErrorAction,
+  boardUpdateItemIdSet: boardUpdateItemIdSetAction,
 } = boardSlice.actions;
 
 export default boardSlice.reducer;

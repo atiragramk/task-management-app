@@ -9,6 +9,7 @@ export type Task = {
   state: string;
   createdAt: string;
   updatedAt: string;
+  assignee: User[] | [];
 };
 
 export type Status = {
@@ -26,12 +27,25 @@ export type SortedTask = {
 };
 
 export type Modal = {
-  open: boolean;
-  name: string | null;
+  open?: boolean;
+  name?: string | null;
 };
 
 export type Params = {
   status?: string;
   priority?: string;
   search?: string;
+};
+
+export type User = {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  color: string;
+};
+
+export type CreateThunkType = {
+  values: Partial<Task>;
+  params: Partial<Params>;
 };
