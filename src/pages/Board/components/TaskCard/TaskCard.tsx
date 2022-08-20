@@ -30,12 +30,13 @@ import {
 type TaskCardProps = {
   data: Task;
   onEdit: (id: string) => void;
+  onDelete: (data: Task) => void;
 };
 
 export const TaskCard: React.FC<TaskCardProps> = (props) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-  const { data, onEdit } = props;
+  const { data, onEdit, onDelete } = props;
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -53,7 +54,7 @@ export const TaskCard: React.FC<TaskCardProps> = (props) => {
         title={
           <StyledHeaderWrapper>
             <StyledHeaderTypography sx={{ bgcolor: "primary.light" }}>
-              AW-228
+              {`AW-${data.key}`}
             </StyledHeaderTypography>
           </StyledHeaderWrapper>
         }
@@ -82,13 +83,20 @@ export const TaskCard: React.FC<TaskCardProps> = (props) => {
                 </Button>
                 <Button
                   size="small"
-                  onClick={() => onEdit(data._id)}
+                  onClick={() => {
+                    onEdit(data._id);
+                    handleClose();
+                  }}
                   startIcon={<EditIcon fontSize="inherit" />}
                 >
                   Edit
                 </Button>
                 <Button
                   size="small"
+                  onClick={() => {
+                    onDelete(data);
+                    handleClose();
+                  }}
                   startIcon={<DeleteForeverIcon fontSize="inherit" />}
                   color="error"
                 >

@@ -1,0 +1,1 @@
+export { DeleteTaskModal } from "./DeleteTaskModal";

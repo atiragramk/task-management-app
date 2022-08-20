@@ -4,6 +4,7 @@ import {
   boardListFetch,
   boardStatusListFetch,
   boardUserListFetch,
+  bookItemUpdateDataFetch,
 } from "../thunk/board";
 import {
   boardFetchInProgress,
@@ -17,6 +18,13 @@ import {
   boardTaskCreateSuccess,
   boardTaskCreateError,
   boardUpdateItemIdSet,
+  boardTaskUpdateInProgress,
+  boardTaskUpdateSuccess,
+  boardTaskUpdateError,
+  boardDeleteItemDataSet,
+  boardTaskDeleteInProgress,
+  boardTaskDeleteSuccess,
+  boardTaskDeleteError,
 } from "../actions/board";
 
 export type BoardState = {
@@ -44,6 +52,11 @@ export type BoardState = {
     error: boolean | null;
     fetchData: { id: string };
     taskData: Task | {};
+  };
+  deleteState: {
+    loading: boolean;
+    error: boolean | null;
+    taskData: Task | null;
   };
 };
 
@@ -73,6 +86,11 @@ const initialState: BoardState = {
     taskData: {},
     fetchData: { id: "" },
   },
+  deleteState: {
+    loading: false,
+    error: null,
+    taskData: null,
+  },
 };
 const name = "BOARD";
 
@@ -91,6 +109,13 @@ const boardSlice = createSlice({
     boardTaskCreateSuccess,
     boardTaskCreateError,
     boardUpdateItemIdSet,
+    boardTaskUpdateInProgress,
+    boardTaskUpdateSuccess,
+    boardTaskUpdateError,
+    boardDeleteItemDataSet,
+    boardTaskDeleteInProgress,
+    boardTaskDeleteSuccess,
+    boardTaskDeleteError,
   },
   extraReducers(builder) {
     builder
@@ -129,6 +154,18 @@ const boardSlice = createSlice({
       .addCase(boardUserListFetch.rejected, (state) => {
         state.users.loading = false;
         state.users.error = true;
+      })
+      .addCase(bookItemUpdateDataFetch.pending, (state) => {
+        state.updateState.loading = true;
+        state.updateState.error = false;
+      })
+      .addCase(bookItemUpdateDataFetch.fulfilled, (state, action) => {
+        state.updateState.loading = false;
+        state.updateState.taskData = action.payload!;
+      })
+      .addCase(bookItemUpdateDataFetch.rejected, (state) => {
+        state.updateState.loading = false;
+        state.updateState.error = true;
       });
   },
 });
@@ -145,6 +182,13 @@ export const {
   boardTaskCreateSuccess: boardTaskCreateSuccessAction,
   boardTaskCreateError: boardTaskCreateErrorAction,
   boardUpdateItemIdSet: boardUpdateItemIdSetAction,
+  boardTaskUpdateInProgress: boardTaskUpdateInProgressAction,
+  boardTaskUpdateSuccess: boardTaskUpdateSuccessAction,
+  boardTaskUpdateError: boardTaskUpdateErrorAction,
+  boardDeleteItemDataSet: boardDeleteItemDataSetAction,
+  boardTaskDeleteInProgress: boardTaskDeleteInProgressAction,
+  boardTaskDeleteSuccess: boardTaskDeleteSuccessAction,
+  boardTaskDeleteError: boardTaskDeleteErrorAction,
 } = boardSlice.actions;
 
 export default boardSlice.reducer;

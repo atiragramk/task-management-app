@@ -1,6 +1,6 @@
 import { BoardState } from "../reducer/board";
 import { PayloadAction } from "@reduxjs/toolkit";
-import { Params } from "../../../types";
+import { Params, Task } from "../../../types";
 
 export const boardFetchInProgress = (state: BoardState) => {
   state.loading = true;
@@ -50,4 +50,37 @@ export const boardUpdateItemIdSet = (
   action: PayloadAction<{ id: string }>
 ) => {
   state.updateState.fetchData = action.payload;
+};
+
+export const boardTaskUpdateInProgress = (state: BoardState) => {
+  state.updateState.loading = true;
+  state.updateState.error = false;
+};
+export const boardTaskUpdateSuccess = (state: BoardState) => {
+  state.updateState.loading = false;
+};
+
+export const boardTaskUpdateError = (state: BoardState) => {
+  state.updateState.loading = false;
+  state.updateState.error = true;
+};
+
+export const boardDeleteItemDataSet = (
+  state: BoardState,
+  action: PayloadAction<Task>
+) => {
+  state.deleteState.taskData = action.payload;
+};
+
+export const boardTaskDeleteInProgress = (state: BoardState) => {
+  state.deleteState.loading = true;
+  state.deleteState.error = false;
+};
+export const boardTaskDeleteSuccess = (state: BoardState) => {
+  state.deleteState.loading = false;
+};
+
+export const boardTaskDeleteError = (state: BoardState) => {
+  state.deleteState.loading = false;
+  state.deleteState.error = true;
 };

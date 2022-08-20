@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Autocomplete,
@@ -23,10 +23,11 @@ type TaskFormProp = {
   statusList: Status[];
   name: string;
   onConfirm: (values: Partial<Task>) => void;
+  taskData?: Partial<Task>;
 };
 
 export const TaskForm: React.FC<TaskFormProp> = (props) => {
-  const { statusList, name, onConfirm } = props;
+  const { statusList, name, onConfirm, taskData } = props;
   const { loading, error, userList } = useSelector(boardUsersSelector);
   const {
     control,
@@ -35,9 +36,13 @@ export const TaskForm: React.FC<TaskFormProp> = (props) => {
   } = useForm({
     resolver: yupResolver(createTaskSchema),
   });
-  const onSubmit: SubmitHandler<any> = async (data) => {
+  const onSubmit = async (values: Partial<Task>) => {
     try {
-      onConfirm(data);
+      if (!taskData) {
+        onConfirm(values);
+      } else {
+        onConfirm({ ...values, _id: taskData._id });
+      }
     } catch (error) {}
   };
 
@@ -48,6 +53,7 @@ export const TaskForm: React.FC<TaskFormProp> = (props) => {
         <Controller
           name="title"
           control={control}
+          defaultValue={taskData?.title || ""}
           render={({ field }) => (
             <TextField
               error={Boolean(errors.title)}
@@ -56,7 +62,6 @@ export const TaskForm: React.FC<TaskFormProp> = (props) => {
               {...field}
             />
           )}
-          defaultValue=""
         />
       </FormControl>
 
@@ -65,7 +70,7 @@ export const TaskForm: React.FC<TaskFormProp> = (props) => {
         <Controller
           name="description"
           control={control}
-          defaultValue=""
+          defaultValue={taskData?.description || ""}
           render={({ field }) => (
             <TextField
               multiline={true}
@@ -88,7 +93,7 @@ export const TaskForm: React.FC<TaskFormProp> = (props) => {
           <Controller
             name="statusId"
             control={control}
-            defaultValue=""
+            defaultValue={taskData?.statusId || ""}
             render={({ field }) => (
               <Select
                 {...field}
@@ -132,7 +137,7 @@ export const TaskForm: React.FC<TaskFormProp> = (props) => {
                 <MenuItem value="critical">Critical</MenuItem>
               </Select>
             )}
-            defaultValue=""
+            defaultValue={taskData?.priority || ""}
           />
           <FormHelperText>
             {errors.priority?.message as ReactNode}
@@ -146,12 +151,14 @@ export const TaskForm: React.FC<TaskFormProp> = (props) => {
         <Controller
           name="assignee"
           control={control}
-          render={({ field: { onChange } }) => (
+          defaultValue={taskData?.assignee}
+          render={({ field: { onChange, value } }) => (
             <Autocomplete
               sx={{ maxWidth: 535, mt: 1 }}
               size="small"
               multiple
               id="users"
+              value={value}
               options={userList}
               filterSelectedOptions
               disableCloseOnSelect

@@ -95,8 +95,8 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
             <em>None</em>
           </MenuItem>
           <MenuItem value="low">Low</MenuItem>
-          <MenuItem value="high">High</MenuItem>
           <MenuItem value="normal">Normal</MenuItem>
+          <MenuItem value="high">High</MenuItem>
           <MenuItem value="critical">Critical</MenuItem>
         </Select>
       </FormControl>
@@ -109,6 +109,13 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
         options={userList}
         filterSelectedOptions
         disableCloseOnSelect
+        onChange={(_, data) => {
+          const assignee: string[] = [];
+          data.forEach((user) => {
+            assignee.push(user.email);
+          });
+          onFilter({ assignee });
+        }}
         getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
         renderInput={(params) => (
           <TextField {...params} label="Assignee" placeholder="User" />

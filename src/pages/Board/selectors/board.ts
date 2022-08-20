@@ -37,3 +37,13 @@ export const boardCreateStateSelector = createSelector(
   boardStateSelector,
   (board) => board.createState
 );
+
+export const boardUpdateStateSelector = createSelector(
+  boardStateSelector,
+  (board) => board.updateState
+);
+
+export const boardDeleteStateSelector = createSelector(
+  boardStateSelector,
+  (board) => board.deleteState
+);

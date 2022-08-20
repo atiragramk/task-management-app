@@ -6,14 +6,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect } from "react";
 import {
   boardCreateTaskFetch,
+  boardDeleteTaskFetch,
   boardListFetch,
   boardStatusListFetch,
+  boardUpdateTaskFetch,
   boardUserListFetch,
 } from "./thunk/board";
 import { AppDispatch } from "../../store";
 import * as selectors from "./selectors/board";
 import { CreateThunkType, Params, Task } from "../../types";
 import {
+  boardDeleteItemDataSetAction,
   boardFilterParamsAction,
   boardUpdateItemIdSetAction,
 } from "./reducer/board";
@@ -26,6 +29,10 @@ import {
 } from "./constants";
 import { modalOpenToggleAction } from "../../store/modal/reducer/modal";
 import { modalStateSelector } from "../../store/modal/selectors/modal";
+import { UpdateTaskModal } from "./components/UpdateTaskModal";
+import { TransitionGroup } from "react-transition-group";
+
+import { DeleteTaskModal } from "./components/DeleteTaskModal";
 
 const Board = () => {
   const { loading, error, data } = useSelector(selectors.boardStatusSelector);
@@ -37,8 +44,11 @@ const Board = () => {
   useEffect(() => {
     dispatch(boardStatusListFetch());
     dispatch(boardListFetch(params));
-    dispatch(boardUserListFetch());
   }, [params]);
+
+  useEffect(() => {
+    dispatch(boardUserListFetch());
+  }, []);
 
   const handleFilter = (param: Partial<Params>) => {
     dispatch(boardFilterParamsAction(param));
@@ -48,14 +58,32 @@ const Board = () => {
     dispatch(modalOpenToggleAction({ name: MODAL_CREATE_NAME }));
   };
 
-  const handleEditModalOpen = useCallback((id: string) => {
+  const handleUpdateModalOpen = useCallback((id: string) => {
     dispatch(boardUpdateItemIdSetAction({ id }));
+    dispatch(modalOpenToggleAction({ name: MODAL_UPDATE_NAME }));
+    // eslint-disable-next-line
+  }, []);
+
+  const handleUpdateModalClose = useCallback(() => {
     dispatch(modalOpenToggleAction({ name: MODAL_UPDATE_NAME }));
     // eslint-disable-next-line
   }, []);
 
   const handleCreateTask = (values: Partial<Task>) => {
     dispatch(boardCreateTaskFetch({ values, params }));
+  };
+
+  const handleUpdateTask = (values: Partial<Task>) => {
+    dispatch(boardUpdateTaskFetch({ values, params }));
+  };
+
+  const handleDeleteModalToggle = useCallback((data: Task) => {
+    dispatch(boardDeleteItemDataSetAction(data));
+    dispatch(modalOpenToggleAction({ name: MODAL_DELETE_NAME }));
+  }, []);
+
+  const handleDeleteTask = (values: Task) => {
+    dispatch(boardDeleteTaskFetch({ values, params }));
   };
 
   return (
@@ -79,7 +107,8 @@ const Board = () => {
                 <TaskListCard
                   key={status._id}
                   status={status}
-                  onEdit={handleEditModalOpen}
+                  onEdit={handleUpdateModalOpen}
+                  onDelete={handleDeleteModalToggle}
                 />
               );
             })}
@@ -94,6 +123,18 @@ const Board = () => {
         <CreateTaskModal
           onClose={handleCreateModalOpenToggle}
           onConfirm={handleCreateTask}
+        />
+      )}
+      {open && name === MODAL_UPDATE_NAME && (
+        <UpdateTaskModal
+          onClose={handleUpdateModalClose}
+          onConfirm={handleUpdateTask}
+        />
+      )}
+      {open && name === MODAL_DELETE_NAME && (
+        <DeleteTaskModal
+          onClose={handleDeleteModalToggle}
+          onConfirm={handleDeleteTask}
         />
       )}
     </>

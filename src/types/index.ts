@@ -35,6 +35,7 @@ export type Params = {
   status?: string;
   priority?: string;
   search?: string;
+  assignee?: string[];
 };
 
 export type User = {
