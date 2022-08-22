@@ -1,4 +1,10 @@
-import { Card, CardContent } from "@mui/material";
+import {
+  AppBar,
+  Card,
+  CardContent,
+  CardHeader,
+  IconButton,
+} from "@mui/material";
 import { styled } from "@mui/system";
 
 export const StyledCard = styled(Card)`
@@ -26,4 +32,10 @@ export const StyledCardContent = styled(CardContent)`
     background-color: rgb(149 117 205 / 26%);
     border-radius: 5px;
   }
+`;
+
+export const StyledIconButton = styled(IconButton)`
+  position: absolute;
+  top: 2px;
+  right: 5px;
 `;

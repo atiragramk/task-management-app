@@ -25,9 +25,17 @@ export const getAllStatuses = async () => {
   }
 };
 
-export const createStatus = async () => {
+export const createStatus = async (data: Partial<Status>) => {
   try {
-    return await client.post<never, Status>("/statuses");
+    return await client.post<never, Status>("/statuses", { ...data });
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const deleteStatus = async (id: string) => {
+  try {
+    return await client.delete<never, Status>(`/statuses/${id}`);
   } catch (error) {
     return Promise.reject(error);
   }

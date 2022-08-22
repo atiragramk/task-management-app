@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { SortedTask, Status, Task } from "../../../../types";
 import { TaskCard } from "../TaskCard";
-import { StyledCard, StyledCardContent } from "./styled";
+import { StyledCard, StyledCardContent, StyledIconButton } from "./styled";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+
 import {
   CardHeader,
   Typography,
@@ -9,25 +11,24 @@ import {
   AppBar,
   LinearProgress,
   Collapse,
+  IconButton,
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import { boardDataSelector, boardLoadingSelector } from "../../selectors/board";
 import { TransitionGroup } from "react-transition-group";
 
 type TaskListCardProps = {
-  status: Partial<Status>;
+  status: Status;
   onEdit: (id: string) => void;
   onDelete: (data: Task) => void;
+  onStatusDelete: (data: Status) => void;
 };
 
-const CustomAppbar = (props: {}) => (
-  <AppBar position="sticky" color="secondary" {...props} />
-);
-
 export const TaskListCard: React.FC<TaskListCardProps> = (props) => {
-  const { status, onEdit, onDelete } = props;
+  const { status, onEdit, onDelete, onStatusDelete } = props;
   const taskList = useSelector(boardDataSelector);
   const loading = useSelector(boardLoadingSelector);
+  const [show, setShow] = useState(false);
 
   const taskCounter = () => {
     if (taskList.some((task) => task._id === status.key)) {
@@ -35,7 +36,17 @@ export const TaskListCard: React.FC<TaskListCardProps> = (props) => {
     }
     return 0;
   };
-
+  const CustomAppbar = (props: {}) => (
+    <AppBar
+      onMouseOver={() => setShow(true)}
+      onMouseOut={() => setShow(false)}
+      onClick={() => setShow(false)}
+      position="sticky"
+      color="secondary"
+      sx={{ height: 40 }}
+      {...props}
+    />
+  );
   return (
     <StyledCard>
       <CardHeader
@@ -46,6 +57,16 @@ export const TaskListCard: React.FC<TaskListCardProps> = (props) => {
               {status.displayName} ({taskCounter()})
             </Typography>
           </Box>
+        }
+        action={
+          show && (
+            <StyledIconButton
+              onClick={() => onStatusDelete(status)}
+              size="small"
+            >
+              <DeleteForeverIcon />
+            </StyledIconButton>
+          )
         }
         component={CustomAppbar}
       />

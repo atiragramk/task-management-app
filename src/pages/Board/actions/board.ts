@@ -1,6 +1,6 @@
-import { BoardState } from "../reducer/board";
+import { BoardState, initialState } from "../reducer/board";
 import { PayloadAction } from "@reduxjs/toolkit";
-import { Params, Task } from "../../../types";
+import { Params, Status, Task } from "../../../types";
 
 export const boardFetchInProgress = (state: BoardState) => {
   state.loading = true;
@@ -14,23 +14,27 @@ export const boardFetchError = (state: BoardState) => {
   state.error = true;
 };
 
-export const boardStatusFetchInProgress = (state: BoardState) => {
+export const boardStatusCreateInProgress = (state: BoardState) => {
   state.status.loading = true;
   state.status.error = false;
 };
-export const boardStatusFetchSuccess = (state: BoardState) => {
+export const boardStatusCreateSuccess = (state: BoardState) => {
   state.status.loading = false;
 };
-export const boardStatusFetchError = (state: BoardState) => {
+export const boardStatusCreateError = (state: BoardState) => {
   state.status.loading = false;
   state.status.error = true;
 };
 
-export const boardFilterParams = (
+export const boardFilterParamsSet = (
   state: BoardState,
   action: PayloadAction<Partial<Params>>
 ) => {
   state.params = { ...state.params, ...action.payload };
+};
+
+export const boardFilterParamsReset = (state: BoardState) => {
+  state.params = initialState.params;
 };
 
 export const boardTaskCreateInProgress = (state: BoardState) => {
@@ -70,6 +74,13 @@ export const boardDeleteItemDataSet = (
   action: PayloadAction<Task>
 ) => {
   state.deleteState.taskData = action.payload;
+};
+
+export const boardDeleteStatusDataSet = (
+  state: BoardState,
+  action: PayloadAction<Status>
+) => {
+  state.deleteState.statusData = action.payload;
 };
 
 export const boardTaskDeleteInProgress = (state: BoardState) => {

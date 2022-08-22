@@ -1,11 +1,19 @@
-import { Box, Button, LinearProgress, Container } from "@mui/material";
+import {
+  Box,
+  Button,
+  LinearProgress,
+  Container,
+  Collapse,
+} from "@mui/material";
 import { TaskListCard } from "./components/TaskListCard";
 import { SortingBar } from "./components/SortingBar";
 import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect } from "react";
 import {
+  boardCreateStatusFetch,
   boardCreateTaskFetch,
+  boardDeleteStatusFetch,
   boardDeleteTaskFetch,
   boardListFetch,
   boardStatusListFetch,
@@ -14,10 +22,12 @@ import {
 } from "./thunk/board";
 import { AppDispatch } from "../../store";
 import * as selectors from "./selectors/board";
-import { CreateThunkType, Params, Task } from "../../types";
+import { CreateThunkType, Params, Status, Task } from "../../types";
 import {
   boardDeleteItemDataSetAction,
-  boardFilterParamsAction,
+  boardDeleteStatusDataSetAction,
+  boardFilterParamsResetAction,
+  boardFilterParamsSetAction,
   boardUpdateItemIdSetAction,
 } from "./reducer/board";
 import { CreateTaskModal } from "./components/CreateTaskModal";
@@ -26,6 +36,8 @@ import {
   MODAL_UPDATE_NAME,
   MODAL_DELETE_NAME,
   MODAL_MORE_NAME,
+  MODAL_STATUS_DELETE_NAME,
+  MODAL_STATUS_CREATE_NAME,
 } from "./constants";
 import { modalOpenToggleAction } from "../../store/modal/reducer/modal";
 import { modalStateSelector } from "../../store/modal/selectors/modal";
@@ -33,6 +45,8 @@ import { UpdateTaskModal } from "./components/UpdateTaskModal";
 import { TransitionGroup } from "react-transition-group";
 
 import { DeleteTaskModal } from "./components/DeleteTaskModal";
+import { DeleteStatusModal } from "./components/DeleteStatusModal";
+import { CreateStatusModal } from "./components/CreateStatusModal";
 
 const Board = () => {
   const { loading, error, data } = useSelector(selectors.boardStatusSelector);
@@ -51,7 +65,11 @@ const Board = () => {
   }, []);
 
   const handleFilter = (param: Partial<Params>) => {
-    dispatch(boardFilterParamsAction(param));
+    dispatch(boardFilterParamsSetAction(param));
+  };
+
+  const handleFilterReset = () => {
+    dispatch(boardFilterParamsResetAction());
   };
 
   const handleCreateModalOpenToggle = () => {
@@ -77,13 +95,40 @@ const Board = () => {
     dispatch(boardUpdateTaskFetch({ values, params }));
   };
 
-  const handleDeleteModalToggle = useCallback((data: Task) => {
+  const handleDeleteModalOpen = useCallback((data: Task) => {
     dispatch(boardDeleteItemDataSetAction(data));
     dispatch(modalOpenToggleAction({ name: MODAL_DELETE_NAME }));
   }, []);
 
+  const handleDeleteModalClose = useCallback(() => {
+    dispatch(modalOpenToggleAction({ name: MODAL_DELETE_NAME }));
+    // eslint-disable-next-line
+  }, []);
+
   const handleDeleteTask = (values: Task) => {
     dispatch(boardDeleteTaskFetch({ values, params }));
+  };
+
+  const handleDeleteStatusModalOpen = useCallback((data: Status) => {
+    dispatch(boardDeleteStatusDataSetAction(data));
+    dispatch(modalOpenToggleAction({ name: MODAL_STATUS_DELETE_NAME }));
+  }, []);
+
+  const handleDeleteStatusModalClose = useCallback(() => {
+    dispatch(modalOpenToggleAction({ name: MODAL_STATUS_DELETE_NAME }));
+    // eslint-disable-next-line
+  }, []);
+
+  const handleDeleteStatus = (values: Status) => {
+    dispatch(boardDeleteStatusFetch(values));
+  };
+
+  const handleCreateStatusModalToogle = useCallback(() => {
+    dispatch(modalOpenToggleAction({ name: MODAL_STATUS_CREATE_NAME }));
+  }, []);
+
+  const handleCreateStatus = (data: Partial<Status>) => {
+    dispatch(boardCreateStatusFetch(data));
   };
 
   return (
@@ -96,24 +141,35 @@ const Board = () => {
       <Container maxWidth="xl">
         <SortingBar
           onFilter={handleFilter}
+          onReset={handleFilterReset}
           data={data}
           onCreateModalOpen={handleCreateModalOpenToggle}
         />
-        <Box sx={{ display: "flex", height: "78vh" }}>
-          {!error &&
-            data.length > 0 &&
-            data.map((status) => {
-              return (
-                <TaskListCard
-                  key={status._id}
-                  status={status}
-                  onEdit={handleUpdateModalOpen}
-                  onDelete={handleDeleteModalToggle}
-                />
-              );
-            })}
+        <Box sx={{ display: "flex", height: "78vh", overflowX: "auto" }}>
+          {!error && data.length > 0 && (
+            <TransitionGroup style={{ display: "flex" }}>
+              {data.map((status) => {
+                return (
+                  <Collapse key={status._id} orientation="horizontal">
+                    <TaskListCard
+                      status={status}
+                      onEdit={handleUpdateModalOpen}
+                      onDelete={handleDeleteModalOpen}
+                      onStatusDelete={handleDeleteStatusModalOpen}
+                    />
+                  </Collapse>
+                );
+              })}
+            </TransitionGroup>
+          )}
           <Box sx={{ width: 220, m: 1 }}>
-            <Button fullWidth={true} variant="outlined" startIcon={<AddIcon />}>
+            <Button
+              sx={{ width: 200 }}
+              fullWidth={true}
+              onClick={handleCreateStatusModalToogle}
+              variant="outlined"
+              startIcon={<AddIcon />}
+            >
               Create column
             </Button>
           </Box>
@@ -133,8 +189,20 @@ const Board = () => {
       )}
       {open && name === MODAL_DELETE_NAME && (
         <DeleteTaskModal
-          onClose={handleDeleteModalToggle}
+          onClose={handleDeleteModalClose}
           onConfirm={handleDeleteTask}
+        />
+      )}
+      {open && name === MODAL_STATUS_DELETE_NAME && (
+        <DeleteStatusModal
+          onClose={handleDeleteStatusModalClose}
+          onConfirm={handleDeleteStatus}
+        />
+      )}
+      {open && name === MODAL_STATUS_CREATE_NAME && (
+        <CreateStatusModal
+          onClose={handleCreateStatusModalToogle}
+          onConfirm={handleCreateStatus}
         />
       )}
     </>

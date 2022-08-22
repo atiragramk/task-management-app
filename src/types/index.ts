@@ -36,6 +36,7 @@ export type Params = {
   priority?: string;
   search?: string;
   assignee?: string[];
+  userData?: User[];
 };
 
 export type User = {
@@ -49,4 +50,9 @@ export type User = {
 export type CreateThunkType = {
   values: Partial<Task>;
   params: Partial<Params>;
+};
+
+export type Response = {
+  error: boolean;
+  data: {};
 };

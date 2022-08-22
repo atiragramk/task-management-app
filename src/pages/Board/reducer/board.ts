@@ -10,10 +10,11 @@ import {
   boardFetchInProgress,
   boardFetchSuccess,
   boardFetchError,
-  boardStatusFetchError,
-  boardStatusFetchInProgress,
-  boardStatusFetchSuccess,
-  boardFilterParams,
+  boardStatusCreateError,
+  boardStatusCreateInProgress,
+  boardStatusCreateSuccess,
+  boardFilterParamsSet,
+  boardFilterParamsReset,
   boardTaskCreateInProgress,
   boardTaskCreateSuccess,
   boardTaskCreateError,
@@ -22,6 +23,7 @@ import {
   boardTaskUpdateSuccess,
   boardTaskUpdateError,
   boardDeleteItemDataSet,
+  boardDeleteStatusDataSet,
   boardTaskDeleteInProgress,
   boardTaskDeleteSuccess,
   boardTaskDeleteError,
@@ -57,10 +59,11 @@ export type BoardState = {
     loading: boolean;
     error: boolean | null;
     taskData: Task | null;
+    statusData: Status | null;
   };
 };
 
-const initialState: BoardState = {
+export const initialState: BoardState = {
   loading: true,
   error: null,
   data: [],
@@ -69,7 +72,13 @@ const initialState: BoardState = {
     error: null,
     data: [],
   },
-  params: {},
+  params: {
+    search: "",
+    priority: "",
+    status: "",
+    assignee: [],
+    userData: [],
+  },
   users: {
     loading: true,
     error: null,
@@ -90,6 +99,7 @@ const initialState: BoardState = {
     loading: false,
     error: null,
     taskData: null,
+    statusData: null,
   },
 };
 const name = "BOARD";
@@ -101,10 +111,11 @@ const boardSlice = createSlice({
     boardFetchInProgress,
     boardFetchSuccess,
     boardFetchError,
-    boardStatusFetchError,
-    boardStatusFetchInProgress,
-    boardStatusFetchSuccess,
-    boardFilterParams,
+    boardStatusCreateError,
+    boardStatusCreateInProgress,
+    boardStatusCreateSuccess,
+    boardFilterParamsSet,
+    boardFilterParamsReset,
     boardTaskCreateInProgress,
     boardTaskCreateSuccess,
     boardTaskCreateError,
@@ -116,6 +127,7 @@ const boardSlice = createSlice({
     boardTaskDeleteInProgress,
     boardTaskDeleteSuccess,
     boardTaskDeleteError,
+    boardDeleteStatusDataSet,
   },
   extraReducers(builder) {
     builder
@@ -174,10 +186,11 @@ export const {
   boardFetchInProgress: boardFetchInProgressAction,
   boardFetchSuccess: boardFetchSuccessAction,
   boardFetchError: boardFetchErrorAction,
-  boardStatusFetchError: boardStatusFetchErrorAction,
-  boardStatusFetchInProgress: boardStatusFetchInProgressAction,
-  boardStatusFetchSuccess: boardStatusFetchSuccessAction,
-  boardFilterParams: boardFilterParamsAction,
+  boardStatusCreateError: boardStatusCreateErrorAction,
+  boardStatusCreateInProgress: boardStatusCreateInProgressAction,
+  boardStatusCreateSuccess: boardStatusCreateSuccessAction,
+  boardFilterParamsSet: boardFilterParamsSetAction,
+  boardFilterParamsReset: boardFilterParamsResetAction,
   boardTaskCreateInProgress: boardTaskCreateInProgressAction,
   boardTaskCreateSuccess: boardTaskCreateSuccessAction,
   boardTaskCreateError: boardTaskCreateErrorAction,
@@ -189,6 +202,7 @@ export const {
   boardTaskDeleteInProgress: boardTaskDeleteInProgressAction,
   boardTaskDeleteSuccess: boardTaskDeleteSuccessAction,
   boardTaskDeleteError: boardTaskDeleteErrorAction,
+  boardDeleteStatusDataSet: boardDeleteStatusDataSetAction,
 } = boardSlice.actions;
 
 export default boardSlice.reducer;

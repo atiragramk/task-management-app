@@ -1,5 +1,4 @@
 import {
-  Box,
   FormControl,
   InputAdornment,
   InputLabel,
@@ -9,38 +8,34 @@ import {
   Button,
   Stack,
   Autocomplete,
-  Chip,
-  Checkbox,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-
+import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
 import { Params, Status } from "../../../../types";
 
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { useSelector } from "react-redux";
-import { boardUsersSelector } from "../../selectors/board";
-
-const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-const checkedIcon = <CheckBoxIcon fontSize="small" />;
+import { boardFilterParams, boardUsersSelector } from "../../selectors/board";
 
 type SortingBarProps = {
   data: Status[];
   onFilter: (params: Params) => void;
+  onReset: () => void;
   onCreateModalOpen: () => void;
 };
 
 export const SortingBar: React.FC<SortingBarProps> = (props) => {
-  const { data, onFilter, onCreateModalOpen } = props;
+  const { data, onFilter, onCreateModalOpen, onReset } = props;
   const { loading, error, userList } = useSelector(boardUsersSelector);
+  const params = useSelector(boardFilterParams);
 
   return (
     <Stack direction="row" spacing={2} sx={{ p: 2 }}>
       <Button
         onClick={onCreateModalOpen}
         variant="contained"
+        size="small"
         startIcon={<AddIcon />}
         sx={{ width: 150 }}
       >
@@ -51,6 +46,7 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
         onChange={(event) => onFilter({ search: event.target.value })}
         placeholder="Search this board"
         variant="outlined"
+        value={params.search}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -66,7 +62,7 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
           labelId="status-select-label"
           id="status-select"
           label="Status"
-          defaultValue=""
+          value={params.status}
           onChange={(event) => onFilter({ status: event.target.value })}
         >
           <MenuItem value="">
@@ -87,7 +83,7 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
           sx={{ minWidth: 150 }}
           labelId="priority-select-label"
           id="priority-select"
-          defaultValue=""
+          value={params.priority}
           label="Priority"
           onChange={(event) => onFilter({ priority: event.target.value })}
         >
@@ -109,18 +105,29 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
         options={userList}
         filterSelectedOptions
         disableCloseOnSelect
+        value={params.userData}
         onChange={(_, data) => {
           const assignee: string[] = [];
           data.forEach((user) => {
             assignee.push(user.email);
           });
           onFilter({ assignee });
+          onFilter({ userData: data });
         }}
         getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
         renderInput={(params) => (
           <TextField {...params} label="Assignee" placeholder="User" />
         )}
       ></Autocomplete>
+      <Button
+        size="small"
+        variant="outlined"
+        onClick={onReset}
+        startIcon={<FilterAltOffIcon />}
+        sx={{ width: "fit-content" }}
+      >
+        Clear All
+      </Button>
     </Stack>
   );
 };
