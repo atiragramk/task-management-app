@@ -16,6 +16,7 @@ import {
   boardDeleteStatusFetch,
   boardDeleteTaskFetch,
   boardListFetch,
+  boardProjectDataFetch,
   boardStatusListFetch,
   boardUpdateTaskFetch,
   boardUserListFetch,
@@ -28,6 +29,7 @@ import {
   boardDeleteStatusDataSetAction,
   boardFilterParamsResetAction,
   boardFilterParamsSetAction,
+  boardItemIdSetAction,
   boardUpdateItemIdSetAction,
 } from "./reducer/board";
 import { CreateTaskModal } from "./components/CreateTaskModal";
@@ -35,7 +37,7 @@ import {
   MODAL_CREATE_NAME,
   MODAL_UPDATE_NAME,
   MODAL_DELETE_NAME,
-  MODAL_MORE_NAME,
+  MODAL_OPEN_TASK_NAME,
   MODAL_STATUS_DELETE_NAME,
   MODAL_STATUS_CREATE_NAME,
 } from "./constants";
@@ -47,6 +49,7 @@ import { TransitionGroup } from "react-transition-group";
 import { DeleteTaskModal } from "./components/DeleteTaskModal";
 import { DeleteStatusModal } from "./components/DeleteStatusModal";
 import { CreateStatusModal } from "./components/CreateStatusModal";
+import { OpenTaskModal } from "./components/OpenTaskModal";
 
 const Board = () => {
   const { loading, error, data } = useSelector(selectors.boardStatusSelector);
@@ -58,6 +61,7 @@ const Board = () => {
   useEffect(() => {
     dispatch(boardStatusListFetch());
     dispatch(boardListFetch(params));
+    dispatch(boardProjectDataFetch({ id: params.projectId! }));
   }, [params]);
 
   useEffect(() => {
@@ -88,11 +92,12 @@ const Board = () => {
   }, []);
 
   const handleCreateTask = (values: Partial<Task>) => {
-    dispatch(boardCreateTaskFetch({ values, params }));
+    const data = { ...values, projectId: params.projectId };
+    dispatch(boardCreateTaskFetch({ data, params }));
   };
 
-  const handleUpdateTask = (values: Partial<Task>) => {
-    dispatch(boardUpdateTaskFetch({ values, params }));
+  const handleUpdateTask = (data: Partial<Task>) => {
+    dispatch(boardUpdateTaskFetch({ data, params }));
   };
 
   const handleDeleteModalOpen = useCallback((data: Task) => {
@@ -105,8 +110,8 @@ const Board = () => {
     // eslint-disable-next-line
   }, []);
 
-  const handleDeleteTask = (values: Task) => {
-    dispatch(boardDeleteTaskFetch({ values, params }));
+  const handleDeleteTask = (data: Task) => {
+    dispatch(boardDeleteTaskFetch({ data, params }));
   };
 
   const handleDeleteStatusModalOpen = useCallback((data: Status) => {
@@ -130,6 +135,15 @@ const Board = () => {
   const handleCreateStatus = (data: Partial<Status>) => {
     dispatch(boardCreateStatusFetch(data));
   };
+
+  const handleOpenTaskModalOpen = useCallback((id: string) => {
+    dispatch(boardItemIdSetAction(id));
+    dispatch(modalOpenToggleAction({ name: MODAL_OPEN_TASK_NAME }));
+  }, []);
+
+  const handleOpenTaskModalClose = useCallback(() => {
+    dispatch(modalOpenToggleAction({ name: MODAL_OPEN_TASK_NAME }));
+  }, []);
 
   return (
     <>
@@ -155,6 +169,7 @@ const Board = () => {
                       status={status}
                       onEdit={handleUpdateModalOpen}
                       onDelete={handleDeleteModalOpen}
+                      onOpen={handleOpenTaskModalOpen}
                       onStatusDelete={handleDeleteStatusModalOpen}
                     />
                   </Collapse>
@@ -204,6 +219,9 @@ const Board = () => {
           onClose={handleCreateStatusModalToogle}
           onConfirm={handleCreateStatus}
         />
+      )}
+      {open && name === MODAL_OPEN_TASK_NAME && (
+        <OpenTaskModal onClose={handleOpenTaskModalClose} />
       )}
     </>
   );

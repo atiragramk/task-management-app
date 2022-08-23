@@ -3,6 +3,7 @@ import {
   AvatarGroup,
   Box,
   Card,
+  CardActionArea,
   CardContent,
   CardHeader,
   Typography,
@@ -52,8 +53,8 @@ export const StyledCardContent = styled(CardContent)`
 `;
 
 export const StyledFooterTypography = styled(Typography)`
-  padding: 1px 11px;
-  border-radius: 7px;
+  padding: 0px 7px;
+  border-radius: 5px;
   font-size: 14px;
   width: fit-content;
 `;
@@ -69,5 +70,17 @@ export const StyledAvatarGroup = styled(AvatarGroup)`
     width: 24px;
     height: 24px;
     font-size: 0.8rem;
+  }
+`;
+
+export const StyledCardActionArea = styled(CardActionArea)`
+  &.MuiCardActionArea-focusHighlight {
+    background: transparent;
+  }
+  :focus-visible {
+    outline: none;
+  }
+  &.Mui-focusVisible {
+    box-shadow: none;
   }
 `;

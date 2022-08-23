@@ -34,7 +34,7 @@ export const boardFilterParamsSet = (
 };
 
 export const boardFilterParamsReset = (state: BoardState) => {
-  state.params = initialState.params;
+  state.params = { ...initialState.params, projectId: state.params.projectId };
 };
 
 export const boardTaskCreateInProgress = (state: BoardState) => {
@@ -94,4 +94,24 @@ export const boardTaskDeleteSuccess = (state: BoardState) => {
 export const boardTaskDeleteError = (state: BoardState) => {
   state.deleteState.loading = false;
   state.deleteState.error = true;
+};
+
+export const boardItemIdSet = (
+  state: BoardState,
+  action: PayloadAction<string>
+) => {
+  state.taskItemState.fetchData = action.payload;
+};
+
+export const boardTaskItemInProgress = (state: BoardState) => {
+  state.taskItemState.loading = true;
+  state.taskItemState.error = false;
+};
+export const boardTaskItemSuccess = (state: BoardState) => {
+  state.taskItemState.loading = false;
+};
+
+export const boardTaskItemError = (state: BoardState) => {
+  state.taskItemState.loading = false;
+  state.taskItemState.error = true;
 };

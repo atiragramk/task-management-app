@@ -154,7 +154,7 @@ export const TaskForm: React.FC<TaskFormProp> = (props) => {
           defaultValue={taskData?.assignee}
           render={({ field: { onChange, value } }) => (
             <Autocomplete
-              sx={{ maxWidth: 535, mt: 1 }}
+              sx={{ maxWidth: 485, mt: 1 }}
               size="small"
               multiple
               id="users"

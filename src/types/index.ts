@@ -37,6 +37,7 @@ export type Params = {
   search?: string;
   assignee?: string[];
   userData?: User[];
+  projectId?: string;
 };
 
 export type User = {
@@ -48,11 +49,13 @@ export type User = {
 };
 
 export type CreateThunkType = {
-  values: Partial<Task>;
+  data: Partial<Task>;
   params: Partial<Params>;
 };
 
-export type Response = {
-  error: boolean;
-  data: {};
+export type Project = {
+  _id: string;
+  name: string;
+  description: string;
+  shortName: string;
 };

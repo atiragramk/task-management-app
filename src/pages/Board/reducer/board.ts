@@ -1,10 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Params, SortedTask, Status, User, Task } from "../../../types";
+import {
+  Params,
+  SortedTask,
+  Status,
+  User,
+  Task,
+  Project,
+} from "../../../types";
 import {
   boardListFetch,
   boardStatusListFetch,
   boardUserListFetch,
-  bookItemUpdateDataFetch,
+  boardItemUpdateDataFetch,
+  boardItemOpenDataFetch,
+  boardProjectDataFetch,
 } from "../thunk/board";
 import {
   boardFetchInProgress,
@@ -27,6 +36,10 @@ import {
   boardTaskDeleteInProgress,
   boardTaskDeleteSuccess,
   boardTaskDeleteError,
+  boardItemIdSet,
+  boardTaskItemInProgress,
+  boardTaskItemSuccess,
+  boardTaskItemError,
 } from "../actions/board";
 
 export type BoardState = {
@@ -44,6 +57,11 @@ export type BoardState = {
     error: boolean | null;
     userList: User[] | [];
   };
+  projectState: {
+    loading: boolean;
+    error: boolean | null;
+    projectData: Project | null;
+  };
   createState: {
     loading: boolean;
     error: boolean | null;
@@ -54,6 +72,12 @@ export type BoardState = {
     error: boolean | null;
     fetchData: { id: string };
     taskData: Task | {};
+  };
+  taskItemState: {
+    loading: boolean;
+    error: boolean | null;
+    fetchData: string;
+    taskData: Task | null;
   };
   deleteState: {
     loading: boolean;
@@ -76,8 +100,14 @@ export const initialState: BoardState = {
     search: "",
     priority: "",
     status: "",
+    projectId: "62ff3937da9eff9d65922090",
     assignee: [],
     userData: [],
+  },
+  projectState: {
+    loading: false,
+    error: null,
+    projectData: null,
   },
   users: {
     loading: true,
@@ -94,6 +124,12 @@ export const initialState: BoardState = {
     error: null,
     taskData: {},
     fetchData: { id: "" },
+  },
+  taskItemState: {
+    loading: false,
+    error: null,
+    fetchData: "",
+    taskData: null,
   },
   deleteState: {
     loading: false,
@@ -128,6 +164,10 @@ const boardSlice = createSlice({
     boardTaskDeleteSuccess,
     boardTaskDeleteError,
     boardDeleteStatusDataSet,
+    boardItemIdSet,
+    boardTaskItemInProgress,
+    boardTaskItemSuccess,
+    boardTaskItemError,
   },
   extraReducers(builder) {
     builder
@@ -167,17 +207,41 @@ const boardSlice = createSlice({
         state.users.loading = false;
         state.users.error = true;
       })
-      .addCase(bookItemUpdateDataFetch.pending, (state) => {
+      .addCase(boardItemUpdateDataFetch.pending, (state) => {
         state.updateState.loading = true;
         state.updateState.error = false;
       })
-      .addCase(bookItemUpdateDataFetch.fulfilled, (state, action) => {
+      .addCase(boardItemUpdateDataFetch.fulfilled, (state, action) => {
         state.updateState.loading = false;
         state.updateState.taskData = action.payload!;
       })
-      .addCase(bookItemUpdateDataFetch.rejected, (state) => {
+      .addCase(boardItemUpdateDataFetch.rejected, (state) => {
         state.updateState.loading = false;
         state.updateState.error = true;
+      })
+      .addCase(boardItemOpenDataFetch.pending, (state) => {
+        state.taskItemState.loading = true;
+        state.taskItemState.error = false;
+      })
+      .addCase(boardItemOpenDataFetch.fulfilled, (state, action) => {
+        state.taskItemState.loading = false;
+        state.taskItemState.taskData = action.payload!;
+      })
+      .addCase(boardItemOpenDataFetch.rejected, (state) => {
+        state.taskItemState.loading = false;
+        state.taskItemState.error = true;
+      })
+      .addCase(boardProjectDataFetch.pending, (state) => {
+        state.projectState.loading = true;
+        state.projectState.error = false;
+      })
+      .addCase(boardProjectDataFetch.fulfilled, (state, action) => {
+        state.projectState.loading = false;
+        state.projectState.projectData = action.payload!;
+      })
+      .addCase(boardProjectDataFetch.rejected, (state) => {
+        state.projectState.loading = false;
+        state.projectState.error = true;
       });
   },
 });
@@ -203,6 +267,10 @@ export const {
   boardTaskDeleteSuccess: boardTaskDeleteSuccessAction,
   boardTaskDeleteError: boardTaskDeleteErrorAction,
   boardDeleteStatusDataSet: boardDeleteStatusDataSetAction,
+  boardItemIdSet: boardItemIdSetAction,
+  boardTaskItemInProgress: boardTaskItemInProgressAction,
+  boardTaskItemSuccess: boardTaskItemSuccessAction,
+  boardTaskItemError: boardTaskItemErrorAction,
 } = boardSlice.actions;
 
 export default boardSlice.reducer;

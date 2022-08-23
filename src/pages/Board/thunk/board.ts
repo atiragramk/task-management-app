@@ -1,6 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
+import { modalOpenToggleAction } from "../../../store/modal/reducer/modal";
+import { CreateThunkType, Params, Status } from "../../../types";
 import {
   createStatus,
   createTask,
@@ -9,17 +11,10 @@ import {
   getAllStatuses,
   getAllTasks,
   getAllUsers,
+  getProject,
   getTask,
   updateTask,
 } from "../../../api/tasks";
-import { modalOpenToggleAction } from "../../../store/modal/reducer/modal";
-import {
-  CreateThunkType,
-  Params,
-  Response,
-  Status,
-  Task,
-} from "../../../types";
 import {
   boardFilterParamsResetAction,
   boardStatusCreateErrorAction,
@@ -77,11 +72,11 @@ const BOARD_CREATE_TASK_FETCH_THUNK_TYPE = "BOARD_CREATE_TASK_FETCH_THUNK_TYPE";
 
 export const boardCreateTaskFetch = createAsyncThunk(
   BOARD_CREATE_TASK_FETCH_THUNK_TYPE,
-  async (data: CreateThunkType, { dispatch }) => {
+  async (values: CreateThunkType, { dispatch }) => {
     try {
-      const { values, params } = data;
+      const { data, params } = values;
       dispatch(boardTaskCreateInProgressAction());
-      await createTask(values);
+      await createTask(data);
       dispatch(boardTaskCreateSuccessAction());
       dispatch(modalOpenToggleAction());
       toast.success("Task was created");
@@ -96,7 +91,7 @@ export const boardCreateTaskFetch = createAsyncThunk(
 );
 
 const BOARD_UPDATE_FETCH_DATA_THUNK_TYPE = "BOARD_UPDATE_FETCH_DATA_THUNK_TYPE";
-export const bookItemUpdateDataFetch = createAsyncThunk(
+export const boardItemUpdateDataFetch = createAsyncThunk(
   BOARD_UPDATE_FETCH_DATA_THUNK_TYPE,
   async (data: { id: string }, { dispatch }) => {
     try {
@@ -107,15 +102,27 @@ export const bookItemUpdateDataFetch = createAsyncThunk(
   }
 );
 
+const BOARD_OPEN_FETCH_DATA_THUNK_TYPE = "BOARD_OPEN_FETCH_DATA_THUNK_TYPE";
+export const boardItemOpenDataFetch = createAsyncThunk(
+  BOARD_OPEN_FETCH_DATA_THUNK_TYPE,
+  async (id: string, { dispatch }) => {
+    try {
+      return await getTask(id);
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  }
+);
+
 const BOARD_UPDATE_TASK_FETCH_THUNK_TYPE = "BOARD_UPDATE_TASK_FETCH_THUNK_TYPE";
 
 export const boardUpdateTaskFetch = createAsyncThunk(
   BOARD_UPDATE_TASK_FETCH_THUNK_TYPE,
-  async (data: CreateThunkType, { dispatch }) => {
+  async (values: CreateThunkType, { dispatch }) => {
     try {
-      const { values, params } = data;
+      const { data, params } = values;
       dispatch(boardTaskUpdateInProgressAction());
-      await updateTask(values, values._id!);
+      await updateTask(data, data._id!);
       dispatch(boardTaskUpdateSuccessAction());
       dispatch(modalOpenToggleAction());
       toast.success("Task was updated");
@@ -132,11 +139,11 @@ const BOARD_DELETE_TASK_FETCH_THUNK_TYPE = "BOARD_DELETE_TASK_FETCH_THUNK_TYPE";
 
 export const boardDeleteTaskFetch = createAsyncThunk(
   BOARD_DELETE_TASK_FETCH_THUNK_TYPE,
-  async (data: CreateThunkType, { dispatch }) => {
+  async (values: CreateThunkType, { dispatch }) => {
     try {
-      const { values, params } = data;
+      const { data, params } = values;
       dispatch(boardTaskDeleteInProgressAction());
-      await deleteTask(values._id!);
+      await deleteTask(data._id!);
       dispatch(boardTaskDeleteSuccessAction());
       dispatch(modalOpenToggleAction());
       toast.success("Task was deleted");
@@ -204,6 +211,19 @@ export const boardCreateStatusFetch = createAsyncThunk(
       }
       dispatch(boardStatusCreateErrorAction());
       await dispatch(boardStatusListFetch());
+    }
+  }
+);
+
+const BOARD_PROJECT_FETCH_DATA_THUNK_TYPE =
+  "BOARD_PROJECT_FETCH_DATA_THUNK_TYPE";
+export const boardProjectDataFetch = createAsyncThunk(
+  BOARD_PROJECT_FETCH_DATA_THUNK_TYPE,
+  async (data: { id: string }, { dispatch }) => {
+    try {
+      return await getProject(data.id);
+    } catch (error) {
+      toast.error("Something went wrong");
     }
   }
 );

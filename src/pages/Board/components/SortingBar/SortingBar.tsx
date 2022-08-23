@@ -37,7 +37,7 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
         variant="contained"
         size="small"
         startIcon={<AddIcon />}
-        sx={{ width: 150 }}
+        sx={{ width: 150, maxHeight: 40 }}
       >
         Add issue
       </Button>
@@ -97,7 +97,7 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
         </Select>
       </FormControl>
       <Autocomplete
-        sx={{ minWidth: 300, mt: 1 }}
+        sx={{ maxWidth: 450, mt: 1, width: 450 }}
         size="small"
         multiple
         loading={loading}
@@ -124,7 +124,7 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
         variant="outlined"
         onClick={onReset}
         startIcon={<FilterAltOffIcon />}
-        sx={{ width: "fit-content" }}
+        sx={{ width: "fit-content", maxHeight: 40 }}
       >
         Clear All
       </Button>

@@ -28,6 +28,7 @@ const Transition = React.forwardRef(function Transition(
 
 type ModalProps = {
   title: string;
+  info?: boolean;
   children?: ReactNode;
   formName?: string;
   loading?: boolean;
@@ -36,18 +37,26 @@ type ModalProps = {
 };
 
 export const Modal: React.FC<ModalProps> = (props) => {
-  const { title, children, onClose, formName, onConfirm, loading } = props;
+  const { title, children, onClose, formName, onConfirm, loading, info } =
+    props;
   const color = formName ? "primary" : "error";
   return (
     <Dialog
       keepMounted
+      onClose={() => onClose()}
       TransitionComponent={Transition}
       maxWidth="xl"
       open={true}
     >
-      <Typography variant="h5" sx={{ minWidth: 550, p: 3 }}>
-        {title}
-      </Typography>
+      {info ? (
+        <Typography variant="h6" sx={{ minWidth: 550, p: 2 }}>
+          {title}
+        </Typography>
+      ) : (
+        <Typography variant="h6" sx={{ minWidth: 550, p: 2 }}>
+          {title}
+        </Typography>
+      )}
 
       <IconButton
         aria-label="close"
@@ -55,7 +64,7 @@ export const Modal: React.FC<ModalProps> = (props) => {
         sx={{
           position: "absolute",
           right: 8,
-          top: 21,
+          top: 10,
           color: (theme) => theme.palette.grey[500],
         }}
       >
@@ -65,27 +74,29 @@ export const Modal: React.FC<ModalProps> = (props) => {
       <DialogContent dividers sx={{ paddingTop: " 20px !important" }}>
         {children}
       </DialogContent>
-      <DialogActions>
-        <LoadingButton
-          loading={loading}
-          size="small"
-          variant="outlined"
-          onClick={onClose as MouseEventHandler}
-        >
-          Cancel
-        </LoadingButton>
-        <LoadingButton
-          type="submit"
-          loading={loading}
-          color={color}
-          form={formName}
-          size="small"
-          onClick={onConfirm as MouseEventHandler}
-          variant="contained"
-        >
-          Confirm
-        </LoadingButton>
-      </DialogActions>
+      {!info && (
+        <DialogActions>
+          <LoadingButton
+            loading={loading}
+            size="small"
+            variant="outlined"
+            onClick={onClose as MouseEventHandler}
+          >
+            Cancel
+          </LoadingButton>
+          <LoadingButton
+            type="submit"
+            loading={loading}
+            color={color}
+            form={formName}
+            size="small"
+            onClick={onConfirm as MouseEventHandler}
+            variant="contained"
+          >
+            Confirm
+          </LoadingButton>
+        </DialogActions>
+      )}
     </Dialog>
   );
 };

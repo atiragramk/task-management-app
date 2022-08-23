@@ -14,6 +14,7 @@ import {
   StyledFooterTypography,
   StyledAvatar,
   StyledAvatarGroup,
+  StyledCardActionArea,
 } from "./styled";
 import {
   Typography,
@@ -25,18 +26,24 @@ import {
   Button,
   Stack,
   Tooltip,
+  CardActionArea,
 } from "@mui/material";
+import { useSelector } from "react-redux";
+import { boardProjectStateSelector } from "../../selectors/board";
 
 type TaskCardProps = {
   data: Task;
   onEdit: (id: string) => void;
   onDelete: (data: Task) => void;
+  onOpen: (id: string) => void;
 };
 
 export const TaskCard: React.FC<TaskCardProps> = (props) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-  const { data, onEdit, onDelete } = props;
+  const { data, onEdit, onDelete, onOpen } = props;
+
+  const { projectData } = useSelector(boardProjectStateSelector);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -54,7 +61,7 @@ export const TaskCard: React.FC<TaskCardProps> = (props) => {
         title={
           <StyledHeaderWrapper>
             <StyledHeaderTypography sx={{ bgcolor: "primary.light" }}>
-              {`AW-${data.key}`}
+              {`${projectData?.shortName}-${data.key}`}
             </StyledHeaderTypography>
           </StyledHeaderWrapper>
         }
@@ -78,6 +85,10 @@ export const TaskCard: React.FC<TaskCardProps> = (props) => {
                   size="small"
                   startIcon={<FolderOpenIcon fontSize="inherit" />}
                   color="info"
+                  onClick={() => {
+                    onOpen(data._id);
+                    handleClose();
+                  }}
                 >
                   Open
                 </Button>
@@ -107,39 +118,45 @@ export const TaskCard: React.FC<TaskCardProps> = (props) => {
           </Box>
         }
       ></StyledCardHeader>
-      <StyledCardContent>
-        <Typography sx={{ fontWeight: 300, fontSize: 14 }}>
-          {data.title}
-        </Typography>
-        <StyledFooterWrapper>
-          <StyledFooterTypography sx={{ bgcolor: `priority.${data.priority}` }}>
-            {data.priority}
-          </StyledFooterTypography>
-          <StyledAvatarGroup max={3}>
-            {data.assignee.length === 0 && (
-              <Tooltip arrow title="No assignee">
-                <Avatar sx={{ width: 24, height: 24 }}></Avatar>
-              </Tooltip>
-            )}
-            {data.assignee.map((user) => {
-              return (
-                <Tooltip
-                  key={user._id}
-                  arrow
-                  title={`${user.firstName} ${user.lastName}`}
-                >
-                  <StyledAvatar
-                    key={user._id}
-                    sx={{ bgcolor: user.color }}
-                  >{`${user.firstName.charAt(0).toUpperCase()}${user.lastName
-                    .charAt(0)
-                    .toUpperCase()}`}</StyledAvatar>
+      <StyledCardActionArea onClick={() => onOpen(data._id)}>
+        <StyledCardContent>
+          <Typography
+            sx={{ fontWeight: 300, fontSize: 14, wordBreak: "break-word" }}
+          >
+            {data.title}
+          </Typography>
+          <StyledFooterWrapper>
+            <StyledFooterTypography
+              sx={{ bgcolor: `priority.${data.priority}` }}
+            >
+              {data.priority}
+            </StyledFooterTypography>
+            <StyledAvatarGroup max={3}>
+              {data.assignee.length === 0 && (
+                <Tooltip arrow title="No assignee">
+                  <Avatar sx={{ width: 24, height: 24 }}></Avatar>
                 </Tooltip>
-              );
-            })}
-          </StyledAvatarGroup>
-        </StyledFooterWrapper>
-      </StyledCardContent>
+              )}
+              {data.assignee.map((user) => {
+                return (
+                  <Tooltip
+                    key={user._id}
+                    arrow
+                    title={`${user.firstName} ${user.lastName}`}
+                  >
+                    <StyledAvatar
+                      key={user._id}
+                      sx={{ bgcolor: user.color }}
+                    >{`${user.firstName.charAt(0).toUpperCase()}${user.lastName
+                      .charAt(0)
+                      .toUpperCase()}`}</StyledAvatar>
+                  </Tooltip>
+                );
+              })}
+            </StyledAvatarGroup>
+          </StyledFooterWrapper>
+        </StyledCardContent>
+      </StyledCardActionArea>
     </StyledCard>
   );
 };

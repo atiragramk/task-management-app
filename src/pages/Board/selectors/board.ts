@@ -47,3 +47,13 @@ export const boardDeleteStateSelector = createSelector(
   boardStateSelector,
   (board) => board.deleteState
 );
+
+export const boardTaskItemSelector = createSelector(
+  boardStateSelector,
+  (board) => board.taskItemState
+);
+
+export const boardProjectStateSelector = createSelector(
+  boardStateSelector,
+  (board) => board.projectState
+);

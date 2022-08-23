@@ -10,10 +10,10 @@ const theme = createTheme({
   typography: {
     fontFamily: `"Oswald", sans-serif`,
     fontSize: 14,
-    fontWeightLight: 300,
-    fontWeightRegular: 400,
-    fontWeightMedium: 500,
-    fontWeightBold: 700,
+    fontWeightLight: 200,
+    fontWeightRegular: 300,
+    fontWeightMedium: 400,
+    fontWeightBold: 500,
   },
   palette: {
     primary: {
@@ -23,6 +23,7 @@ const theme = createTheme({
     secondary: {
       main: "#e8eaf6",
       light: "#9FA8DA",
+      dark: "#546E7A",
     },
     priority: {
       low: "#AED581",

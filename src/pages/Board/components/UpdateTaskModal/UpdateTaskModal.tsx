@@ -9,7 +9,7 @@ import {
   boardStatusSelector,
   boardUpdateStateSelector,
 } from "../../selectors/board";
-import { bookItemUpdateDataFetch } from "../../thunk/board";
+import { boardItemUpdateDataFetch } from "../../thunk/board";
 import { TaskForm } from "../TaskForm";
 
 type UpdateTaskModalProps = {
@@ -28,7 +28,7 @@ export const UpdateTaskModal: React.FC<UpdateTaskModalProps> = ({
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(bookItemUpdateDataFetch(fetchData));
+    dispatch(boardItemUpdateDataFetch(fetchData));
   }, []);
 
   return (

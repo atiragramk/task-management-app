@@ -22,10 +22,11 @@ type TaskListCardProps = {
   onEdit: (id: string) => void;
   onDelete: (data: Task) => void;
   onStatusDelete: (data: Status) => void;
+  onOpen: (id: string) => void;
 };
 
 export const TaskListCard: React.FC<TaskListCardProps> = (props) => {
-  const { status, onEdit, onDelete, onStatusDelete } = props;
+  const { status, onEdit, onDelete, onStatusDelete, onOpen } = props;
   const taskList = useSelector(boardDataSelector);
   const loading = useSelector(boardLoadingSelector);
   const [show, setShow] = useState(false);
@@ -38,9 +39,6 @@ export const TaskListCard: React.FC<TaskListCardProps> = (props) => {
   };
   const CustomAppbar = (props: {}) => (
     <AppBar
-      onMouseOver={() => setShow(true)}
-      onMouseOut={() => setShow(false)}
-      onClick={() => setShow(false)}
       position="sticky"
       color="secondary"
       sx={{ height: 40 }}
@@ -50,6 +48,9 @@ export const TaskListCard: React.FC<TaskListCardProps> = (props) => {
   return (
     <StyledCard>
       <CardHeader
+        onMouseOver={() => setShow(true)}
+        onMouseOut={() => setShow(false)}
+        onClick={() => setShow(false)}
         sx={{ padding: "5px" }}
         title={
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -83,6 +84,7 @@ export const TaskListCard: React.FC<TaskListCardProps> = (props) => {
                       data={record}
                       onEdit={onEdit}
                       onDelete={onDelete}
+                      onOpen={onOpen}
                     />
                   </Collapse>
                 );
