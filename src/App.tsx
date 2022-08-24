@@ -1,6 +1,11 @@
 import { Container } from "@mui/material";
 import { lazy } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 import { Layout } from "./components/Layout";
@@ -16,8 +21,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path="/board" element={<Board />} />
             <Route path="/projects" element={<Projects />} />
+            <Route path="/projects/:routeId" element={<Board />} />
           </Route>
         </Routes>
       </Router>

@@ -4,12 +4,13 @@ import {
   LinearProgress,
   Container,
   Collapse,
+  Typography,
 } from "@mui/material";
 import { TaskListCard } from "./components/TaskListCard";
 import { SortingBar } from "./components/SortingBar";
 import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback, useEffect } from "react";
+import { EffectCallback, useCallback, useEffect } from "react";
 import {
   boardCreateStatusFetch,
   boardCreateTaskFetch,
@@ -50,23 +51,30 @@ import { DeleteTaskModal } from "./components/DeleteTaskModal";
 import { DeleteStatusModal } from "./components/DeleteStatusModal";
 import { CreateStatusModal } from "./components/CreateStatusModal";
 import { OpenTaskModal } from "./components/OpenTaskModal";
+import { useParams } from "react-router-dom";
 
 const Board = () => {
   const { loading, error, data } = useSelector(selectors.boardStatusSelector);
   const params = useSelector(selectors.boardFilterParams);
   const { open, name } = useSelector(modalStateSelector);
+  const { routeId } = useParams();
+  const { projectData } = useSelector(selectors.boardProjectStateSelector);
 
   const dispatch: AppDispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(boardStatusListFetch());
-    dispatch(boardListFetch(params));
-    dispatch(boardProjectDataFetch({ id: params.projectId! }));
-  }, [params]);
+  useEffect((): (() => void) => {
+    dispatch(boardProjectDataFetch({ id: routeId! }));
+    dispatch(boardFilterParamsSetAction({ projectId: routeId }));
+    dispatch(boardUserListFetch());
+    return () => dispatch(boardFilterParamsSetAction({ projectId: "" }));
+  }, []);
 
   useEffect(() => {
-    dispatch(boardUserListFetch());
-  }, []);
+    if (params.projectId) {
+      dispatch(boardStatusListFetch());
+      dispatch(boardListFetch(params));
+    }
+  }, [params]);
 
   const handleFilter = (param: Partial<Params>) => {
     dispatch(boardFilterParamsSetAction(param));
@@ -92,7 +100,7 @@ const Board = () => {
   }, []);
 
   const handleCreateTask = (values: Partial<Task>) => {
-    const data = { ...values, projectId: params.projectId };
+    const data = { ...values, projectId: projectData?._id };
     dispatch(boardCreateTaskFetch({ data, params }));
   };
 
@@ -159,6 +167,12 @@ const Board = () => {
           data={data}
           onCreateModalOpen={handleCreateModalOpenToggle}
         />
+        <Box sx={{ ml: 1 }}>
+          <Typography
+            color="info.main"
+            variant="subtitle1"
+          >{`Project / ${projectData?.name}`}</Typography>
+        </Box>
         <Box sx={{ display: "flex", height: "78vh", overflowX: "auto" }}>
           {!error && data.length > 0 && (
             <TransitionGroup style={{ display: "flex" }}>

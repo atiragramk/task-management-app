@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { AppDispatch } from "../../store";
 import { projectsListFetch } from "./thunk/projects";
 import { Container } from "@mui/system";
-import { Box, Button, LinearProgress } from "@mui/material";
+import { Box, Button, LinearProgress, Stack, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Link, useLocation } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
@@ -31,12 +31,7 @@ const Projects = () => {
       headerName: "Name",
       width: 200,
       renderCell: (params) => (
-        <Link
-          onClick={() => handleProjectSelection(params.row._id)}
-          to={`/board`}
-        >
-          {params.value}
-        </Link>
+        <Link to={`/projects/${params.row._id}`}>{params.value}</Link>
       ),
     },
     { field: "description", headerName: "Description", width: 1000 },
@@ -45,6 +40,23 @@ const Projects = () => {
 
   return (
     <Container maxWidth="xl" sx={{ mt: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "baseline",
+          justifyContent: "space-between",
+        }}
+      >
+        <Typography variant="h5">Projects</Typography>
+        <Button
+          sx={{ mb: 2 }}
+          variant="contained"
+          size="small"
+          startIcon={<AddIcon />}
+        >
+          Create Project
+        </Button>
+      </Box>
       <Box sx={{ height: "550px" }}>
         <DataGrid
           disableColumnMenu
@@ -58,14 +70,6 @@ const Projects = () => {
           onRowClick={() => console.log("fff")}
         />
       </Box>
-      <Button
-        sx={{ mt: 2 }}
-        variant="contained"
-        size="small"
-        startIcon={<AddIcon />}
-      >
-        Add Project
-      </Button>
     </Container>
   );
 };

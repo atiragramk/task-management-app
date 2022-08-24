@@ -25,6 +25,9 @@ const theme = createTheme({
       light: "#9FA8DA",
       dark: "#546E7A",
     },
+    info: {
+      main: "#5C6BC0",
+    },
     priority: {
       low: "#AED581",
       normal: "#B0BEC5",

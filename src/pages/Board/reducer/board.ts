@@ -100,7 +100,7 @@ export const initialState: BoardState = {
     search: "",
     priority: "",
     status: "",
-    projectId: "62ff3937da9eff9d65922090",
+    projectId: "",
     assignee: [],
     userData: [],
   },

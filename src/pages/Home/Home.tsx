@@ -1,4 +1,5 @@
 import { Box, Button, Container, Typography } from "@mui/material";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { StyledTypography } from "./styled";
 
@@ -40,7 +41,7 @@ const Home = () => {
             color="primary"
             variant="contained"
             component={Link}
-            to="/board"
+            to="/projects"
           >
             Start for free
           </Button>

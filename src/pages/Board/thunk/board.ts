@@ -80,7 +80,7 @@ export const boardCreateTaskFetch = createAsyncThunk(
       dispatch(boardTaskCreateSuccessAction());
       dispatch(modalOpenToggleAction());
       toast.success("Task was created");
-      dispatch(boardFilterParamsResetAction());
+      // dispatch(boardFilterParamsResetAction());
       await dispatch(boardListFetch(params));
     } catch (error) {
       console.log(error);
