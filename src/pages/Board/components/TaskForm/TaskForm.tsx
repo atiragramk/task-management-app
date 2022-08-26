@@ -18,17 +18,19 @@ import { Status, Task } from "../../../../types";
 import { useSelector } from "react-redux";
 import { boardUsersSelector } from "../../selectors/board";
 import { createTaskSchema } from "./validation";
+import { priorityList } from "../../constants";
 
 type TaskFormProp = {
   statusList: Status[];
   name: string;
   onConfirm: (values: Partial<Task>) => void;
   taskData?: Partial<Task>;
+  loading: boolean;
 };
 
 export const TaskForm: React.FC<TaskFormProp> = (props) => {
-  const { statusList, name, onConfirm, taskData } = props;
-  const { loading, error, userList } = useSelector(boardUsersSelector);
+  const { statusList, name, onConfirm, taskData, loading } = props;
+  const { userList } = useSelector(boardUsersSelector);
   const {
     control,
     handleSubmit,
@@ -57,6 +59,7 @@ export const TaskForm: React.FC<TaskFormProp> = (props) => {
           render={({ field }) => (
             <TextField
               error={Boolean(errors.title)}
+              disabled={loading}
               helperText={errors.title?.message as ReactNode}
               size="small"
               {...field}
@@ -75,6 +78,7 @@ export const TaskForm: React.FC<TaskFormProp> = (props) => {
             <TextField
               multiline={true}
               rows={5}
+              disabled={loading}
               error={Boolean(errors.description)}
               helperText={errors.description?.message as ReactNode}
               {...field}
@@ -99,6 +103,7 @@ export const TaskForm: React.FC<TaskFormProp> = (props) => {
                 {...field}
                 labelId="status"
                 id="status-select"
+                disabled={loading}
                 label="Status"
               >
                 {statusList.map((status) => {
@@ -127,14 +132,18 @@ export const TaskForm: React.FC<TaskFormProp> = (props) => {
             render={({ field }) => (
               <Select
                 {...field}
+                disabled={loading}
                 labelId="priority-select-label"
                 id="priority-select"
                 label="Priority"
               >
-                <MenuItem value="low">Low</MenuItem>
-                <MenuItem value="high">High</MenuItem>
-                <MenuItem value="normal">Normal</MenuItem>
-                <MenuItem value="critical">Critical</MenuItem>
+                {priorityList.map((priority) => {
+                  return (
+                    <MenuItem value={priority.toLowerCase()}>
+                      {priority}
+                    </MenuItem>
+                  );
+                })}
               </Select>
             )}
             defaultValue={taskData?.priority || ""}
@@ -160,6 +169,7 @@ export const TaskForm: React.FC<TaskFormProp> = (props) => {
               id="users"
               value={value}
               options={userList}
+              disabled={loading}
               filterSelectedOptions
               disableCloseOnSelect
               getOptionLabel={(option) =>

@@ -51,7 +51,7 @@ export const boardTaskCreateError = (state: BoardState) => {
 
 export const boardUpdateItemIdSet = (
   state: BoardState,
-  action: PayloadAction<{ id: string }>
+  action: PayloadAction<string>
 ) => {
   state.updateState.fetchData = action.payload;
 };

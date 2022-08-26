@@ -1,7 +1,5 @@
-// import styled from "styled-components";
 import { AppBar, Avatar, styled, Toolbar } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import { deepPurple } from "@mui/material/colors";
 
 export const StyledImage = styled("img")`
   height: 80px;

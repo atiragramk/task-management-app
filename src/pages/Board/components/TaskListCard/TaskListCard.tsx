@@ -73,7 +73,6 @@ export const TaskListCard: React.FC<TaskListCardProps> = (props) => {
       </StyledHeader>
       <StyledCard draggable={isOver} ref={drop}>
         <StyledCardContent>
-          {loading && <LinearProgress />}
           <TransitionGroup>
             {taskList.map((task) => {
               if (task._id === status.key) {

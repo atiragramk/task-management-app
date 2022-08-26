@@ -1,5 +1,9 @@
-import logo from "../../assets/img/logo.png";
+import { useState } from "react";
+import { Stack } from "@mui/system";
+import { Link } from "react-router-dom";
+
 import { Typography, IconButton, Box, Popover, Button } from "@mui/material";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import {
   StyledImage,
   StyledNavLink,
@@ -9,10 +13,7 @@ import {
   StyledAvatar,
   StyledSpan,
 } from "./styled";
-import { useState } from "react";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { Stack } from "@mui/system";
-import { Link } from "react-router-dom";
+import logo from "../../assets/img/logo.png";
 
 export const Header = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -71,14 +72,6 @@ export const Header = () => {
                       to="/projects"
                     >
                       View all projects
-                    </Button>
-                    <Button
-                      component={Link}
-                      size="small"
-                      to="/projects"
-                      color="info"
-                    >
-                      Create project
                     </Button>
                   </Stack>
                 </Popover>

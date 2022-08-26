@@ -70,7 +70,7 @@ export type BoardState = {
   updateState: {
     loading: boolean;
     error: boolean | null;
-    fetchData: { id: string };
+    fetchData: string;
     taskData: Task | {};
   };
   taskItemState: {
@@ -92,7 +92,7 @@ export const initialState: BoardState = {
   error: null,
   data: [],
   status: {
-    loading: true,
+    loading: false,
     error: null,
     data: [],
   },
@@ -123,7 +123,7 @@ export const initialState: BoardState = {
     loading: false,
     error: null,
     taskData: {},
-    fetchData: { id: "" },
+    fetchData: "",
   },
   taskItemState: {
     loading: false,

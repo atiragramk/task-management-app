@@ -1,24 +1,23 @@
+import React from "react";
+import { useSelector } from "react-redux";
+import { boardFilterParams, boardUsersSelector } from "../../selectors/board";
+
+import AddIcon from "@mui/icons-material/Add";
+import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
+import SearchIcon from "@mui/icons-material/Search";
 import {
-  FormControl,
   InputAdornment,
   InputLabel,
   MenuItem,
   Select,
   TextField,
-  Button,
   Stack,
   Autocomplete,
-  Container,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
-import SearchIcon from "@mui/icons-material/Search";
-import React from "react";
-import { Params, Status } from "../../../../types";
 
-import { useSelector } from "react-redux";
-import { boardFilterParams, boardUsersSelector } from "../../selectors/board";
 import { priorityList } from "../../constants";
+import { Params, Status, User } from "../../../../types";
+import { StyledButton, StyledFormControl } from "./styled";
 
 type SortingBarProps = {
   data: Status[];
@@ -29,24 +28,32 @@ type SortingBarProps = {
 
 export const SortingBar: React.FC<SortingBarProps> = (props) => {
   const { data, onFilter, onCreateModalOpen, onReset } = props;
-  const { loading, error, userList } = useSelector(boardUsersSelector);
+  const { loading, userList } = useSelector(boardUsersSelector);
   const params = useSelector(boardFilterParams);
+
+  const handleAssigneeChange = (data: User[]) => {
+    const assignee: string[] = [];
+    data.forEach((user) => {
+      assignee.push(user.email);
+    });
+    onFilter({ assignee });
+    onFilter({ userData: data });
+  };
 
   return (
     <Stack
       direction={{ xs: "column", sm: "column", md: "column", lg: "row" }}
-      spacing={3}
-      sx={{ p: 2 }}
+      spacing={2}
+      sx={{ pt: 2, pl: 1 }}
     >
-      <Button
+      <StyledButton
         onClick={onCreateModalOpen}
         variant="contained"
         size="small"
         startIcon={<AddIcon />}
-        sx={{ width: 150, maxHeight: 40 }}
       >
         Add issue
-      </Button>
+      </StyledButton>
       <TextField
         size="small"
         onChange={(event) => onFilter({ search: event.target.value })}
@@ -61,10 +68,9 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
           ),
         }}
       ></TextField>
-      <FormControl size="small" sx={{ minWidth: 120 }}>
+      <StyledFormControl size="small">
         <InputLabel id="status-select-label">Status</InputLabel>
         <Select
-          sx={{ minWidth: 150 }}
           labelId="status-select-label"
           id="status-select"
           label="Status"
@@ -82,11 +88,10 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
             );
           })}
         </Select>
-      </FormControl>
-      <FormControl size="small" sx={{ minWidth: 120 }}>
+      </StyledFormControl>
+      <StyledFormControl size="small">
         <InputLabel id="priority-select-label">Priority</InputLabel>
         <Select
-          sx={{ minWidth: 150 }}
           labelId="priority-select-label"
           id="priority-select"
           value={params.priority}
@@ -96,13 +101,15 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          {priorityList.map((priority) => {
+          {priorityList.map((priority, index) => {
             return (
-              <MenuItem value={priority.toLowerCase()}>{priority}</MenuItem>
+              <MenuItem key={index} value={priority.toLowerCase()}>
+                {priority}
+              </MenuItem>
             );
           })}
         </Select>
-      </FormControl>
+      </StyledFormControl>
       <Autocomplete
         sx={{ maxWidth: 450, mt: 1, minWidth: 350 }}
         size="small"
@@ -113,28 +120,20 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
         filterSelectedOptions
         disableCloseOnSelect
         value={params.userData}
-        onChange={(_, data) => {
-          const assignee: string[] = [];
-          data.forEach((user) => {
-            assignee.push(user.email);
-          });
-          onFilter({ assignee });
-          onFilter({ userData: data });
-        }}
+        onChange={(_, data) => handleAssigneeChange(data)}
         getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
         renderInput={(params) => (
           <TextField {...params} label="Assignee" placeholder="User" />
         )}
       ></Autocomplete>
-      <Button
+      <StyledButton
         size="small"
         variant="outlined"
         onClick={onReset}
         startIcon={<FilterAltOffIcon />}
-        sx={{ minWidth: "fit-content", maxHeight: 40 }}
       >
         Clear All
-      </Button>
+      </StyledButton>
     </Stack>
   );
 };

@@ -1,24 +1,43 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Project } from "../../../types";
 import { projectsListFetch } from "../thunk/projects";
+import {
+  projectCreateInProgress,
+  projectCreateSuccess,
+  projectCreateError,
+} from "../actions/projects";
 
-type ProjectsState = {
+export type ProjectsState = {
   error: boolean | null;
   loading: boolean;
   data: Project[] | [];
+  createState: {
+    error: boolean | null;
+    loading: boolean;
+    data: Project | {};
+  };
 };
 
 const initialState: ProjectsState = {
   error: null,
   loading: true,
   data: [],
+  createState: {
+    error: null,
+    loading: false,
+    data: {},
+  },
 };
 
 const name = "PROJECTS";
 const projectSlice = createSlice({
   name,
   initialState,
-  reducers: {},
+  reducers: {
+    projectCreateInProgress,
+    projectCreateSuccess,
+    projectCreateError,
+  },
   extraReducers(builder) {
     builder
       .addCase(projectsListFetch.pending, (state) => {
@@ -35,5 +54,11 @@ const projectSlice = createSlice({
       });
   },
 });
+
+export const {
+  projectCreateInProgress: projectCreateInProgressAction,
+  projectCreateSuccess: projectCreateSuccessAtion,
+  projectCreateError: projectCreateErrorAction,
+} = projectSlice.actions;
 
 export default projectSlice.reducer;

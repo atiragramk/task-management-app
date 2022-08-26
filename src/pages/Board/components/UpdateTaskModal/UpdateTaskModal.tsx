@@ -1,10 +1,9 @@
-import { Backdrop, LinearProgress } from "@mui/material";
+import { LinearProgress } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "../../../../components/Modal";
 import { AppDispatch } from "../../../../store";
 import { Task } from "../../../../types";
-import { boardUpdateItemIdSetAction } from "../../reducer/board";
 import {
   boardStatusSelector,
   boardUpdateStateSelector,
@@ -41,6 +40,7 @@ export const UpdateTaskModal: React.FC<UpdateTaskModalProps> = ({
       {loading && <LinearProgress />}
       {!loading && (
         <TaskForm
+          loading={loading}
           statusList={data}
           name="update"
           onConfirm={onConfirm}

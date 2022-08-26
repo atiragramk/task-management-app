@@ -53,7 +53,9 @@ import { DeleteTaskModal } from "./components/DeleteTaskModal";
 import { DeleteStatusModal } from "./components/DeleteStatusModal";
 import { CreateStatusModal } from "./components/CreateStatusModal";
 import { OpenTaskModal } from "./components/OpenTaskModal";
-import { StyledBoardWrapper } from "./styled";
+import { StyledBoardWrapper, StyledLink } from "./styled";
+import { ErrorBoundary } from "../../components/ErrorBoundary";
+import { ErrorMessage } from "../../components/ErrorMessage";
 
 const Board = () => {
   const { loading, error, data } = useSelector(selectors.boardStatusSelector);
@@ -73,7 +75,7 @@ const Board = () => {
 
   useEffect(() => {
     if (params.projectId) {
-      dispatch(boardStatusListFetch());
+      dispatch(boardStatusListFetch(params));
       dispatch(boardListFetch(params));
     }
   }, [params]);
@@ -91,7 +93,7 @@ const Board = () => {
   };
 
   const handleUpdateModalOpen = useCallback((id: string) => {
-    dispatch(boardUpdateItemIdSetAction({ id }));
+    dispatch(boardUpdateItemIdSetAction(id));
     dispatch(modalOpenToggleAction({ name: MODAL_UPDATE_NAME }));
     // eslint-disable-next-line
   }, []);
@@ -134,16 +136,18 @@ const Board = () => {
     // eslint-disable-next-line
   }, []);
 
-  const handleDeleteStatus = (values: Status) => {
-    dispatch(boardDeleteStatusFetch(values));
+  const handleDeleteStatus = (data: Status) => {
+    dispatch(boardDeleteStatusFetch({ data, params }));
   };
 
   const handleCreateStatusModalToogle = useCallback(() => {
     dispatch(modalOpenToggleAction({ name: MODAL_STATUS_CREATE_NAME }));
   }, []);
 
-  const handleCreateStatus = (data: Partial<Status>) => {
-    dispatch(boardCreateStatusFetch(data));
+  const handleCreateStatus = (values: Partial<Status>) => {
+    const data = { ...values, projectId: projectData?._id };
+
+    dispatch(boardCreateStatusFetch({ data, params }));
   };
 
   const handleOpenTaskModalOpen = useCallback((id: string) => {
@@ -156,89 +160,95 @@ const Board = () => {
   }, []);
 
   return (
-    <>
-      {loading && !error && data.length === 0 && (
-        <Box sx={{ width: "100%" }}>
-          <LinearProgress />
-        </Box>
-      )}
-      <Container maxWidth="xl">
-        <SortingBar
-          onFilter={handleFilter}
-          onReset={handleFilterReset}
-          data={data}
-          onCreateModalOpen={handleCreateModalOpenToggle}
-        />
-        <Box sx={{ m: 2 }}>
-          <Typography color="info.main" variant="subtitle1">
-            <Link to="/projects">Projects </Link> / {projectData?.name}
-          </Typography>
-        </Box>
-        <StyledBoardWrapper>
-          {!error && data.length > 0 && (
-            <TransitionGroup style={{ display: "flex" }}>
-              {data.map((status) => {
-                return (
-                  <Collapse key={status._id} orientation="horizontal">
-                    <TaskListCard
-                      status={status}
-                      onEdit={handleUpdateModalOpen}
-                      onDelete={handleDeleteModalOpen}
-                      onOpen={handleOpenTaskModalOpen}
-                      onStatusDelete={handleDeleteStatusModalOpen}
-                    />
-                  </Collapse>
-                );
-              })}
-            </TransitionGroup>
-          )}
-          <Box sx={{ width: 220, ml: 1 }}>
-            <Button
-              sx={{ width: 200, position: "sticky", top: 0 }}
-              fullWidth={true}
-              onClick={handleCreateStatusModalToogle}
-              variant="outlined"
-              startIcon={<AddIcon />}
-            >
-              Create column
-            </Button>
+    <ErrorBoundary>
+      <>
+        {loading && !error && data.length === 0 && (
+          <Box sx={{ width: "100%" }}>
+            <LinearProgress />
           </Box>
-        </StyledBoardWrapper>
-      </Container>
-      {open && name === MODAL_CREATE_NAME && (
-        <CreateTaskModal
-          onClose={handleCreateModalOpenToggle}
-          onConfirm={handleCreateTask}
-        />
-      )}
-      {open && name === MODAL_UPDATE_NAME && (
-        <UpdateTaskModal
-          onClose={handleUpdateModalClose}
-          onConfirm={handleUpdateTask}
-        />
-      )}
-      {open && name === MODAL_DELETE_NAME && (
-        <DeleteTaskModal
-          onClose={handleDeleteModalClose}
-          onConfirm={handleDeleteTask}
-        />
-      )}
-      {open && name === MODAL_STATUS_DELETE_NAME && (
-        <DeleteStatusModal
-          onClose={handleDeleteStatusModalClose}
-          onConfirm={handleDeleteStatus}
-        />
-      )}
-      {open && name === MODAL_STATUS_CREATE_NAME && (
-        <CreateStatusModal
-          onClose={handleCreateStatusModalToogle}
-          onConfirm={handleCreateStatus}
-        />
-      )}
-      {open && name === MODAL_OPEN_TASK_NAME && (
-        <OpenTaskModal onClose={handleOpenTaskModalClose} />
-      )}
-    </>
+        )}
+        {!error && !loading && (
+          <Container maxWidth="xl">
+            <SortingBar
+              onFilter={handleFilter}
+              onReset={handleFilterReset}
+              data={data}
+              onCreateModalOpen={handleCreateModalOpenToggle}
+            />
+            <Box sx={{ m: 2 }}>
+              <Typography color="info.main" variant="subtitle1">
+                <StyledLink to="/projects">Projects </StyledLink> /{" "}
+                {projectData?.name}
+              </Typography>
+            </Box>
+            <StyledBoardWrapper>
+              {!error && data.length > 0 && (
+                <TransitionGroup style={{ display: "flex" }}>
+                  {data.map((status) => {
+                    return (
+                      <Collapse key={status._id} orientation="horizontal">
+                        <TaskListCard
+                          status={status}
+                          onEdit={handleUpdateModalOpen}
+                          onDelete={handleDeleteModalOpen}
+                          onOpen={handleOpenTaskModalOpen}
+                          onStatusDelete={handleDeleteStatusModalOpen}
+                        />
+                      </Collapse>
+                    );
+                  })}
+                </TransitionGroup>
+              )}
+              <Box sx={{ width: 220, ml: 1 }}>
+                <Button
+                  sx={{ width: 200, position: "sticky", top: 0 }}
+                  fullWidth={true}
+                  onClick={handleCreateStatusModalToogle}
+                  variant="outlined"
+                  startIcon={<AddIcon />}
+                >
+                  Create column
+                </Button>
+              </Box>
+            </StyledBoardWrapper>
+          </Container>
+        )}
+        {open && name === MODAL_CREATE_NAME && (
+          <CreateTaskModal
+            onClose={handleCreateModalOpenToggle}
+            onConfirm={handleCreateTask}
+          />
+        )}
+        {open && name === MODAL_UPDATE_NAME && (
+          <UpdateTaskModal
+            onClose={handleUpdateModalClose}
+            onConfirm={handleUpdateTask}
+          />
+        )}
+        {open && name === MODAL_DELETE_NAME && (
+          <DeleteTaskModal
+            onClose={handleDeleteModalClose}
+            onConfirm={handleDeleteTask}
+          />
+        )}
+        {open && name === MODAL_STATUS_DELETE_NAME && (
+          <DeleteStatusModal
+            onClose={handleDeleteStatusModalClose}
+            onConfirm={handleDeleteStatus}
+          />
+        )}
+        {open && name === MODAL_STATUS_CREATE_NAME && (
+          <CreateStatusModal
+            onClose={handleCreateStatusModalToogle}
+            onConfirm={handleCreateStatus}
+          />
+        )}
+        {open && name === MODAL_OPEN_TASK_NAME && (
+          <OpenTaskModal onClose={handleOpenTaskModalClose} />
+        )}
+      </>
+      {error && !loading && <ErrorMessage />}
+    </ErrorBoundary>
   );
 };
 

@@ -17,3 +17,8 @@ export const projectsDataSelector = createSelector(
   projectsStateSelector,
   (projects) => projects.data
 );
+
+export const projectCreateStateSelector = createSelector(
+  projectsStateSelector,
+  (projects) => projects.createState
+);

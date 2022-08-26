@@ -49,7 +49,7 @@ export type User = {
 };
 
 export type CreateThunkType = {
-  data: Partial<Task>;
+  data: Partial<Task | Status>;
   params: Partial<Params>;
 };
 

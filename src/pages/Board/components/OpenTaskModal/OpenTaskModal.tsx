@@ -33,7 +33,7 @@ export const OpenTaskModal: React.FC<OpenTaskModalProps> = ({ onClose }) => {
       title={`${projectData?.shortName} - ${taskData?.key}`}
     >
       <Box sx={{ display: "flex" }}>
-        <Stack spacing={2} sx={{ maxWidth: 300 }}>
+        <Stack spacing={2} sx={{ maxWidth: 550 }}>
           <Typography variant="h6" color="primary.main">
             {taskData?.title}
           </Typography>

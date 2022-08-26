@@ -17,30 +17,6 @@ export const getTask = async (id: string) => {
   }
 };
 
-export const getAllStatuses = async () => {
-  try {
-    return await client.get<never, Status[]>("/statuses");
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-
-export const createStatus = async (data: Partial<Status>) => {
-  try {
-    return await client.post<never, Status>("/statuses", { ...data });
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-
-export const deleteStatus = async (id: string) => {
-  try {
-    return await client.delete<never, Status>(`/statuses/${id}`);
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-
 export const createTask = async (data: Partial<Task>) => {
   try {
     return await client.post<never, Task>("/tasks", { ...data });
@@ -65,6 +41,30 @@ export const deleteTask = async (id: string) => {
   }
 };
 
+export const getAllStatuses = async (params: Params = {}) => {
+  try {
+    return await client.get<never, Status[]>("/statuses", { params });
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const createStatus = async (data: Partial<Status>) => {
+  try {
+    return await client.post<never, Status>("/statuses", { ...data });
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const deleteStatus = async (id: string) => {
+  try {
+    return await client.delete<never, Status>(`/statuses/${id}`);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 export const getAllUsers = async () => {
   try {
     return await client.get<never, User[]>("/users");
@@ -84,6 +84,14 @@ export const getProject = async (id: string) => {
 export const getAllProjects = async () => {
   try {
     return await client.get<never, Project[]>("/projects");
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const createProject = async (data: Partial<Project>) => {
+  try {
+    return await client.post<never, Project>("/projects", { ...data });
   } catch (error) {
     return Promise.reject(error);
   }

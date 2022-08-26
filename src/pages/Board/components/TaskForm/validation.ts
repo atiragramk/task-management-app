@@ -11,7 +11,11 @@ const assigneeTaskSchema = yup.object().shape({
 });
 
 export const createTaskSchema = yup.object().shape({
-  title: yup.string().required("Required"),
+  title: yup
+    .string()
+    .min(3, "Min length is 2 symbols")
+    .max(255, "Max length is 255 symbols")
+    .required("Required"),
   description: yup.string(),
   statusId: yup.string().required("Required"),
   priority: yup.string().required("Required"),

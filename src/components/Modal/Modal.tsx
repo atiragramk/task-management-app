@@ -1,9 +1,7 @@
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   Typography,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
@@ -11,11 +9,16 @@ import { LoadingButton } from "@mui/lab";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { ReactNode, MouseEventHandler } from "react";
-import { Task } from "../../types";
+
 import Slide from "@mui/material/Slide";
 
 import { TransitionProps } from "@mui/material/transitions";
 import React from "react";
+import {
+  StyledDialogContent,
+  StyledIconButton,
+  StyledTypography,
+} from "./styled";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -40,44 +43,33 @@ export const Modal: React.FC<ModalProps> = (props) => {
   const { title, children, onClose, formName, onConfirm, loading, info } =
     props;
   const color = formName ? "primary" : "error";
+
   return (
     <Dialog
       keepMounted
-      onClose={() => onClose()}
+      // onClose={() => onClose()}
       TransitionComponent={Transition}
-      maxWidth="xl"
+      maxWidth="md"
       open={true}
     >
       {info ? (
-        <Typography variant="h6" sx={{ minWidth: 550, p: 2 }}>
-          {title}
-        </Typography>
+        <StyledTypography variant="h6">{title}</StyledTypography>
       ) : (
-        <Typography variant="h6" sx={{ minWidth: 550, p: 2 }}>
-          {title}
-        </Typography>
+        <StyledTypography variant="h6">{title}</StyledTypography>
       )}
 
-      <IconButton
+      <StyledIconButton
         aria-label="close"
         onClick={onClose as MouseEventHandler}
-        sx={{
-          position: "absolute",
-          right: 8,
-          top: 10,
-          color: (theme) => theme.palette.grey[500],
-        }}
       >
         <CloseIcon />
-      </IconButton>
+      </StyledIconButton>
 
-      <DialogContent dividers sx={{ paddingTop: " 20px !important" }}>
-        {children}
-      </DialogContent>
+      <StyledDialogContent dividers>{children}</StyledDialogContent>
       {!info && (
         <DialogActions>
           <LoadingButton
-            loading={loading}
+            disabled={loading}
             size="small"
             variant="outlined"
             onClick={onClose as MouseEventHandler}
@@ -86,8 +78,8 @@ export const Modal: React.FC<ModalProps> = (props) => {
           </LoadingButton>
           <LoadingButton
             type="submit"
-            loading={loading}
             color={color}
+            disabled={loading}
             form={formName}
             size="small"
             onClick={onConfirm as MouseEventHandler}

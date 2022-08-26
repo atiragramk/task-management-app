@@ -23,7 +23,12 @@ export const CreateTaskModal: React.FC<CreateTaskModalProps> = (props) => {
       title="Create Task"
       loading={loading}
     >
-      <TaskForm statusList={data} name="create" onConfirm={onConfirm} />
+      <TaskForm
+        loading={loading}
+        statusList={data}
+        name="create"
+        onConfirm={onConfirm}
+      />
     </Modal>
   );
 };

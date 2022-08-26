@@ -1,8 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { AxiosError } from "axios";
 import { toast } from "react-toastify";
+
+import { AxiosError } from "axios";
 import { modalOpenToggleAction } from "../../../store/modal/reducer/modal";
-import { CreateThunkType, Params, Status } from "../../../types";
+import { CreateThunkType, Params } from "../../../types";
 import {
   createStatus,
   createTask,
@@ -15,6 +16,7 @@ import {
   getTask,
   updateTask,
 } from "../../../api/tasks";
+
 import {
   boardFilterParamsResetAction,
   boardStatusCreateErrorAction,
@@ -39,6 +41,7 @@ export const boardListFetch = createAsyncThunk(
     try {
       return await getAllTasks(params);
     } catch (error) {
+      toast.error("Something went wrong");
       return rejectWithValue(error);
     }
   }
@@ -47,10 +50,11 @@ const STATUS_LIST_FETCH_THUNK_TYPE = "STATUS_LIST_FETCH_THUNK_TYPE";
 
 export const boardStatusListFetch = createAsyncThunk(
   STATUS_LIST_FETCH_THUNK_TYPE,
-  async (_, { rejectWithValue }) => {
+  async (params: Partial<Params>, { rejectWithValue }) => {
     try {
-      return await getAllStatuses();
+      return await getAllStatuses(params);
     } catch (error) {
+      toast.error("Something went wrong");
       return rejectWithValue(error);
     }
   }
@@ -63,6 +67,7 @@ export const boardUserListFetch = createAsyncThunk(
     try {
       return await getAllUsers();
     } catch (error) {
+      toast.error("Something went wrong");
       return rejectWithValue(error);
     }
   }
@@ -80,10 +85,8 @@ export const boardCreateTaskFetch = createAsyncThunk(
       dispatch(boardTaskCreateSuccessAction());
       dispatch(modalOpenToggleAction());
       toast.success("Task was created");
-      // dispatch(boardFilterParamsResetAction());
       await dispatch(boardListFetch(params));
     } catch (error) {
-      console.log(error);
       toast.error("Something went wrong");
       dispatch(boardTaskCreateErrorAction());
     }
@@ -93,11 +96,12 @@ export const boardCreateTaskFetch = createAsyncThunk(
 const BOARD_UPDATE_FETCH_DATA_THUNK_TYPE = "BOARD_UPDATE_FETCH_DATA_THUNK_TYPE";
 export const boardItemUpdateDataFetch = createAsyncThunk(
   BOARD_UPDATE_FETCH_DATA_THUNK_TYPE,
-  async (data: { id: string }, { dispatch }) => {
+  async (id: string, { rejectWithValue }) => {
     try {
-      return await getTask(data.id);
+      return await getTask(id);
     } catch (error) {
       toast.error("Something went wrong");
+      return rejectWithValue(error);
     }
   }
 );
@@ -105,11 +109,12 @@ export const boardItemUpdateDataFetch = createAsyncThunk(
 const BOARD_OPEN_FETCH_DATA_THUNK_TYPE = "BOARD_OPEN_FETCH_DATA_THUNK_TYPE";
 export const boardItemOpenDataFetch = createAsyncThunk(
   BOARD_OPEN_FETCH_DATA_THUNK_TYPE,
-  async (id: string, { dispatch }) => {
+  async (id: string, { rejectWithValue }) => {
     try {
       return await getTask(id);
     } catch (error) {
       toast.error("Something went wrong");
+      return rejectWithValue(error);
     }
   }
 );
@@ -150,13 +155,13 @@ export const boardDeleteTaskFetch = createAsyncThunk(
       dispatch(boardFilterParamsResetAction());
       await dispatch(boardListFetch(params));
     } catch (error) {
+      dispatch(boardTaskDeleteErrorAction());
       if (error instanceof AxiosError) {
         if (error.response?.data) {
           return toast.error(error.response?.data.data);
         }
         toast.error(error.message);
       }
-      dispatch(boardTaskDeleteErrorAction());
     }
   }
 );
@@ -166,23 +171,25 @@ const BOARD_DELETE_STATUS_FETCH_THUNK_TYPE =
 
 export const boardDeleteStatusFetch = createAsyncThunk(
   BOARD_DELETE_STATUS_FETCH_THUNK_TYPE,
-  async (data: Status, { dispatch }) => {
+  async (values: CreateThunkType, { dispatch }) => {
     try {
+      const { data, params } = values;
+
       dispatch(boardTaskDeleteInProgressAction());
       await deleteStatus(data._id!);
       dispatch(boardTaskDeleteSuccessAction());
       dispatch(modalOpenToggleAction());
       toast.success("Column was deleted");
       dispatch(boardFilterParamsResetAction());
-      await dispatch(boardStatusListFetch());
+      await dispatch(boardStatusListFetch(params));
     } catch (error) {
+      dispatch(boardTaskDeleteErrorAction());
       if (error instanceof AxiosError) {
         if (error.response?.data) {
           return toast.error(error.response?.data.data);
         }
         toast.error(error.message);
       }
-      dispatch(boardTaskDeleteErrorAction());
     }
   }
 );
@@ -192,25 +199,27 @@ const BOARD_CREATE_STATUS_FETCH_THUNK_TYPE =
 
 export const boardCreateStatusFetch = createAsyncThunk(
   BOARD_CREATE_STATUS_FETCH_THUNK_TYPE,
-  async (data: Partial<Status>, { dispatch }) => {
+  async (values: CreateThunkType, { dispatch }) => {
     try {
+      const { data, params } = values;
+
       dispatch(boardStatusCreateInProgressAction());
       await createStatus(data);
       dispatch(boardStatusCreateSuccessAction());
       dispatch(modalOpenToggleAction());
       toast.success("Column was created");
       dispatch(boardFilterParamsResetAction());
-      await dispatch(boardStatusListFetch());
+      await dispatch(boardStatusListFetch(params));
     } catch (error) {
-      console.log(error);
+      const { params } = values;
+      dispatch(boardStatusCreateErrorAction());
+      await dispatch(boardStatusListFetch(params));
       if (error instanceof AxiosError) {
         if (error.response?.data) {
           return toast.error(error.response?.data.data);
         }
         toast.error(error.message);
       }
-      dispatch(boardStatusCreateErrorAction());
-      await dispatch(boardStatusListFetch());
     }
   }
 );
