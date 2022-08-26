@@ -59,3 +59,7 @@ export type Project = {
   description: string;
   shortName: string;
 };
+
+export enum ItemTypes {
+  CARD = "CARD",
+}

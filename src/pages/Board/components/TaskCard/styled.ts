@@ -10,18 +10,13 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 
-function randomColor() {
-  let hex = Math.floor(Math.random() * 0xffffff);
-  let color = "#" + hex.toString(16);
-
-  return color;
-}
-
-export const StyledCard = styled(Card)`
-  width: 220px;
-  margin-bottom: 10px;
-  border-left: 5px solid;
-`;
+export const StyledCard = styled(Card)((props) => ({
+  width: 220,
+  marginBottom: 10,
+  borderLeft: "5px solid",
+  opacity: props.draggable ? "0.2" : "1",
+  cursor: "move",
+}));
 
 export const StyledCardHeader = styled(CardHeader)`
   padding: 8px;

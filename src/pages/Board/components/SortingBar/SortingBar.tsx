@@ -8,6 +8,7 @@ import {
   Button,
   Stack,
   Autocomplete,
+  Container,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
@@ -17,6 +18,7 @@ import { Params, Status } from "../../../../types";
 
 import { useSelector } from "react-redux";
 import { boardFilterParams, boardUsersSelector } from "../../selectors/board";
+import { priorityList } from "../../constants";
 
 type SortingBarProps = {
   data: Status[];
@@ -31,7 +33,11 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
   const params = useSelector(boardFilterParams);
 
   return (
-    <Stack direction="row" spacing={2} sx={{ p: 2 }}>
+    <Stack
+      direction={{ xs: "column", sm: "column", md: "column", lg: "row" }}
+      spacing={3}
+      sx={{ p: 2 }}
+    >
       <Button
         onClick={onCreateModalOpen}
         variant="contained"
@@ -90,14 +96,15 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          <MenuItem value="low">Low</MenuItem>
-          <MenuItem value="normal">Normal</MenuItem>
-          <MenuItem value="high">High</MenuItem>
-          <MenuItem value="critical">Critical</MenuItem>
+          {priorityList.map((priority) => {
+            return (
+              <MenuItem value={priority.toLowerCase()}>{priority}</MenuItem>
+            );
+          })}
         </Select>
       </FormControl>
       <Autocomplete
-        sx={{ maxWidth: 450, mt: 1, width: 450 }}
+        sx={{ maxWidth: 450, mt: 1, minWidth: 350 }}
         size="small"
         multiple
         loading={loading}
@@ -124,7 +131,7 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
         variant="outlined"
         onClick={onReset}
         startIcon={<FilterAltOffIcon />}
-        sx={{ width: "fit-content", maxHeight: 40 }}
+        sx={{ minWidth: "fit-content", maxHeight: 40 }}
       >
         Clear All
       </Button>

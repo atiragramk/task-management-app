@@ -5,6 +5,8 @@ import { createTheme, ThemeOptions, ThemeProvider } from "@mui/material";
 import { Provider } from "react-redux";
 import store from "./store";
 import "react-toastify/dist/ReactToastify.css";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 const theme = createTheme({
   typography: {
@@ -44,8 +46,10 @@ root.render(
   <>
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <App />
+        <DndProvider backend={HTML5Backend}>
+          <GlobalStyle />
+          <App />
+        </DndProvider>
       </ThemeProvider>
     </Provider>
   </>

@@ -5,13 +5,15 @@ export const GlobalStyle = createGlobalStyle`
   margin: 0;
   font-family: "Oswald",sans-serif;
   background-color:#FAFAFA;
+  overflow-x: hidden;
   color: #424242;
   ::-webkit-scrollbar {
-    width: 9px;
+    width: 4px;
   }
   ::-webkit-scrollbar-thumb {
-    background-color: rgb(149 117 205 / 26%);
+    background-color:#7986cb78;
     border-radius: 5px;
   }
   }
+
 `;

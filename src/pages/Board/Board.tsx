@@ -1,3 +1,8 @@
+import { useDispatch, useSelector } from "react-redux";
+import { useCallback, useEffect } from "react";
+import { TransitionGroup } from "react-transition-group";
+import { Link, useParams } from "react-router-dom";
+
 import {
   Box,
   Button,
@@ -6,25 +11,23 @@ import {
   Collapse,
   Typography,
 } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import { TaskListCard } from "./components/TaskListCard";
 import { SortingBar } from "./components/SortingBar";
-import AddIcon from "@mui/icons-material/Add";
-import { useDispatch, useSelector } from "react-redux";
-import { EffectCallback, useCallback, useEffect } from "react";
 import {
+  boardStatusListFetch,
   boardCreateStatusFetch,
   boardCreateTaskFetch,
   boardDeleteStatusFetch,
   boardDeleteTaskFetch,
   boardListFetch,
   boardProjectDataFetch,
-  boardStatusListFetch,
   boardUpdateTaskFetch,
   boardUserListFetch,
 } from "./thunk/board";
 import { AppDispatch } from "../../store";
 import * as selectors from "./selectors/board";
-import { CreateThunkType, Params, Status, Task } from "../../types";
+import { Params, Status, Task } from "../../types";
 import {
   boardDeleteItemDataSetAction,
   boardDeleteStatusDataSetAction,
@@ -45,13 +48,12 @@ import {
 import { modalOpenToggleAction } from "../../store/modal/reducer/modal";
 import { modalStateSelector } from "../../store/modal/selectors/modal";
 import { UpdateTaskModal } from "./components/UpdateTaskModal";
-import { TransitionGroup } from "react-transition-group";
 
 import { DeleteTaskModal } from "./components/DeleteTaskModal";
 import { DeleteStatusModal } from "./components/DeleteStatusModal";
 import { CreateStatusModal } from "./components/CreateStatusModal";
 import { OpenTaskModal } from "./components/OpenTaskModal";
-import { useParams } from "react-router-dom";
+import { StyledBoardWrapper } from "./styled";
 
 const Board = () => {
   const { loading, error, data } = useSelector(selectors.boardStatusSelector);
@@ -167,13 +169,12 @@ const Board = () => {
           data={data}
           onCreateModalOpen={handleCreateModalOpenToggle}
         />
-        <Box sx={{ ml: 1 }}>
-          <Typography
-            color="info.main"
-            variant="subtitle1"
-          >{`Project / ${projectData?.name}`}</Typography>
+        <Box sx={{ m: 2 }}>
+          <Typography color="info.main" variant="subtitle1">
+            <Link to="/projects">Projects </Link> / {projectData?.name}
+          </Typography>
         </Box>
-        <Box sx={{ display: "flex", height: "78vh", overflowX: "auto" }}>
+        <StyledBoardWrapper>
           {!error && data.length > 0 && (
             <TransitionGroup style={{ display: "flex" }}>
               {data.map((status) => {
@@ -191,9 +192,9 @@ const Board = () => {
               })}
             </TransitionGroup>
           )}
-          <Box sx={{ width: 220, m: 1 }}>
+          <Box sx={{ width: 220, ml: 1 }}>
             <Button
-              sx={{ width: 200 }}
+              sx={{ width: 200, position: "sticky", top: 0 }}
               fullWidth={true}
               onClick={handleCreateStatusModalToogle}
               variant="outlined"
@@ -202,7 +203,7 @@ const Board = () => {
               Create column
             </Button>
           </Box>
-        </Box>
+        </StyledBoardWrapper>
       </Container>
       {open && name === MODAL_CREATE_NAME && (
         <CreateTaskModal

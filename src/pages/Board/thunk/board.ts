@@ -227,3 +227,22 @@ export const boardProjectDataFetch = createAsyncThunk(
     }
   }
 );
+
+const BOARD_UPDATE_TASK_DRAG_THUNK_TYPE = "BOARD_UPDATE_TASK_DRAG_THUNK_TYPE";
+
+export const boardUpdateTaskDrag = createAsyncThunk(
+  BOARD_UPDATE_TASK_DRAG_THUNK_TYPE,
+  async (values: CreateThunkType, { dispatch }) => {
+    try {
+      const { data, params } = values;
+      dispatch(boardTaskUpdateInProgressAction());
+      await updateTask(data, data._id!);
+      dispatch(boardTaskUpdateSuccessAction());
+      toast.success("Task was updated");
+      await dispatch(boardListFetch(params));
+    } catch (error) {
+      toast.error("Something went wrong");
+      dispatch(boardTaskUpdateErrorAction());
+    }
+  }
+);

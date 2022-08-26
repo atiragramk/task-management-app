@@ -1,9 +1,23 @@
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useDrag } from "react-dnd";
+
+import {
+  Typography,
+  Box,
+  IconButton,
+  Avatar,
+  Popover,
+  Button,
+  Stack,
+  Tooltip,
+} from "@mui/material";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
-import { useState } from "react";
-import { Task } from "../../../../types";
+
+import { Task, ItemTypes } from "../../../../types";
 import {
   StyledCard,
   StyledCardHeader,
@@ -16,20 +30,8 @@ import {
   StyledAvatarGroup,
   StyledCardActionArea,
 } from "./styled";
-import {
-  Typography,
-  Box,
-  IconButton,
-  Avatar,
-  AvatarGroup,
-  Popover,
-  Button,
-  Stack,
-  Tooltip,
-  CardActionArea,
-} from "@mui/material";
-import { useSelector } from "react-redux";
 import { boardProjectStateSelector } from "../../selectors/board";
+import { AppDispatch } from "../../../../store";
 
 type TaskCardProps = {
   data: Task;
@@ -42,6 +44,18 @@ export const TaskCard: React.FC<TaskCardProps> = (props) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const { data, onEdit, onDelete, onOpen } = props;
+  const dispatch: AppDispatch = useDispatch();
+
+  const [{ isDragging }, drag] = useDrag({
+    type: ItemTypes.CARD,
+    item: {
+      _id: data._id,
+    },
+
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
 
   const { projectData } = useSelector(boardProjectStateSelector);
 
@@ -56,7 +70,11 @@ export const TaskCard: React.FC<TaskCardProps> = (props) => {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
   return (
-    <StyledCard sx={{ borderColor: `priority.${data.priority}` }}>
+    <StyledCard
+      draggable={isDragging}
+      ref={drag}
+      sx={{ borderColor: `priority.${data.priority}` }}
+    >
       <StyledCardHeader
         title={
           <StyledHeaderWrapper>

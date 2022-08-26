@@ -10,6 +10,7 @@ export const projectsListFetch = createAsyncThunk(
     try {
       return await getAllProjects();
     } catch (error) {
+      toast.error("Something going wrong");
       return rejectWithValue(error);
     }
   }
