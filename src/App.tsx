@@ -7,6 +7,7 @@ import { Layout } from "./components/Layout";
 const Home = lazy(() => import("./pages/Home"));
 const Board = lazy(() => import("./pages/Board"));
 const Projects = lazy(() => import("./pages/Projects"));
+const Auth = lazy(() => import("./pages/Auth"));
 const Page404 = lazy(() => import("./pages/Page404"));
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/projects/:routeId" element={<Board />} />
+            <Route path="/login" element={<Auth />} />
             <Route path="*" element={<Page404 />} />
           </Route>
         </Routes>

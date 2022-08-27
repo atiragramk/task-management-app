@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
-import { createProject, getAllProjects } from "../../../api/tasks";
+import { createProject, getAllProjects } from "../../../api/projects";
 import { modalOpenToggleAction } from "../../../store/modal/reducer/modal";
 import { Project } from "../../../types";
 import {

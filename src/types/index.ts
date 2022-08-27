@@ -41,11 +41,13 @@ export type Params = {
 };
 
 export type User = {
-  _id: string;
+  _id?: string;
   firstName: string;
   lastName: string;
   email: string;
   color: string;
+  password: string;
+  token?: string;
 };
 
 export type CreateThunkType = {

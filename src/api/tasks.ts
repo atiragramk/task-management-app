@@ -1,4 +1,4 @@
-import { Params, Project, SortedTask, Status, Task, User } from "../types";
+import { Params, SortedTask, Task } from "../types";
 import { client } from "./client";
 
 export const getAllTasks = async (params: Params = {}) => {
@@ -36,62 +36,6 @@ export const updateTask = async (data: Partial<Task>, id: string) => {
 export const deleteTask = async (id: string) => {
   try {
     return await client.delete<never, Task>(`/tasks/${id}`);
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-
-export const getAllStatuses = async (params: Params = {}) => {
-  try {
-    return await client.get<never, Status[]>("/statuses", { params });
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-
-export const createStatus = async (data: Partial<Status>) => {
-  try {
-    return await client.post<never, Status>("/statuses", { ...data });
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-
-export const deleteStatus = async (id: string) => {
-  try {
-    return await client.delete<never, Status>(`/statuses/${id}`);
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-
-export const getAllUsers = async () => {
-  try {
-    return await client.get<never, User[]>("/users");
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-
-export const getProject = async (id: string) => {
-  try {
-    return await client.get<never, Project>(`/projects/${id}`);
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-
-export const getAllProjects = async () => {
-  try {
-    return await client.get<never, Project[]>("/projects");
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-
-export const createProject = async (data: Partial<Project>) => {
-  try {
-    return await client.post<never, Project>("/projects", { ...data });
   } catch (error) {
     return Promise.reject(error);
   }

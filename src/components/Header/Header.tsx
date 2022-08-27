@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Stack } from "@mui/system";
 import { Link } from "react-router-dom";
 
+import { Stack } from "@mui/system";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { Typography, IconButton, Box, Popover, Button } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+
 import {
   StyledImage,
   StyledNavLink,
@@ -16,18 +18,33 @@ import {
 import logo from "../../assets/img/logo.png";
 
 export const Header = () => {
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [anchorNavEl, setAnchorNavEl] = useState<HTMLButtonElement | null>(
+    null
+  );
+  const [anchorAvatarEl, setAnchorAvatarEl] = useState<HTMLDivElement | null>(
+    null
+  );
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
+  const handleNavClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorNavEl(event.currentTarget);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleAvatarClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    setAnchorAvatarEl(event.currentTarget);
   };
 
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
+  const handleCloseNav = () => {
+    setAnchorNavEl(null);
+  };
+
+  const handleCloseAvatar = () => {
+    setAnchorAvatarEl(null);
+  };
+
+  const openNav = Boolean(anchorNavEl);
+  const openAvatar = Boolean(anchorAvatarEl);
+
+  const id = openNav || openAvatar ? "simple-popover" : undefined;
 
   return (
     <>
@@ -49,23 +66,27 @@ export const Header = () => {
               <StyledNavLink to="/">HOME</StyledNavLink>
               <Stack direction="row">
                 <StyledNavLink to="/projects">PROJECTS</StyledNavLink>
-                <IconButton onClick={handleClick} sx={{ p: 0 }} color="primary">
+                <IconButton
+                  onClick={handleNavClick}
+                  sx={{ p: 0 }}
+                  color="primary"
+                >
                   <ArrowDropDownIcon />
                 </IconButton>
 
                 <Popover
-                  open={open}
+                  open={openNav}
                   id={id}
-                  anchorEl={anchorEl}
-                  onClose={handleClose}
+                  anchorEl={anchorNavEl}
+                  onClose={handleCloseNav}
                   anchorOrigin={{
-                    vertical: 30,
+                    vertical: 40,
                     horizontal: -10,
                   }}
                 >
                   <Stack>
                     <Button
-                      onClick={handleClose}
+                      onClick={handleCloseNav}
                       component={Link}
                       size="small"
                       color="info"
@@ -79,7 +100,28 @@ export const Header = () => {
             </Stack>
           </Box>
           <IconButton>
-            <StyledAvatar />
+            <StyledAvatar onClick={handleAvatarClick} />
+            <Popover
+              open={openAvatar}
+              id={id}
+              anchorEl={anchorAvatarEl}
+              onClose={handleCloseAvatar}
+              anchorOrigin={{
+                vertical: 40,
+                horizontal: -10,
+              }}
+            >
+              <Stack>
+                <Button
+                  onClick={handleCloseAvatar}
+                  endIcon={<LogoutIcon />}
+                  size="small"
+                  color="info"
+                >
+                  Sign out
+                </Button>
+              </Stack>
+            </Popover>
           </IconButton>
         </StyledToolbar>
       </StyledAppBar>

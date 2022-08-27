@@ -5,17 +5,20 @@ import { AxiosError } from "axios";
 import { modalOpenToggleAction } from "../../../store/modal/reducer/modal";
 import { CreateThunkType, Params } from "../../../types";
 import {
-  createStatus,
   createTask,
-  deleteStatus,
   deleteTask,
-  getAllStatuses,
   getAllTasks,
-  getAllUsers,
-  getProject,
   getTask,
   updateTask,
 } from "../../../api/tasks";
+import { getAllUsers } from "../../../api/auth";
+import { getProject } from "../../../api/projects";
+
+import {
+  createStatus,
+  deleteStatus,
+  getAllStatuses,
+} from "../../../api/statuses";
 
 import {
   boardFilterParamsResetAction,
