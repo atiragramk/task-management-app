@@ -16,6 +16,10 @@ import {
   StyledSpan,
 } from "./styled";
 import logo from "../../assets/img/logo.png";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store";
+import { authRemoveToken } from "../../pages/Auth/actions/auth";
+import { authRemoveTokenAction } from "../../pages/Auth/reducer/auth";
 
 export const Header = () => {
   const [anchorNavEl, setAnchorNavEl] = useState<HTMLButtonElement | null>(
@@ -24,6 +28,7 @@ export const Header = () => {
   const [anchorAvatarEl, setAnchorAvatarEl] = useState<HTMLDivElement | null>(
     null
   );
+  const dispatch: AppDispatch = useDispatch();
 
   const handleNavClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorNavEl(event.currentTarget);
@@ -39,6 +44,10 @@ export const Header = () => {
 
   const handleCloseAvatar = () => {
     setAnchorAvatarEl(null);
+  };
+
+  const handleSignOut = () => {
+    dispatch(authRemoveTokenAction());
   };
 
   const openNav = Boolean(anchorNavEl);
@@ -113,7 +122,10 @@ export const Header = () => {
             >
               <Stack>
                 <Button
-                  onClick={handleCloseAvatar}
+                  onClick={() => {
+                    handleCloseAvatar();
+                    handleSignOut();
+                  }}
                   endIcon={<LogoutIcon />}
                   size="small"
                   color="info"

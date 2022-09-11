@@ -7,7 +7,7 @@ export type AuthState = {
   loading: boolean;
   error: boolean | null;
   token?: string;
-  data: Partial<User> | {};
+  data: Partial<User>;
 };
 
 const initialState: AuthState = {
@@ -31,6 +31,7 @@ const authSlice = createSlice({
       })
       .addCase(authLoginFetch.fulfilled, (state, action) => {
         state.loading = false;
+        state.data = action.payload!
       })
       .addCase(authLoginFetch.rejected, (state) => {
         state.loading = false;

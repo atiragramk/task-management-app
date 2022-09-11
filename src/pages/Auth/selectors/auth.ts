@@ -1,3 +1,3 @@
 import { RootState } from "../../../store";
 
-export const authStateSelector = (state: RootState) => state.auth;
+export const authStateSelector = (state: RootState) => state.auth.data;

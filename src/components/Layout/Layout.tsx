@@ -8,8 +8,8 @@ export const Layout = () => {
     <>
       <Header />
       <Suspense>
-        {localStorage.getItem("token") && <Outlet />}
-        {!localStorage.getItem("token") && <Auth />}
+        <Outlet />
+        {/* {!localStorage.getItem("token") && <Auth />} */}
       </Suspense>
     </>
   );

@@ -19,8 +19,8 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
 }) => {
   const { loading } = useSelector(projectCreateStateSelector);
   const createProjectSchema = yup.object().shape({
-    name: yup.string().required("Required"),
-    description: yup.string().required("Required"),
+    name: yup.string().required("Name is required"),
+    description: yup.string().required("Description is required"),
   });
   const {
     control,
@@ -43,7 +43,7 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
     >
       <form onSubmit={handleSubmit(onSubmit)} id="create_project">
         <FormControl sx={{ width: "100%" }}>
-          <FormLabel>Project Name</FormLabel>
+          <FormLabel required>Project Name</FormLabel>
           <Controller
             name="name"
             control={control}
@@ -59,7 +59,7 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
           />
         </FormControl>
         <FormControl sx={{ width: "100%" }}>
-          <FormLabel>Description</FormLabel>
+          <FormLabel required>Description</FormLabel>
           <Controller
             name="description"
             control={control}
