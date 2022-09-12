@@ -12,8 +12,6 @@ export const authLoginFetch = createAsyncThunk(
     try {
       const user = await login(data);
       localStorage.setItem("token", user.token!);
-      localStorage.setItem("id", user._id!);
-      // window.location.reload();
       return user;
     } catch (error) {
       if (error instanceof AxiosError) {

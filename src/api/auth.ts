@@ -9,9 +9,9 @@ export const getAllUsers = async () => {
   }
 };
 
-export const register = async (data: User) => {
+export const register = async (data: Partial<User>) => {
   try {
-    return await client.post<never, User>("/auth/register", { ...data });
+    return await client.post<never, Partial<User>>("/auth/register", { ...data });
   } catch (error) {
     return Promise.reject(error);
   }

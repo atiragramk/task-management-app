@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { authSchema } from "./validation";
-import { StyledContainer, StyledForm } from "./styled";
+import { StyledContainer, StyledForm, StyledLink } from "./styled";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { User } from "../../types";
@@ -16,9 +16,11 @@ import {
   FormLabel,
   IconButton,
   InputAdornment,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -49,7 +51,7 @@ const Auth = () => {
           </Typography>
         </Typography>
         <FormControl>
-          <FormLabel>Email</FormLabel>
+          <FormLabel required>Email</FormLabel>
           <Controller
             name="email"
             control={control}
@@ -67,7 +69,7 @@ const Auth = () => {
           />
         </FormControl>
         <FormControl>
-          <FormLabel>Password</FormLabel>
+          <FormLabel required>Password</FormLabel>
           <Controller
             name="password"
             control={control}
@@ -94,15 +96,12 @@ const Auth = () => {
             )}
           />
         </FormControl>
-        <Button
-          // to={location.pathname}
-          // component={Link}
-          sx={{ width: 300 }}
-          type="submit"
-          variant="contained"
-        >
+        <Button sx={{ width: 300 }} type="submit" variant="contained">
           Sign in
         </Button>
+        <Typography variant="caption">
+          No account? <StyledLink to="/register">Create one</StyledLink>
+        </Typography>
       </StyledForm>
     </StyledContainer>
   );

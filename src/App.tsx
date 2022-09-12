@@ -10,15 +10,19 @@ import { ToastContainer } from "react-toastify";
 
 import { Layout } from "./components/Layout";
 import { authStateSelector } from "./pages/Auth/selectors/auth";
+import { registerStateSelector } from "./pages/Register/selectors/register";
 
 const Home = lazy(() => import("./pages/Home"));
 const Board = lazy(() => import("./pages/Board"));
 const Projects = lazy(() => import("./pages/Projects"));
 const Auth = lazy(() => import("./pages/Auth"));
+const Register = lazy(() => import("./pages/Register"));
 const Page404 = lazy(() => import("./pages/Page404"));
 
 function App() {
   const { token } = useSelector(authStateSelector);
+
+  const data = useSelector(registerStateSelector);
 
   console.log(token);
 
@@ -52,6 +56,16 @@ function App() {
             <Route
               path="/login"
               element={token ? <Navigate to="/" /> : <Auth />}
+            />
+            <Route
+              path="/register"
+              element={
+                Object.entries(data).length ? (
+                  <Navigate to="/login" />
+                ) : (
+                  <Register />
+                )
+              }
             />
             <Route path="*" element={<Page404 />} />
           </Route>

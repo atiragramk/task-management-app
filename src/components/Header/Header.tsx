@@ -29,6 +29,7 @@ export const Header = () => {
     null
   );
   const dispatch: AppDispatch = useDispatch();
+  const token = localStorage.getItem("token");
 
   const handleNavClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorNavEl(event.currentTarget);
@@ -108,33 +109,35 @@ export const Header = () => {
               </Stack>
             </Stack>
           </Box>
-          <IconButton>
-            <StyledAvatar onClick={handleAvatarClick} />
-            <Popover
-              open={openAvatar}
-              id={id}
-              anchorEl={anchorAvatarEl}
-              onClose={handleCloseAvatar}
-              anchorOrigin={{
-                vertical: 40,
-                horizontal: -10,
-              }}
-            >
-              <Stack>
-                <Button
-                  onClick={() => {
-                    handleCloseAvatar();
-                    handleSignOut();
-                  }}
-                  endIcon={<LogoutIcon />}
-                  size="small"
-                  color="info"
-                >
-                  Sign out
-                </Button>
-              </Stack>
-            </Popover>
-          </IconButton>
+          {token && (
+            <IconButton>
+              <StyledAvatar onClick={handleAvatarClick} />
+              <Popover
+                open={openAvatar}
+                id={id}
+                anchorEl={anchorAvatarEl}
+                onClose={handleCloseAvatar}
+                anchorOrigin={{
+                  vertical: 40,
+                  horizontal: -10,
+                }}
+              >
+                <Stack>
+                  <Button
+                    onClick={() => {
+                      handleCloseAvatar();
+                      handleSignOut();
+                    }}
+                    endIcon={<LogoutIcon />}
+                    size="small"
+                    color="info"
+                  >
+                    Sign out
+                  </Button>
+                </Stack>
+              </Popover>
+            </IconButton>
+          )}
         </StyledToolbar>
       </StyledAppBar>
     </>

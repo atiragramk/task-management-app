@@ -2,7 +2,7 @@ import { Container, styled } from "@mui/material";
 import { Link } from "react-router-dom";
 
 export const StyledContainer = styled(Container)`
-  padding-top: 20px;
+  padding: 20px 0;
 `;
 
 export const StyledForm = styled("form")`
@@ -11,8 +11,7 @@ export const StyledForm = styled("form")`
   align-items: center;
   padding: 20px;
   justify-content: space-between;
-  height: 270px;
-  border-radius: 5px;
+  height: 450px;
 `;
 
 export const StyledLink = styled(Link)`
