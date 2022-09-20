@@ -182,7 +182,7 @@ export const boardDeleteStatusFetch = createAsyncThunk(
       await deleteStatus(data._id!);
       dispatch(boardTaskDeleteSuccessAction());
       dispatch(modalOpenToggleAction());
-      toast.success("Column was deleted");
+      toast.success("Status was deleted");
       dispatch(boardFilterParamsResetAction());
       await dispatch(boardStatusListFetch(params));
     } catch (error) {
@@ -210,7 +210,7 @@ export const boardCreateStatusFetch = createAsyncThunk(
       await createStatus(data);
       dispatch(boardStatusCreateSuccessAction());
       dispatch(modalOpenToggleAction());
-      toast.success("Column was created");
+      toast.success("Status was created");
       dispatch(boardFilterParamsResetAction());
       await dispatch(boardStatusListFetch(params));
     } catch (error) {

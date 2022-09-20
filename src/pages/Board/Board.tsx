@@ -167,7 +167,7 @@ const Board = () => {
             <LinearProgress />
           </Box>
         )}
-        {!error && !loading && (
+        {!error && (
           <Container maxWidth="xl">
             <SortingBar
               onFilter={handleFilter}
@@ -207,7 +207,7 @@ const Board = () => {
                   variant="outlined"
                   startIcon={<AddIcon />}
                 >
-                  Create column
+                  Create status
                 </Button>
               </Box>
             </StyledBoardWrapper>

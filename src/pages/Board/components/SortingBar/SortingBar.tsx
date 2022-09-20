@@ -51,6 +51,7 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
         variant="contained"
         size="small"
         startIcon={<AddIcon />}
+        disabled={!data.length}
       >
         Add issue
       </StyledButton>
@@ -60,6 +61,7 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
         placeholder="Search this board"
         variant="outlined"
         value={params.search}
+        disabled={!data.length}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -74,6 +76,7 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
           labelId="status-select-label"
           id="status-select"
           label="Status"
+          disabled={!data.length}
           value={params.status}
           onChange={(event) => onFilter({ status: event.target.value })}
         >
@@ -96,6 +99,7 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
           id="priority-select"
           value={params.priority}
           label="Priority"
+          disabled={!data.length}
           onChange={(event) => onFilter({ priority: event.target.value })}
         >
           <MenuItem value="">
@@ -116,6 +120,7 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
         multiple
         loading={loading}
         id="users"
+        disabled={!data.length}
         options={userList}
         filterSelectedOptions
         disableCloseOnSelect
@@ -129,6 +134,7 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
       <StyledButton
         size="small"
         variant="outlined"
+        disabled={!data.length}
         onClick={onReset}
         startIcon={<FilterAltOffIcon />}
       >

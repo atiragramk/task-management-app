@@ -38,6 +38,20 @@ export const TaskForm: React.FC<TaskFormProp> = (props) => {
   } = useForm({
     resolver: yupResolver(createTaskSchema),
   });
+
+  const filteredList = () => {
+    if (taskData?.assignee?.length) {
+      const assignee = [...taskData.assignee];
+      return userList.filter((item) => {
+        return assignee.every((filter) => {
+          return filter._id !== item._id;
+        });
+      });
+    }
+    return userList;
+  };
+  const assigneeList = filteredList();
+
   const onSubmit = async (values: Partial<Task>) => {
     try {
       if (!taskData) {
@@ -50,7 +64,7 @@ export const TaskForm: React.FC<TaskFormProp> = (props) => {
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)} id={name}>
-      <FormControl error={Boolean(errors.title)}>
+      <FormControl required error={Boolean(errors.title)}>
         <FormLabel>Task Title</FormLabel>
         <Controller
           name="title"
@@ -139,7 +153,7 @@ export const TaskForm: React.FC<TaskFormProp> = (props) => {
               >
                 {priorityList.map((priority) => {
                   return (
-                    <MenuItem value={priority.toLowerCase()}>
+                    <MenuItem key={priority} value={priority.toLowerCase()}>
                       {priority}
                     </MenuItem>
                   );
@@ -168,7 +182,7 @@ export const TaskForm: React.FC<TaskFormProp> = (props) => {
               multiple
               id="users"
               value={value}
-              options={userList}
+              options={assigneeList}
               disabled={loading}
               filterSelectedOptions
               disableCloseOnSelect

@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { Modal } from "../../../../components/Modal";
-import { Status, Task } from "../../../../types";
+import { Task } from "../../../../types";
 import {
   boardCreateStateSelector,
   boardStatusSelector,

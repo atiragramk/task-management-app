@@ -1,6 +1,7 @@
 import axios from "axios";
 import type { AxiosRequestConfig } from "axios";
 
+
 const { REACT_APP_API } = process.env;
 
 export const client = axios.create({
@@ -9,7 +10,12 @@ export const client = axios.create({
 
 client.interceptors.response.use(
   (response) => response.data.data,
-  (error) => Promise.reject(error)
+  (error) => {
+    if (error.message === 'Request failed with status code 401') {
+      localStorage.clear()
+    }
+    return Promise.reject(error)
+  }
 );
 
 client.interceptors.request.use(

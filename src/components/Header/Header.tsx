@@ -16,10 +16,10 @@ import {
   StyledSpan,
 } from "./styled";
 import logo from "../../assets/img/logo.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store";
-import { authRemoveToken } from "../../pages/Auth/actions/auth";
 import { authRemoveTokenAction } from "../../pages/Auth/reducer/auth";
+import { authStateSelector } from "../../pages/Auth/selectors/auth";
 
 export const Header = () => {
   const [anchorNavEl, setAnchorNavEl] = useState<HTMLButtonElement | null>(
@@ -30,21 +30,23 @@ export const Header = () => {
   );
   const dispatch: AppDispatch = useDispatch();
   const token = localStorage.getItem("token");
+  const { firstName } = useSelector(authStateSelector);
 
-  const handleNavClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorNavEl(event.currentTarget);
+  const handleOpenPopover = (event: React.BaseSyntheticEvent, type: string) => {
+    console.log(event);
+    if (type === "avatar") {
+      setAnchorAvatarEl(event.currentTarget);
+    } else {
+      setAnchorNavEl(event.currentTarget);
+    }
   };
 
-  const handleAvatarClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    setAnchorAvatarEl(event.currentTarget);
-  };
-
-  const handleCloseNav = () => {
-    setAnchorNavEl(null);
-  };
-
-  const handleCloseAvatar = () => {
-    setAnchorAvatarEl(null);
+  const handleClosePopover = (type: string) => {
+    if (type === "avatar") {
+      setAnchorAvatarEl(null);
+    } else {
+      setAnchorNavEl(null);
+    }
   };
 
   const handleSignOut = () => {
@@ -77,7 +79,7 @@ export const Header = () => {
               <Stack direction="row">
                 <StyledNavLink to="/projects">PROJECTS</StyledNavLink>
                 <IconButton
-                  onClick={handleNavClick}
+                  onClick={(e) => handleOpenPopover(e, "navigation")}
                   sx={{ p: 0 }}
                   color="primary"
                 >
@@ -88,7 +90,7 @@ export const Header = () => {
                   open={openNav}
                   id={id}
                   anchorEl={anchorNavEl}
-                  onClose={handleCloseNav}
+                  onClose={() => handleClosePopover("projects")}
                   anchorOrigin={{
                     vertical: 40,
                     horizontal: -10,
@@ -96,7 +98,7 @@ export const Header = () => {
                 >
                   <Stack>
                     <Button
-                      onClick={handleCloseNav}
+                      onClick={() => handleClosePopover("projects")}
                       component={Link}
                       size="small"
                       color="info"
@@ -110,33 +112,41 @@ export const Header = () => {
             </Stack>
           </Box>
           {token && (
-            <IconButton>
-              <StyledAvatar onClick={handleAvatarClick} />
-              <Popover
-                open={openAvatar}
-                id={id}
-                anchorEl={anchorAvatarEl}
-                onClose={handleCloseAvatar}
-                anchorOrigin={{
-                  vertical: 40,
-                  horizontal: -10,
-                }}
-              >
-                <Stack>
-                  <Button
-                    onClick={() => {
-                      handleCloseAvatar();
-                      handleSignOut();
-                    }}
-                    endIcon={<LogoutIcon />}
-                    size="small"
-                    color="info"
-                  >
-                    Sign out
-                  </Button>
-                </Stack>
-              </Popover>
-            </IconButton>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Typography display="inline">
+                Hello,{" "}
+                <Typography color="primary" display="inline" variant="button">
+                  {firstName}
+                </Typography>
+              </Typography>
+              <IconButton>
+                <StyledAvatar onClick={(e) => handleOpenPopover(e, "avatar")} />
+                <Popover
+                  open={openAvatar}
+                  id={id}
+                  anchorEl={anchorAvatarEl}
+                  onClose={() => handleClosePopover("avatar")}
+                  anchorOrigin={{
+                    vertical: 40,
+                    horizontal: -10,
+                  }}
+                >
+                  <Stack>
+                    <Button
+                      onClick={() => {
+                        handleClosePopover("avatar");
+                        handleSignOut();
+                      }}
+                      endIcon={<LogoutIcon />}
+                      size="small"
+                      color="info"
+                    >
+                      Sign out
+                    </Button>
+                  </Stack>
+                </Popover>
+              </IconButton>
+            </Box>
           )}
         </StyledToolbar>
       </StyledAppBar>

@@ -43,12 +43,12 @@ export const CreateStatusModal: React.FC<CreateStatusModalProps> = ({
     <Modal
       loading={loading}
       onClose={onClose}
-      title="Create Column"
+      title="Create Status"
       formName="status"
     >
       <form onSubmit={handleSubmit(onSubmit)} id="status">
-        <FormControl sx={{ width: "100%" }}>
-          <FormLabel>Column Title</FormLabel>
+        <FormControl required sx={{ width: "100%" }}>
+          <FormLabel>Status Title</FormLabel>
           <Controller
             name="key"
             control={control}

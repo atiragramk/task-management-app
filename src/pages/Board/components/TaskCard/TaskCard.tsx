@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 import { useDrag } from "react-dnd";
 
@@ -31,7 +31,6 @@ import {
   StyledCardActionArea,
 } from "./styled";
 import { boardProjectStateSelector } from "../../selectors/board";
-import { AppDispatch } from "../../../../store";
 
 type TaskCardProps = {
   data: Task;
@@ -44,7 +43,6 @@ export const TaskCard: React.FC<TaskCardProps> = (props) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const { data, onEdit, onDelete, onOpen } = props;
-  const dispatch: AppDispatch = useDispatch();
 
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.CARD,
@@ -136,7 +134,7 @@ export const TaskCard: React.FC<TaskCardProps> = (props) => {
           </Box>
         }
       ></StyledCardHeader>
-      <StyledCardActionArea onClick={() => onOpen(data._id)}>
+      <StyledCardActionArea onClick={() => onEdit(data._id)}>
         <StyledCardContent>
           <Typography
             sx={{ fontWeight: 300, fontSize: 14, wordBreak: "break-word" }}

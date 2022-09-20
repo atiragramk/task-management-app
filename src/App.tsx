@@ -24,8 +24,6 @@ function App() {
 
   const data = useSelector(registerStateSelector);
 
-  console.log(token);
-
   useEffect(() => {
     const saveToken = () => {
       if (token) {
@@ -47,15 +45,29 @@ function App() {
             <Route index element={<Home />} />
             <Route
               path="/projects"
-              element={token ? <Projects /> : <Navigate to="/login" />}
+              element={
+                localStorage.getItem("token") ? (
+                  <Projects />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
             />
             <Route
               path="/projects/:routeId"
-              element={token ? <Board /> : <Navigate to="/login" />}
+              element={
+                localStorage.getItem("token") ? (
+                  <Board />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
             />
             <Route
               path="/login"
-              element={token ? <Navigate to="/" /> : <Auth />}
+              element={
+                localStorage.getItem("token") ? <Navigate to="/" /> : <Auth />
+              }
             />
             <Route
               path="/register"
@@ -71,7 +83,12 @@ function App() {
           </Route>
         </Routes>
       </Router>
-      <ToastContainer position="top-right" autoClose={3000} theme="dark" />
+      <ToastContainer
+        hideProgressBar
+        position="top-right"
+        autoClose={3000}
+        theme="dark"
+      />
     </>
   );
 }

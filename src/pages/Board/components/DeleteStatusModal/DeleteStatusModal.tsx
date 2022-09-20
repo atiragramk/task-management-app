@@ -18,7 +18,7 @@ export const DeleteStatusModal: React.FC<DeleteTaskModalProps> = ({
 
   return (
     <Modal
-      title="Delete Column"
+      title="Delete Status"
       onClose={onClose}
       onConfirm={() => onConfirm(statusData!)}
     >
@@ -29,7 +29,7 @@ export const DeleteStatusModal: React.FC<DeleteTaskModalProps> = ({
             {statusData?.displayName}
           </StyledTypography>
         }{" "}
-        column ?
+        status ?
       </StyledTypography>
       <Typography>
         The item will be deleted immediately. You can not undo this action.
