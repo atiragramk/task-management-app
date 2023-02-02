@@ -1,0 +1,36 @@
+{
+  "files": {
+    "main.css": "/task-management-app/static/css/main.3d10672c.css",
+    "main.js": "/task-management-app/static/js/main.77403a77.js",
+    "static/js/776.128c9fc8.chunk.js": "/task-management-app/static/js/776.128c9fc8.chunk.js",
+    "static/js/737.404e1501.chunk.js": "/task-management-app/static/js/737.404e1501.chunk.js",
+    "static/js/273.5bd25856.chunk.js": "/task-management-app/static/js/273.5bd25856.chunk.js",
+    "static/js/945.3e7c4f1c.chunk.js": "/task-management-app/static/js/945.3e7c4f1c.chunk.js",
+    "static/js/144.c0c5ce3b.chunk.js": "/task-management-app/static/js/144.c0c5ce3b.chunk.js",
+    "static/js/862.42dd6c27.chunk.js": "/task-management-app/static/js/862.42dd6c27.chunk.js",
+    "static/js/850.b3539e7c.chunk.js": "/task-management-app/static/js/850.b3539e7c.chunk.js",
+    "static/js/428.f67274e9.chunk.js": "/task-management-app/static/js/428.f67274e9.chunk.js",
+    "static/js/921.df9803e9.chunk.js": "/task-management-app/static/js/921.df9803e9.chunk.js",
+    "static/js/455.fbb9d85e.chunk.js": "/task-management-app/static/js/455.fbb9d85e.chunk.js",
+    "static/media/404.gif": "/task-management-app/static/media/404.7a20d452463fe471672a.gif",
+    "static/media/error.gif": "/task-management-app/static/media/error.d9aa7b1a785ebcbec41f.gif",
+    "static/media/logo.png": "/task-management-app/static/media/logo.5f6953ff780bea04ad9f.png",
+    "index.html": "/task-management-app/index.html",
+    "main.3d10672c.css.map": "/task-management-app/static/css/main.3d10672c.css.map",
+    "main.77403a77.js.map": "/task-management-app/static/js/main.77403a77.js.map",
+    "776.128c9fc8.chunk.js.map": "/task-management-app/static/js/776.128c9fc8.chunk.js.map",
+    "737.404e1501.chunk.js.map": "/task-management-app/static/js/737.404e1501.chunk.js.map",
+    "273.5bd25856.chunk.js.map": "/task-management-app/static/js/273.5bd25856.chunk.js.map",
+    "945.3e7c4f1c.chunk.js.map": "/task-management-app/static/js/945.3e7c4f1c.chunk.js.map",
+    "144.c0c5ce3b.chunk.js.map": "/task-management-app/static/js/144.c0c5ce3b.chunk.js.map",
+    "862.42dd6c27.chunk.js.map": "/task-management-app/static/js/862.42dd6c27.chunk.js.map",
+    "850.b3539e7c.chunk.js.map": "/task-management-app/static/js/850.b3539e7c.chunk.js.map",
+    "428.f67274e9.chunk.js.map": "/task-management-app/static/js/428.f67274e9.chunk.js.map",
+    "921.df9803e9.chunk.js.map": "/task-management-app/static/js/921.df9803e9.chunk.js.map",
+    "455.fbb9d85e.chunk.js.map": "/task-management-app/static/js/455.fbb9d85e.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3d10672c.css",
+    "static/js/main.77403a77.js"
+  ]
+}
