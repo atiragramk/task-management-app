@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Stack } from "@mui/system";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -15,11 +16,12 @@ import {
   StyledAvatar,
   StyledSpan,
 } from "./styled";
+
 import logo from "../../assets/img/logo.png";
-import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store";
 import { authRemoveTokenAction } from "../../pages/Auth/reducer/auth";
 import { authStateSelector } from "../../pages/Auth/selectors/auth";
+import { authUserDataFetch } from "../../pages/Auth/thunk/auth";
 
 export const Header = () => {
   const [anchorNavEl, setAnchorNavEl] = useState<HTMLButtonElement | null>(
@@ -28,12 +30,18 @@ export const Header = () => {
   const [anchorAvatarEl, setAnchorAvatarEl] = useState<HTMLDivElement | null>(
     null
   );
-  const dispatch: AppDispatch = useDispatch();
-  const token = localStorage.getItem("token");
-  const { firstName } = useSelector(authStateSelector);
 
+  const { data, loading } = useSelector(authStateSelector);
+  const dispatch: AppDispatch = useDispatch();
+
+  useEffect(() => {
+    if (data._id) {
+      dispatch(authUserDataFetch(data._id));
+    }
+  }, [data._id, dispatch]);
+
+  const token = localStorage.getItem("token");
   const handleOpenPopover = (event: React.BaseSyntheticEvent, type: string) => {
-    console.log(event);
     if (type === "avatar") {
       setAnchorAvatarEl(event.currentTarget);
     } else {
@@ -111,12 +119,12 @@ export const Header = () => {
               </Stack>
             </Stack>
           </Box>
-          {token && (
+          {token && data._id && !loading && (
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Typography display="inline">
                 Hello,{" "}
                 <Typography color="primary" display="inline" variant="button">
-                  {firstName}
+                  {data.firstName}
                 </Typography>
               </Typography>
               <IconButton>

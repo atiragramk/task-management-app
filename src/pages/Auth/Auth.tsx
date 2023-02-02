@@ -1,4 +1,6 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
+import { useDispatch } from "react-redux";
+
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { authSchema } from "./validation";
@@ -7,20 +9,16 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { User } from "../../types";
 import { AppDispatch } from "../../store";
-import { useDispatch, useSelector } from "react-redux";
 import { authLoginFetch } from "./thunk/auth";
-import { authStateSelector } from "./selectors/auth";
 import {
   Button,
   FormControl,
   FormLabel,
   IconButton,
   InputAdornment,
-  Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
 
 const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);

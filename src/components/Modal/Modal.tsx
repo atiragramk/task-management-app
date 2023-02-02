@@ -1,19 +1,11 @@
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  Typography,
-} from "@mui/material";
-import { LoadingButton } from "@mui/lab";
-
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 import { ReactNode, MouseEventHandler } from "react";
-
-import Slide from "@mui/material/Slide";
-
-import { TransitionProps } from "@mui/material/transitions";
 import React from "react";
+
+import { Dialog, DialogActions } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import CloseIcon from "@mui/icons-material/Close";
+import Slide from "@mui/material/Slide";
+import { TransitionProps } from "@mui/material/transitions";
 import {
   StyledDialogContent,
   StyledIconButton,
@@ -47,7 +39,6 @@ export const Modal: React.FC<ModalProps> = (props) => {
   return (
     <Dialog
       keepMounted
-      // onClose={() => onClose()}
       TransitionComponent={Transition}
       maxWidth="md"
       open={true}

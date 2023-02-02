@@ -9,9 +9,19 @@ export const getAllUsers = async () => {
   }
 };
 
+export const getUser = async (id: string) => {
+  try {
+    return await client.get<never, User>(`/auth/${id}`);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 export const register = async (data: Partial<User>) => {
   try {
-    return await client.post<never, Partial<User>>("/auth/register", { ...data });
+    return await client.post<never, Partial<User>>("/auth/register", {
+      ...data,
+    });
   } catch (error) {
     return Promise.reject(error);
   }

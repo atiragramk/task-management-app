@@ -18,6 +18,7 @@ import { AppDispatch } from "../../store";
 import { registerSchema } from "./validation";
 import { registerUserFetch } from "./thunk/register";
 import { resetRegisteredDataAction } from "./reducer/register";
+import { StyledLink } from "../Auth/styled";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -187,6 +188,9 @@ const Register = () => {
         <Button sx={{ width: 300, mt: 2 }} type="submit" variant="contained">
           Sign up
         </Button>
+        <Typography variant="caption">
+          Already have an account? <StyledLink to="/login">Sign in</StyledLink>
+        </Typography>
       </StyledForm>
     </StyledContainer>
   );

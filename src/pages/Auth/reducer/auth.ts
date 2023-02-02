@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { authLoginFetch } from "../thunk/auth";
+
+import { authLoginFetch, authUserDataFetch } from "../thunk/auth";
 import { authRemoveToken } from "../actions/auth";
 import { User } from "../../../types";
 
@@ -31,9 +32,21 @@ const authSlice = createSlice({
       })
       .addCase(authLoginFetch.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload!
+        state.data = action.payload!;
       })
       .addCase(authLoginFetch.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      })
+      .addCase(authUserDataFetch.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(authUserDataFetch.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload!;
+      })
+      .addCase(authUserDataFetch.rejected, (state) => {
         state.loading = false;
         state.error = true;
       });
