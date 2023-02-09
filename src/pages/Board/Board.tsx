@@ -71,6 +71,7 @@ const Board = () => {
     dispatch(boardFilterParamsSetAction({ projectId: routeId }));
     dispatch(boardUserListFetch());
     return () => dispatch(boardFilterParamsSetAction({ projectId: "" }));
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -78,7 +79,7 @@ const Board = () => {
       dispatch(boardStatusListFetch(params));
       dispatch(boardListFetch(params));
     }
-  }, [params]);
+  }, [params, dispatch]);
 
   const handleFilter = (param: Partial<Params>) => {
     dispatch(boardFilterParamsSetAction(param));
@@ -115,6 +116,7 @@ const Board = () => {
   const handleDeleteModalOpen = useCallback((data: Task) => {
     dispatch(boardDeleteItemDataSetAction(data));
     dispatch(modalOpenToggleAction({ name: MODAL_DELETE_NAME }));
+    // eslint-disable-next-line
   }, []);
 
   const handleDeleteModalClose = useCallback(() => {
@@ -129,6 +131,7 @@ const Board = () => {
   const handleDeleteStatusModalOpen = useCallback((data: Status) => {
     dispatch(boardDeleteStatusDataSetAction(data));
     dispatch(modalOpenToggleAction({ name: MODAL_STATUS_DELETE_NAME }));
+    // eslint-disable-next-line
   }, []);
 
   const handleDeleteStatusModalClose = useCallback(() => {
@@ -142,6 +145,7 @@ const Board = () => {
 
   const handleCreateStatusModalToogle = useCallback(() => {
     dispatch(modalOpenToggleAction({ name: MODAL_STATUS_CREATE_NAME }));
+    // eslint-disable-next-line
   }, []);
 
   const handleCreateStatus = (values: Partial<Status>) => {
@@ -153,16 +157,18 @@ const Board = () => {
   const handleOpenTaskModalOpen = useCallback((id: string) => {
     dispatch(boardItemIdSetAction(id));
     dispatch(modalOpenToggleAction({ name: MODAL_OPEN_TASK_NAME }));
+    // eslint-disable-next-line
   }, []);
 
   const handleOpenTaskModalClose = useCallback(() => {
     dispatch(modalOpenToggleAction({ name: MODAL_OPEN_TASK_NAME }));
+    // eslint-disable-next-line
   }, []);
 
   return (
     <ErrorBoundary>
       <>
-        {loading && !error && data.length === 0 && (
+        {loading && !error && (
           <Box sx={{ width: "100%" }}>
             <LinearProgress />
           </Box>
@@ -182,7 +188,7 @@ const Board = () => {
               </Typography>
             </Box>
             <StyledBoardWrapper>
-              {!error && data.length > 0 && (
+              {!error && !loading && data.length > 0 && (
                 <TransitionGroup style={{ display: "flex" }}>
                   {data.map((status) => {
                     return (

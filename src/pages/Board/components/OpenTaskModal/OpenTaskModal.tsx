@@ -15,9 +15,7 @@ type OpenTaskModalProps = {
   onClose: () => void;
 };
 export const OpenTaskModal: React.FC<OpenTaskModalProps> = ({ onClose }) => {
-  const { loading, error, taskData, fetchData } = useSelector(
-    boardTaskItemSelector
-  );
+  const { taskData, fetchData } = useSelector(boardTaskItemSelector);
 
   const { projectData } = useSelector(boardProjectStateSelector);
 
@@ -25,7 +23,7 @@ export const OpenTaskModal: React.FC<OpenTaskModalProps> = ({ onClose }) => {
 
   useEffect(() => {
     dispatch(boardItemOpenDataFetch(fetchData));
-  }, []);
+  }, [dispatch, fetchData]);
   return (
     <Modal
       info={true}

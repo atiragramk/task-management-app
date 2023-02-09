@@ -1,14 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { ItemTypes, Status, Task } from "../../../../types";
 import { TaskCard } from "../TaskCard";
-import {
-  StyledCard,
-  StyledCardContent,
-  StyledHeader,
-  StyledIconButton,
-} from "./styled";
+import { StyledCard, StyledHeader, StyledIconButton } from "./styled";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { Box, LinearProgress, Collapse } from "@mui/material";
+import { Box, Collapse, CardContent } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { boardUpdateTaskDrag } from "../../thunk/board";
 import {
@@ -58,42 +53,49 @@ export const TaskListCard: React.FC<TaskListCardProps> = (props) => {
   };
 
   return (
-    <Box>
-      <StyledHeader
-        onMouseOver={() => setShow(true)}
-        onMouseOut={() => setShow(false)}
-        onClick={() => setShow(false)}
-      >
-        {status.displayName} ({taskCounter()})
-        {show && (
-          <StyledIconButton onClick={() => onStatusDelete(status)} size="small">
-            <DeleteForeverIcon />
-          </StyledIconButton>
-        )}
-      </StyledHeader>
-      <StyledCard draggable={isOver} ref={drop}>
-        <StyledCardContent>
-          <TransitionGroup>
-            {taskList.map((task) => {
-              if (task._id === status.key) {
-                return task.records.map((record) => {
-                  return (
-                    <Collapse>
-                      <TaskCard
-                        key={record._id}
-                        data={record}
-                        onEdit={onEdit}
-                        onDelete={onDelete}
-                        onOpen={onOpen}
-                      />
-                    </Collapse>
-                  );
-                });
-              }
-            })}
-          </TransitionGroup>
-        </StyledCardContent>
-      </StyledCard>
-    </Box>
+    <>
+      {!loading && (
+        <Box>
+          <StyledHeader
+            onMouseOver={() => setShow(true)}
+            onMouseOut={() => setShow(false)}
+            onClick={() => setShow(false)}
+          >
+            {status.displayName} ({taskCounter()})
+            {show && (
+              <StyledIconButton
+                onClick={() => onStatusDelete(status)}
+                size="small"
+              >
+                <DeleteForeverIcon />
+              </StyledIconButton>
+            )}
+          </StyledHeader>
+          <StyledCard draggable={isOver} ref={drop}>
+            <CardContent>
+              <TransitionGroup>
+                {taskList.map((task) => {
+                  if (task._id === status.key) {
+                    return task.records.map((record) => {
+                      return (
+                        <Collapse>
+                          <TaskCard
+                            key={record._id}
+                            data={record}
+                            onEdit={onEdit}
+                            onDelete={onDelete}
+                            onOpen={onOpen}
+                          />
+                        </Collapse>
+                      );
+                    });
+                  }
+                })}
+              </TransitionGroup>
+            </CardContent>
+          </StyledCard>
+        </Box>
+      )}
+    </>
   );
 };

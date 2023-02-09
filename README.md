@@ -1,46 +1,27 @@
-# Getting Started with Create React App
+# Task Management App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Demo link:
 
-## Available Scripts
+Access to the app at [Task Management App](https://atiragramk.github.io/task-management-app/)
 
-In the project directory, you can run:
+## About The App
 
-### `npm start`
+Task Management App represents the kanban board for managing working tasks by your team within an certain project.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+For getting access to the projects of our team you should register and login to the workspace or use test credentials:
+`login: test@test.com`
+`password: qwerty123`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Technologies
 
-### `npm test`
+App was created with [Create React App](https://github.com/facebook/create-react-app).
+As compoment library was used [MaterialUI](https://mui.com/material-ui/getting-started/overview/).
+Server side of application was developed by using Express framework and MongoDB database complied in Docker Container. More information [here](https://github.com/atiragramk/task-management-app-backend)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## To run this project on your local machine
 
-### `npm run build`
+- download this repository
+- run `npm install` for installing all needed dependencies
+- run `npm start`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+For app correct working you have to set configurations to your environment variables

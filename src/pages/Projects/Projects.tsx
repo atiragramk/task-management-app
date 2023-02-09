@@ -30,7 +30,7 @@ const Projects = () => {
 
   useEffect(() => {
     dispatch(projectsListFetch());
-  }, []);
+  }, [dispatch]);
 
   const columns: GridColDef[] = [
     {
@@ -56,6 +56,7 @@ const Projects = () => {
 
   return (
     <ErrorBoundary>
+      {loading && <LinearProgress />}
       {!error && !loading && (
         <Container maxWidth="xl" sx={{ mt: 2 }}>
           <Box

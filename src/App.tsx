@@ -39,7 +39,7 @@ function App() {
   }, [token]);
   return (
     <>
-      <Router>
+      <Router basename="/task-management-app">
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />

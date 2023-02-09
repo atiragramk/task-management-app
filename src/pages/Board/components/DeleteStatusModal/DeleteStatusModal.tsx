@@ -14,7 +14,7 @@ export const DeleteStatusModal: React.FC<DeleteTaskModalProps> = ({
   onClose,
   onConfirm,
 }) => {
-  const { loading, statusData } = useSelector(boardDeleteStateSelector);
+  const { statusData } = useSelector(boardDeleteStateSelector);
 
   return (
     <Modal

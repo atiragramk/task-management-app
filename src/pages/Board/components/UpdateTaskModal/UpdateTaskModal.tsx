@@ -28,7 +28,7 @@ export const UpdateTaskModal: React.FC<UpdateTaskModalProps> = ({
 
   useEffect(() => {
     dispatch(boardItemUpdateDataFetch(fetchData));
-  }, []);
+  }, [dispatch, fetchData]);
 
   return (
     <Modal

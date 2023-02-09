@@ -30,7 +30,7 @@ const Register = () => {
     return () => {
       dispatch(resetRegisteredDataAction());
     };
-  }, []);
+  }, [dispatch]);
 
   const {
     control,

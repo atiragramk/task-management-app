@@ -1,5 +1,4 @@
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
-import { useEffect } from "react";
+import { Button, Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { StyledContainer, StyledTypography } from "./styled";
 
