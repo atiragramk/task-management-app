@@ -1,9 +1,9 @@
 {
   "files": {
     "main.css": "/task-management-app/static/css/main.3d10672c.css",
-    "main.js": "/task-management-app/static/js/main.86b9cf41.js",
+    "main.js": "/task-management-app/static/js/main.b5abb788.js",
     "static/js/776.128c9fc8.chunk.js": "/task-management-app/static/js/776.128c9fc8.chunk.js",
-    "static/js/737.00709d3c.chunk.js": "/task-management-app/static/js/737.00709d3c.chunk.js",
+    "static/js/737.55e2361b.chunk.js": "/task-management-app/static/js/737.55e2361b.chunk.js",
     "static/js/273.64ec98cc.chunk.js": "/task-management-app/static/js/273.64ec98cc.chunk.js",
     "static/js/945.3e7c4f1c.chunk.js": "/task-management-app/static/js/945.3e7c4f1c.chunk.js",
     "static/js/144.7af569e8.chunk.js": "/task-management-app/static/js/144.7af569e8.chunk.js",
@@ -17,9 +17,9 @@
     "static/media/logo.png": "/task-management-app/static/media/logo.5f6953ff780bea04ad9f.png",
     "index.html": "/task-management-app/index.html",
     "main.3d10672c.css.map": "/task-management-app/static/css/main.3d10672c.css.map",
-    "main.86b9cf41.js.map": "/task-management-app/static/js/main.86b9cf41.js.map",
+    "main.b5abb788.js.map": "/task-management-app/static/js/main.b5abb788.js.map",
     "776.128c9fc8.chunk.js.map": "/task-management-app/static/js/776.128c9fc8.chunk.js.map",
-    "737.00709d3c.chunk.js.map": "/task-management-app/static/js/737.00709d3c.chunk.js.map",
+    "737.55e2361b.chunk.js.map": "/task-management-app/static/js/737.55e2361b.chunk.js.map",
     "273.64ec98cc.chunk.js.map": "/task-management-app/static/js/273.64ec98cc.chunk.js.map",
     "945.3e7c4f1c.chunk.js.map": "/task-management-app/static/js/945.3e7c4f1c.chunk.js.map",
     "144.7af569e8.chunk.js.map": "/task-management-app/static/js/144.7af569e8.chunk.js.map",
@@ -31,6 +31,6 @@
   },
   "entrypoints": [
     "static/css/main.3d10672c.css",
-    "static/js/main.86b9cf41.js"
+    "static/js/main.b5abb788.js"
   ]
 }
