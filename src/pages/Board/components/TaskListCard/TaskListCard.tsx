@@ -9,7 +9,7 @@ import { boardUpdateTaskDrag } from "../../thunk/board";
 import {
   boardDataSelector,
   boardFilterParams,
-  boardLoadingSelector,
+  boardProjectStateSelector,
 } from "../../selectors/board";
 import { TransitionGroup } from "react-transition-group";
 import { useDrop } from "react-dnd";
@@ -27,7 +27,7 @@ export const TaskListCard: React.FC<TaskListCardProps> = (props) => {
   const { status, onEdit, onDelete, onStatusDelete, onOpen } = props;
 
   const taskList = useSelector(boardDataSelector);
-  const loading = useSelector(boardLoadingSelector);
+  const { loading } = useSelector(boardProjectStateSelector);
   const params = useSelector(boardFilterParams);
 
   const [show, setShow] = useState(false);

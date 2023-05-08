@@ -10,6 +10,8 @@ import {
   Container,
   Collapse,
   Typography,
+  Backdrop,
+  CircularProgress,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { TaskListCard } from "./components/TaskListCard";
@@ -58,8 +60,9 @@ import { ErrorBoundary } from "../../components/ErrorBoundary";
 import { ErrorMessage } from "../../components/ErrorMessage";
 
 const Board = () => {
-  const { loading, error, data } = useSelector(selectors.boardStatusSelector);
+  const { error, data } = useSelector(selectors.boardStatusSelector);
   const params = useSelector(selectors.boardFilterParams);
+  const loading = useSelector(selectors.boardLoadingSelector);
   const { open, name } = useSelector(modalStateSelector);
   const { routeId } = useParams();
   const { projectData } = useSelector(selectors.boardProjectStateSelector);
@@ -168,6 +171,13 @@ const Board = () => {
   return (
     <ErrorBoundary>
       <>
+        {/* <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loading && data.length >0}
+          // onClick={handleClose}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop> */}
         {loading && !error && (
           <Box sx={{ width: "100%" }}>
             <LinearProgress />
@@ -188,7 +198,7 @@ const Board = () => {
               </Typography>
             </Box>
             <StyledBoardWrapper>
-              {!error && !loading && data.length > 0 && (
+              {!error && data.length > 0 && (
                 <TransitionGroup style={{ display: "flex" }}>
                   {data.map((status) => {
                     return (
