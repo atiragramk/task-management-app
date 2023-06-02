@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/task-management-app/static/css/main.3d10672c.css",
-    "main.js": "/task-management-app/static/js/main.b5abb788.js",
+    "main.js": "/task-management-app/static/js/main.3c05bd14.js",
     "static/js/776.128c9fc8.chunk.js": "/task-management-app/static/js/776.128c9fc8.chunk.js",
-    "static/js/737.55e2361b.chunk.js": "/task-management-app/static/js/737.55e2361b.chunk.js",
-    "static/js/273.64ec98cc.chunk.js": "/task-management-app/static/js/273.64ec98cc.chunk.js",
-    "static/js/945.3e7c4f1c.chunk.js": "/task-management-app/static/js/945.3e7c4f1c.chunk.js",
-    "static/js/144.7af569e8.chunk.js": "/task-management-app/static/js/144.7af569e8.chunk.js",
+    "static/js/737.5da3e78d.chunk.js": "/task-management-app/static/js/737.5da3e78d.chunk.js",
+    "static/js/273.6cff2606.chunk.js": "/task-management-app/static/js/273.6cff2606.chunk.js",
+    "static/js/945.d5b3452d.chunk.js": "/task-management-app/static/js/945.d5b3452d.chunk.js",
+    "static/js/144.3166549f.chunk.js": "/task-management-app/static/js/144.3166549f.chunk.js",
     "static/js/862.42dd6c27.chunk.js": "/task-management-app/static/js/862.42dd6c27.chunk.js",
-    "static/js/850.b3539e7c.chunk.js": "/task-management-app/static/js/850.b3539e7c.chunk.js",
+    "static/js/367.b9990fed.chunk.js": "/task-management-app/static/js/367.b9990fed.chunk.js",
     "static/js/428.f67274e9.chunk.js": "/task-management-app/static/js/428.f67274e9.chunk.js",
     "static/js/921.df9803e9.chunk.js": "/task-management-app/static/js/921.df9803e9.chunk.js",
     "static/js/455.fbb9d85e.chunk.js": "/task-management-app/static/js/455.fbb9d85e.chunk.js",
@@ -17,20 +17,20 @@
     "static/media/logo.png": "/task-management-app/static/media/logo.5f6953ff780bea04ad9f.png",
     "index.html": "/task-management-app/index.html",
     "main.3d10672c.css.map": "/task-management-app/static/css/main.3d10672c.css.map",
-    "main.b5abb788.js.map": "/task-management-app/static/js/main.b5abb788.js.map",
+    "main.3c05bd14.js.map": "/task-management-app/static/js/main.3c05bd14.js.map",
     "776.128c9fc8.chunk.js.map": "/task-management-app/static/js/776.128c9fc8.chunk.js.map",
-    "737.55e2361b.chunk.js.map": "/task-management-app/static/js/737.55e2361b.chunk.js.map",
-    "273.64ec98cc.chunk.js.map": "/task-management-app/static/js/273.64ec98cc.chunk.js.map",
-    "945.3e7c4f1c.chunk.js.map": "/task-management-app/static/js/945.3e7c4f1c.chunk.js.map",
-    "144.7af569e8.chunk.js.map": "/task-management-app/static/js/144.7af569e8.chunk.js.map",
+    "737.5da3e78d.chunk.js.map": "/task-management-app/static/js/737.5da3e78d.chunk.js.map",
+    "273.6cff2606.chunk.js.map": "/task-management-app/static/js/273.6cff2606.chunk.js.map",
+    "945.d5b3452d.chunk.js.map": "/task-management-app/static/js/945.d5b3452d.chunk.js.map",
+    "144.3166549f.chunk.js.map": "/task-management-app/static/js/144.3166549f.chunk.js.map",
     "862.42dd6c27.chunk.js.map": "/task-management-app/static/js/862.42dd6c27.chunk.js.map",
-    "850.b3539e7c.chunk.js.map": "/task-management-app/static/js/850.b3539e7c.chunk.js.map",
+    "367.b9990fed.chunk.js.map": "/task-management-app/static/js/367.b9990fed.chunk.js.map",
     "428.f67274e9.chunk.js.map": "/task-management-app/static/js/428.f67274e9.chunk.js.map",
     "921.df9803e9.chunk.js.map": "/task-management-app/static/js/921.df9803e9.chunk.js.map",
     "455.fbb9d85e.chunk.js.map": "/task-management-app/static/js/455.fbb9d85e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.3d10672c.css",
-    "static/js/main.b5abb788.js"
+    "static/js/main.3c05bd14.js"
   ]
 }
