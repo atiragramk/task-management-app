@@ -32,9 +32,9 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
   const params = useSelector(boardFilterParams);
 
   const handleAssigneeChange = (data: User[]) => {
-    const assignee: string[] = [];
+    const assignee: User[] = [];
     data.forEach((user) => {
-      assignee.push(user.email);
+      assignee.push(user);
     });
     onFilter({ assignee });
     onFilter({ userData: data });

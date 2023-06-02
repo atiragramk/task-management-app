@@ -6,6 +6,7 @@ import {
   projectCreateSuccess,
   projectCreateError,
 } from "../actions/projects";
+import { DocumentData } from "firebase/firestore";
 
 export type ProjectsState = {
   error: boolean | null;

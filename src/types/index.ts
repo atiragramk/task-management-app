@@ -16,8 +16,6 @@ export type Status = {
   _id: string;
   key: string;
   displayName: string;
-  createdAt: string;
-  updatedAt: string;
 };
 
 export type SortedTask = {
@@ -35,7 +33,7 @@ export type Params = {
   status?: string;
   priority?: string;
   search?: string;
-  assignee?: string[];
+  assignee?: User[];
   userData?: User[];
   projectId?: string;
 };
@@ -51,7 +49,7 @@ export type User = {
 };
 
 export type CreateThunkType = {
-  data: Partial<Task | Status>;
+  data: Partial<Task>;
   params: Partial<Params>;
 };
 

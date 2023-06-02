@@ -46,8 +46,14 @@ export const TaskListCard: React.FC<TaskListCardProps> = (props) => {
   });
 
   const taskCounter = () => {
-    if (taskList.some((task) => task._id === status.key)) {
-      return taskList.filter((task) => task._id === status.key)[0].count;
+    if (
+      taskList.some(
+        (task) => task.statusId.toLowerCase() === status.key.toLowerCase()
+      )
+    ) {
+      return taskList.filter(
+        (task) => task.statusId.toLowerCase() === status.key.toLowerCase()
+      ).length;
     }
     return 0;
   };
@@ -75,20 +81,21 @@ export const TaskListCard: React.FC<TaskListCardProps> = (props) => {
             <CardContent>
               <TransitionGroup>
                 {taskList.map((task) => {
-                  if (task._id === status.key) {
-                    return task.records.map((record) => {
-                      return (
-                        <Collapse>
-                          <TaskCard
-                            key={record._id}
-                            data={record}
-                            onEdit={onEdit}
-                            onDelete={onDelete}
-                            onOpen={onOpen}
-                          />
-                        </Collapse>
-                      );
-                    });
+                  if (
+                    task.statusId.toLowerCase() ===
+                    status.displayName.toLowerCase()
+                  ) {
+                    return (
+                      <Collapse key={task._id}>
+                        <TaskCard
+                          key={task._id}
+                          data={task}
+                          onEdit={onEdit}
+                          onDelete={onDelete}
+                          onOpen={onOpen}
+                        />
+                      </Collapse>
+                    );
                   }
                 })}
               </TransitionGroup>

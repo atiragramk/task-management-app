@@ -3,22 +3,14 @@ import { toast } from "react-toastify";
 
 import { AxiosError } from "axios";
 import { modalOpenToggleAction } from "../../../store/modal/reducer/modal";
-import { CreateThunkType, Params } from "../../../types";
 import {
-  createTask,
-  deleteTask,
-  getAllTasks,
-  getTask,
-  updateTask,
-} from "../../../api/tasks";
-import { getAllUsers } from "../../../api/auth";
-import { getProject } from "../../../api/projects";
-
-import {
-  createStatus,
-  deleteStatus,
-  getAllStatuses,
-} from "../../../api/statuses";
+  CreateThunkType,
+  Params,
+  Project,
+  Status,
+  Task,
+  User,
+} from "../../../types";
 
 import {
   boardFilterParamsResetAction,
@@ -35,6 +27,19 @@ import {
   boardTaskUpdateInProgressAction,
   boardTaskUpdateSuccessAction,
 } from "../reducer/board";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { db } from "../../../firebase";
+import { v4 as uuidv4 } from "uuid";
 
 const BOARD_FETCH_THUNK_TYPE = "BOARD_FETCH_THUNK_TYPE";
 
@@ -42,9 +47,26 @@ export const boardListFetch = createAsyncThunk(
   BOARD_FETCH_THUNK_TYPE,
   async (params: Partial<Params>, { rejectWithValue }) => {
     try {
-      return await getAllTasks(params);
+      const constraints = [
+        where("projectId", "==", params.projectId),
+        where("state", "==", "ACTIVE"),
+      ];
+      if (params.status)
+        constraints.push(where("statusId", "==", params.status));
+      if (params.priority)
+        constraints.push(where("priority", "==", params.priority));
+
+      if (params.search) constraints.push(where("title", "==", params.search));
+      if (params.assignee?.length)
+        constraints.push(
+          where("assignee", "array-contains-any", params.assignee)
+        );
+
+      const q = query(collection(db, "tasks"), ...constraints);
+      return (await getDocs(q)).docs.map((doc) => doc.data()) as Task[];
     } catch (error) {
       toast.error("Something went wrong");
+
       return rejectWithValue(error);
     }
   }
@@ -55,7 +77,12 @@ export const boardStatusListFetch = createAsyncThunk(
   STATUS_LIST_FETCH_THUNK_TYPE,
   async (params: Partial<Params>, { rejectWithValue }) => {
     try {
-      return await getAllStatuses(params);
+      const q = query(
+        collection(db, "statuses"),
+        where("projectId", "==", params.projectId)
+      );
+      const querySnapshot = await getDocs(q);
+      return querySnapshot.docs.map((doc) => doc.data()) as Status[];
     } catch (error) {
       toast.error("Something went wrong");
       return rejectWithValue(error);
@@ -68,7 +95,11 @@ export const boardUserListFetch = createAsyncThunk(
   BOARD_USER_FETCH_THUNK_TYPE,
   async (_, { rejectWithValue }) => {
     try {
-      return await getAllUsers();
+      const projectRef = collection(db, "users");
+      const querySnapshot = await getDocs(projectRef);
+      return querySnapshot.docs.map((doc) => {
+        return doc.data();
+      }) as User[];
     } catch (error) {
       toast.error("Something went wrong");
       return rejectWithValue(error);
@@ -84,7 +115,24 @@ export const boardCreateTaskFetch = createAsyncThunk(
     try {
       const { data, params } = values;
       dispatch(boardTaskCreateInProgressAction());
-      await createTask(data);
+      const id = uuidv4();
+      const q = query(
+        collection(db, "tasks"),
+        where("projectId", "==", params.projectId)
+      );
+      const querySnapshot = await getDocs(q);
+      const key = querySnapshot.docs.length + 1;
+      await setDoc(doc(db, "tasks", id), {
+        _id: id,
+        title: data.title,
+        description: data.description,
+        projectId: data.projectId,
+        key,
+        statusId: data.statusId,
+        priority: data.priority,
+        assignee: data.assignee || [],
+        state: "ACTIVE",
+      });
       dispatch(boardTaskCreateSuccessAction());
       dispatch(modalOpenToggleAction());
       toast.success("Task was created");
@@ -101,7 +149,11 @@ export const boardItemUpdateDataFetch = createAsyncThunk(
   BOARD_UPDATE_FETCH_DATA_THUNK_TYPE,
   async (id: string, { rejectWithValue }) => {
     try {
-      return await getTask(id);
+      const taskRef = doc(db, "tasks", id);
+      const docSnap = await getDoc(taskRef);
+      if (docSnap.exists()) {
+        return docSnap.data() as Task;
+      }
     } catch (error) {
       toast.error("Something went wrong");
       return rejectWithValue(error);
@@ -114,7 +166,11 @@ export const boardItemOpenDataFetch = createAsyncThunk(
   BOARD_OPEN_FETCH_DATA_THUNK_TYPE,
   async (id: string, { rejectWithValue }) => {
     try {
-      return await getTask(id);
+      const taskRef = doc(db, "tasks", id);
+      const docSnap = await getDoc(taskRef);
+      if (docSnap.exists()) {
+        return docSnap.data() as Task;
+      }
     } catch (error) {
       toast.error("Something went wrong");
       return rejectWithValue(error);
@@ -130,7 +186,10 @@ export const boardUpdateTaskFetch = createAsyncThunk(
     try {
       const { data, params } = values;
       dispatch(boardTaskUpdateInProgressAction());
-      await updateTask(data, data._id!);
+      const taskRef = doc(db, "tasks", data._id!);
+      await updateDoc(taskRef, {
+        ...data,
+      });
       dispatch(boardTaskUpdateSuccessAction());
       dispatch(modalOpenToggleAction());
       toast.success("Task was updated");
@@ -151,7 +210,11 @@ export const boardDeleteTaskFetch = createAsyncThunk(
     try {
       const { data, params } = values;
       dispatch(boardTaskDeleteInProgressAction());
-      await deleteTask(data._id!);
+      const taskRef = doc(db, "tasks", data._id!);
+      await updateDoc(taskRef, {
+        state: "DELETED",
+      });
+
       dispatch(boardTaskDeleteSuccessAction());
       dispatch(modalOpenToggleAction());
       toast.success("Task was deleted");
@@ -179,7 +242,7 @@ export const boardDeleteStatusFetch = createAsyncThunk(
       const { data, params } = values;
 
       dispatch(boardTaskDeleteInProgressAction());
-      await deleteStatus(data._id!);
+      await deleteDoc(doc(db, "statuses", data._id!));
       dispatch(boardTaskDeleteSuccessAction());
       dispatch(modalOpenToggleAction());
       toast.success("Status was deleted");
@@ -207,7 +270,15 @@ export const boardCreateStatusFetch = createAsyncThunk(
       const { data, params } = values;
 
       dispatch(boardStatusCreateInProgressAction());
-      await createStatus(data);
+
+      const id = uuidv4();
+      await setDoc(doc(db, "statuses", id), {
+        _id: id,
+        displayName:
+          data.key?.trim().charAt(0).toUpperCase() + data.key!.slice(1),
+        key: data.key,
+        projectId: params.projectId,
+      });
       dispatch(boardStatusCreateSuccessAction());
       dispatch(modalOpenToggleAction());
       toast.success("Status was created");
@@ -229,11 +300,16 @@ export const boardCreateStatusFetch = createAsyncThunk(
 
 const BOARD_PROJECT_FETCH_DATA_THUNK_TYPE =
   "BOARD_PROJECT_FETCH_DATA_THUNK_TYPE";
+
 export const boardProjectDataFetch = createAsyncThunk(
   BOARD_PROJECT_FETCH_DATA_THUNK_TYPE,
   async (data: { id: string }, { dispatch }) => {
     try {
-      return await getProject(data.id);
+      const projectRef = doc(db, "projects", data.id);
+      const docSnap = await getDoc(projectRef);
+      if (docSnap.exists()) {
+        return docSnap.data() as Project;
+      }
     } catch (error) {
       toast.error("Something went wrong");
     }
@@ -248,7 +324,10 @@ export const boardUpdateTaskDrag = createAsyncThunk(
     try {
       const { data, params } = values;
       dispatch(boardTaskUpdateInProgressAction());
-      await updateTask(data, data._id!);
+      const taskRef = doc(db, "tasks", data._id!);
+      await updateDoc(taskRef, {
+        ...data,
+      });
       dispatch(boardTaskUpdateSuccessAction());
       toast.success("Task was updated");
       await dispatch(boardListFetch(params));

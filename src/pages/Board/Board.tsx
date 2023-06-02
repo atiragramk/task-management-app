@@ -10,8 +10,6 @@ import {
   Container,
   Collapse,
   Typography,
-  Backdrop,
-  CircularProgress,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { TaskListCard } from "./components/TaskListCard";
@@ -171,13 +169,6 @@ const Board = () => {
   return (
     <ErrorBoundary>
       <>
-        {/* <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={loading && data.length >0}
-          // onClick={handleClose}
-        >
-          <CircularProgress color="inherit" />
-        </Backdrop> */}
         {loading && !error && (
           <Box sx={{ width: "100%" }}>
             <LinearProgress />

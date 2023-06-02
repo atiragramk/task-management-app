@@ -1,12 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  Params,
-  SortedTask,
-  Status,
-  User,
-  Task,
-  Project,
-} from "../../../types";
+import { Params, Status, User, Task, Project } from "../../../types";
 import {
   boardListFetch,
   boardStatusListFetch,
@@ -45,7 +38,7 @@ import {
 export type BoardState = {
   loading: boolean;
   error: boolean | null;
-  data: SortedTask[] | [];
+  data: Task[] | [];
   status: {
     loading: boolean;
     error: boolean | null;

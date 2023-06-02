@@ -18,6 +18,7 @@ import { StyledLink } from "./styled";
 import { MODAL_CREATE_PROJECT_NAME } from "./constants";
 import { ErrorBoundary } from "../../components/ErrorBoundary";
 import { ErrorMessage } from "../../components/ErrorMessage";
+import { authStateSelector } from "../Auth/selectors/auth";
 
 const Projects = () => {
   const data = useSelector(selectors.projectsDataSelector);

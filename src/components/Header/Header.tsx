@@ -31,14 +31,15 @@ export const Header = () => {
     null
   );
 
-  const { data, loading } = useSelector(authStateSelector);
+  const { data, loading, user } = useSelector(authStateSelector);
+
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    if (data._id) {
-      dispatch(authUserDataFetch(data._id));
+    if (data.uid) {
+      dispatch(authUserDataFetch(data.uid));
     }
-  }, [data._id, dispatch]);
+  }, [data.uid, dispatch]);
 
   const token = localStorage.getItem("token");
   const handleOpenPopover = (event: React.BaseSyntheticEvent, type: string) => {
@@ -119,12 +120,12 @@ export const Header = () => {
               </Stack>
             </Stack>
           </Box>
-          {token && data._id && !loading && (
+          {token && data.uid && !loading && (
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Typography display="inline">
                 Hello,{" "}
                 <Typography color="primary" display="inline" variant="button">
-                  {data.firstName}
+                  {user.firstName}
                 </Typography>
               </Typography>
               <IconButton>
