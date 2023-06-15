@@ -1,10 +1,10 @@
 {
   "files": {
     "main.css": "/task-management-app/static/css/main.3d10672c.css",
-    "main.js": "/task-management-app/static/js/main.3c05bd14.js",
-    "static/js/776.128c9fc8.chunk.js": "/task-management-app/static/js/776.128c9fc8.chunk.js",
-    "static/js/737.5da3e78d.chunk.js": "/task-management-app/static/js/737.5da3e78d.chunk.js",
-    "static/js/273.6cff2606.chunk.js": "/task-management-app/static/js/273.6cff2606.chunk.js",
+    "main.js": "/task-management-app/static/js/main.852c76d3.js",
+    "static/js/776.541ae927.chunk.js": "/task-management-app/static/js/776.541ae927.chunk.js",
+    "static/js/737.274dc430.chunk.js": "/task-management-app/static/js/737.274dc430.chunk.js",
+    "static/js/273.09406e05.chunk.js": "/task-management-app/static/js/273.09406e05.chunk.js",
     "static/js/945.d5b3452d.chunk.js": "/task-management-app/static/js/945.d5b3452d.chunk.js",
     "static/js/144.3166549f.chunk.js": "/task-management-app/static/js/144.3166549f.chunk.js",
     "static/js/862.42dd6c27.chunk.js": "/task-management-app/static/js/862.42dd6c27.chunk.js",
@@ -17,10 +17,10 @@
     "static/media/logo.png": "/task-management-app/static/media/logo.5f6953ff780bea04ad9f.png",
     "index.html": "/task-management-app/index.html",
     "main.3d10672c.css.map": "/task-management-app/static/css/main.3d10672c.css.map",
-    "main.3c05bd14.js.map": "/task-management-app/static/js/main.3c05bd14.js.map",
-    "776.128c9fc8.chunk.js.map": "/task-management-app/static/js/776.128c9fc8.chunk.js.map",
-    "737.5da3e78d.chunk.js.map": "/task-management-app/static/js/737.5da3e78d.chunk.js.map",
-    "273.6cff2606.chunk.js.map": "/task-management-app/static/js/273.6cff2606.chunk.js.map",
+    "main.852c76d3.js.map": "/task-management-app/static/js/main.852c76d3.js.map",
+    "776.541ae927.chunk.js.map": "/task-management-app/static/js/776.541ae927.chunk.js.map",
+    "737.274dc430.chunk.js.map": "/task-management-app/static/js/737.274dc430.chunk.js.map",
+    "273.09406e05.chunk.js.map": "/task-management-app/static/js/273.09406e05.chunk.js.map",
     "945.d5b3452d.chunk.js.map": "/task-management-app/static/js/945.d5b3452d.chunk.js.map",
     "144.3166549f.chunk.js.map": "/task-management-app/static/js/144.3166549f.chunk.js.map",
     "862.42dd6c27.chunk.js.map": "/task-management-app/static/js/862.42dd6c27.chunk.js.map",
@@ -31,6 +31,6 @@
   },
   "entrypoints": [
     "static/css/main.3d10672c.css",
-    "static/js/main.3c05bd14.js"
+    "static/js/main.852c76d3.js"
   ]
 }
