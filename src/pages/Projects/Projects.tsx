@@ -37,15 +37,23 @@ const Projects = () => {
     {
       field: "name",
       headerName: "Name",
-      width: 200,
+      flex: 1,
       renderCell: (params) => (
         <StyledLink to={`/projects/${params.row._id}`}>
           {params.value}
         </StyledLink>
       ),
     },
-    { field: "description", headerName: "Description", width: 1000 },
-    { field: "shortName", headerName: "Key", width: 200 },
+    {
+      field: "description",
+      headerName: "Description",
+      flex: 2,
+    },
+    {
+      field: "shortName",
+      headerName: "Key",
+      flex: 1,
+    },
   ];
 
   const handleCreateProjectModalToogle = () => {
@@ -78,7 +86,7 @@ const Projects = () => {
               Create Project
             </Button>
           </Box>
-          <Box sx={{ height: "550px" }}>
+          <Box sx={{ height: "550px", width: "100%" }}>
             <DataGrid
               disableColumnMenu
               components={{

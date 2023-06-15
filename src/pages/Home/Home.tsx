@@ -5,10 +5,16 @@ import { StyledContainer, StyledTypography } from "./styled";
 const Home = () => {
   return (
     <StyledContainer maxWidth="xl">
-      <Typography variant="h2">
+      <Typography
+        variant="h2"
+        sx={{ textAlign: "center", fontSize: { xs: 50, lg: 62 } }}
+      >
         Organize your work and life, finally.
       </Typography>
-      <StyledTypography paragraph={true}>
+      <StyledTypography
+        paragraph={true}
+        sx={{ width: { xs: "100%", lg: 600 } }}
+      >
         Task management is the process of creating, prioritizing, delegating,
         and monitoring tasks to ensure they are completed within given
         deadlines. It also involves organizing the workflow and resolving

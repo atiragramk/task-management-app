@@ -47,6 +47,9 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
       sx={{ pt: 2, pl: 1 }}
     >
       <StyledButton
+        sx={{
+          minWidth: { xs: "100%", lg: 120 },
+        }}
         onClick={onCreateModalOpen}
         variant="contained"
         size="small"
@@ -114,24 +117,32 @@ export const SortingBar: React.FC<SortingBarProps> = (props) => {
           })}
         </Select>
       </StyledFormControl>
-      <Autocomplete
-        sx={{ maxWidth: 450, mt: 1, minWidth: 350 }}
-        size="small"
-        multiple
-        loading={loading}
-        id="users"
-        disabled={!data.length}
-        options={userList}
-        filterSelectedOptions
-        disableCloseOnSelect
-        value={params.userData}
-        onChange={(_, data) => handleAssigneeChange(data)}
-        getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
-        renderInput={(params) => (
-          <TextField {...params} label="Assignee" placeholder="User" />
-        )}
-      ></Autocomplete>
+      <StyledFormControl size="small">
+        <Autocomplete
+          sx={{
+            maxWidth: { xs: 450 },
+            minWidth: { xs: "100%", lg: 350 },
+          }}
+          size="small"
+          multiple
+          loading={loading}
+          id="users"
+          disabled={!data.length}
+          options={userList}
+          filterSelectedOptions
+          disableCloseOnSelect
+          value={params.userData}
+          onChange={(_, data) => handleAssigneeChange(data)}
+          getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
+          renderInput={(params) => (
+            <TextField {...params} label="Assignee" placeholder="User" />
+          )}
+        ></Autocomplete>
+      </StyledFormControl>
       <StyledButton
+        sx={{
+          minWidth: { xs: "100%", lg: 120 },
+        }}
         size="small"
         variant="outlined"
         disabled={!data.length}

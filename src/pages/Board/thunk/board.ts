@@ -40,6 +40,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../../firebase";
 import { v4 as uuidv4 } from "uuid";
+import { get } from "http";
 
 const BOARD_FETCH_THUNK_TYPE = "BOARD_FETCH_THUNK_TYPE";
 
@@ -55,8 +56,15 @@ export const boardListFetch = createAsyncThunk(
         constraints.push(where("statusId", "==", params.status));
       if (params.priority)
         constraints.push(where("priority", "==", params.priority));
-
-      if (params.search) constraints.push(where("title", "==", params.search));
+      const titleVariations = [
+        params.search?.toLowerCase(),
+        params.search?.toUpperCase(),
+        params.search,
+        params.search?.charAt(0).toUpperCase() +
+          params.search!.slice(1).toLowerCase(),
+      ];
+      if (params.search)
+        constraints.push(where("title", "in", titleVariations));
       if (params.assignee?.length)
         constraints.push(
           where("assignee", "array-contains-any", params.assignee)

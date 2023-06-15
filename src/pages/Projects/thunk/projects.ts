@@ -62,25 +62,3 @@ export const projectCreateFetch = createAsyncThunk(
     }
   }
 );
-
-// export const projectCreateFetch = createAsyncThunk(
-//   PROJECTS_CREATE_FETCH_THUNK_TYPE,
-//   async (data: Partial<Project>, { dispatch }) => {
-//     try {
-//       dispatch(projectCreateInProgressAction());
-//       await createProject(data);
-//       dispatch(projectCreateSuccessAtion());
-//       dispatch(modalOpenToggleAction());
-//       toast.success("Project was created");
-//       await dispatch(projectsListFetch());
-//     } catch (error) {
-//       dispatch(projectCreateErrorAction());
-//       if (error instanceof AxiosError) {
-//         if (error.response?.data) {
-//           return toast.error(error.response?.data.data);
-//         }
-//         toast.error(error.message);
-//       }
-//     }
-//   }
-// );

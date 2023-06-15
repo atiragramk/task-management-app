@@ -80,13 +80,20 @@ export const Header = () => {
             <StyledLink to="/">
               <StyledImage src={logo} alt="logo" />
             </StyledLink>
-            <Typography variant="h6">
+            <Typography variant="h6" sx={{ fontSize: { xs: 14, lg: 18 } }}>
               Just <StyledSpan>TODO</StyledSpan> it
             </Typography>
             <Stack sx={{ ml: 2 }} direction="row">
-              <StyledNavLink to="/">HOME</StyledNavLink>
+              <StyledNavLink sx={{ fontSize: { xs: 12, lg: 16 } }} to="/">
+                HOME
+              </StyledNavLink>
               <Stack direction="row">
-                <StyledNavLink to="/projects">PROJECTS</StyledNavLink>
+                <StyledNavLink
+                  sx={{ fontSize: { xs: 12, lg: 16 } }}
+                  to="/projects"
+                >
+                  PROJECTS
+                </StyledNavLink>
                 <IconButton
                   onClick={(e) => handleOpenPopover(e, "navigation")}
                   sx={{ p: 0 }}
@@ -122,9 +129,17 @@ export const Header = () => {
           </Box>
           {token && data.uid && !loading && (
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Typography display="inline">
+              <Typography
+                display="inline"
+                sx={{ fontSize: { xs: 12, lg: 16 } }}
+              >
                 Hello,{" "}
-                <Typography color="primary" display="inline" variant="button">
+                <Typography
+                  color="primary"
+                  display="inline"
+                  variant="button"
+                  sx={{ fontSize: { xs: 12, lg: 16 } }}
+                >
                   {user.firstName}
                 </Typography>
               </Typography>
